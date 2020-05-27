@@ -30,7 +30,9 @@ pip install -r requirements.txt
 
 Usage
 =========================
-* quick start
+* An example of a spot trade API
+* Replace it with your own API KEY
+* Run
 ```python
 from bitmart.api_spot import APISpot
 
