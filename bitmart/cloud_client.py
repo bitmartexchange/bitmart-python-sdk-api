@@ -6,17 +6,18 @@ from .cloud_consts import Auth
 
 class CloudClient(object):
 
-    def __init__(self, api_key, secret_key, memo):
+    def __init__(self, api_key, secret_key, memo, url: str = c.API_URL):
 
         self.API_KEY = api_key
         self.SECRET_KEY = secret_key
         self.MEMO = memo
+        self.URL = url
 
     def _request(self, method, request_path, params, auth):
         if method == c.GET or method == c.DELETE:
-            url = c.API_URL + request_path + cloud_utils.parse_params_to_str(params)
+            url = self.URL + request_path + cloud_utils.parse_params_to_str(params)
         else:
-            url = c.API_URL + request_path
+            url = self.URL + request_path
 
         # set body
         body = json.dumps(params) if method == c.POST else ""
