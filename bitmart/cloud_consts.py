@@ -1,7 +1,7 @@
 from enum import Enum, unique
 
 # domain
-API_URL = 'https://www.api-cloud.bitmart.com'
+API_URL = 'https://api-cloud.bitmart.com'
 
 # http header
 CONTENT_TYPE = 'Content-Type'
