@@ -39,7 +39,7 @@ class APISpot(CloudClient):
             'to': toTime,
             'step': step
         }
-        return self._request_with_params(GET, API_SPOT_KLINE_URL, param)
+        return self._request_with_params(GET, API_SPOT_SYMBOLS_KLINE_URL, param)
 
     # GET https://api-cloud.bitmart.com/spot/v1/symbols/book
     def get_symbol_book(self, symbol: str, precision: int):
@@ -48,14 +48,14 @@ class APISpot(CloudClient):
         }
         if precision:
             param['precision'] = precision
-        return self._request_with_params(GET, API_SPOT_BOOK_URL, param)
+        return self._request_with_params(GET, API_SPOT_SYMBOLS_BOOK_URL, param)
 
     # GET https://api-cloud.bitmart.com/spot/v1/symbols/trades
     def get_symbol_trades(self, symbol: str):
         param = {
             'symbol': symbol
         }
-        return self._request_with_params(GET, API_SPOT_BOOK_URL, param)
+        return self._request_with_params(GET, API_SPOT_SYMBOLS_TRADES_URL, param)
 
     # trade API
 

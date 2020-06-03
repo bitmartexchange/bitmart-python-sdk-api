@@ -10,7 +10,7 @@ if __name__ == '__main__':
     symbol = 'BTC_USDT'
 
     # Test GET https://api-cloud.bitmart.com/spot/v1/currencies
-    print(spotAPI.get_currencies())
+    # print(spotAPI.get_currencies())
 
     # # Test GET https://api-cloud.bitmart.com/spot/v1/symbols
     # print(spotAPI.get_symbols())
@@ -52,7 +52,12 @@ if __name__ == '__main__':
     # print(spotAPI.get_user_order_detail(symbol, 2147484353))
 
     # Test GET https://api-cloud.bitmart.com/spot/v1/orders
-    # print(spotAPI.get_user_orders(symbol, offset=1, limit=10, status="2"))
+    print(spotAPI.get_user_orders(symbol, offset=1, limit=100, status="2"))
+    print(spotAPI.get_user_orders(symbol, offset=2, limit=100, status="2"))
+    print(spotAPI.get_user_orders(symbol, offset=3, limit=100, status="2"))
+    print(spotAPI.get_user_orders(symbol, offset=4, limit=100, status="2"))
+    print(spotAPI.get_user_orders(symbol, offset=5, limit=100, status="2"))
+    print(spotAPI.get_user_orders(symbol, offset=6, limit=100, status="2"))
 
     # Test GET https://api-cloud.bitmart.com/spot/v1/trades
     # print(spotAPI.get_user_order_trades(symbol, 2147484351))
