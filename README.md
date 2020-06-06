@@ -18,14 +18,18 @@ Feature
 Installation
 =========================
 
-* 1.Python 3.6+ support
+* 1.Python 3.6 support
 
 * 2.Clone
 ```git
-git clone git@github.com:bitmartexchange/bitmart-python-api.git
-pip install -r requirements.txt
+git clone https://github.com/bitmartexchange/bitmart-python-sdk-api.git
+pip3 install -r requirements.txt
 ```
 
+* 3.Copy 
+```bash
+mv bitmart-python-sdk-api/bitmart /Your Working Directory
+```
 
 
 Usage
@@ -38,9 +42,9 @@ from bitmart.api_spot import APISpot
 
 if __name__ == '__main__':
 
-    api_key = "80618e45710812162b04892c7ee5ead4a3cc3e56"
-    secret_key = "6c6c98544461bbe71db2bca4c6d7fd0021e0ba9efc215f9c6ad41852df9d9df9"
-    memo = "test001"
+    api_key = "Your API KEY"
+    secret_key = "Your Secret KEY"
+    memo = "Your Memo"
 
     spotAPI = APISpot(api_key, secret_key, memo)
 
