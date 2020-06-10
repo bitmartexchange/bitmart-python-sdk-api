@@ -103,10 +103,10 @@ class APISpot(CloudClient):
         return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 
     # POST https://api-cloud.bitmart.com/spot/v1/cancel_order
-    def post_cancel_order(self, symbol: str, entrustId: int):
+    def post_cancel_order(self, symbol: str, orderId: int):
         param = {
             'symbol': symbol,
-            'entrust_id': entrustId
+            'order_id': orderId
         }
         return self._request_with_params(POST, API_SPOT_CANCEL_ORDER_URL, param, Auth.SIGNED)
 
@@ -119,10 +119,10 @@ class APISpot(CloudClient):
         return self._request_with_params(POST, API_SPOT_CANCEL_ORDERS_URL, param, Auth.SIGNED)
 
     # GET https://api-cloud.bitmart.com/spot/v1/order_detail
-    def get_user_order_detail(self, symbol: str, entrustId: int):
+    def get_user_order_detail(self, symbol: str, orderId: int):
         param = {
             'symbol': symbol,
-            'entrust_id': entrustId
+            'order_id': orderId
         }
         return self._request_with_params(GET, API_SPOT_ORDER_DETAIL_URL, param, Auth.KEYED)
 
@@ -137,10 +137,10 @@ class APISpot(CloudClient):
         return self._request_with_params(GET, API_SPOT_ORDERS_URL, param, Auth.KEYED)
 
     # GET https://api-cloud.bitmart.com/spot/v1/trades
-    def get_user_order_trades(self, symbol: str, entrustId: int):
+    def get_user_order_trades(self, symbol: str, orderId: int):
         param = {
             'symbol': symbol,
-            'entrust_id': entrustId
+            'order_id': orderId
         }
         return self._request_with_params(GET, API_SPOT_TRADES_URL, param, Auth.KEYED)
 
