@@ -26,7 +26,7 @@ if __name__ == '__main__':
     print(spotAPI.get_steps())
 
     # Test GET https://api-cloud.bitmart.com/spot/v1/symbols/kline
-    print(spotAPI.get_symbol_book(symbol, 1525760116000, 1525769116000, 1440))
+    print(spotAPI.get_symbol_kline(symbol, 1591789435, 1591875835, 60))
 
     # GET https://api-cloud.bitmart.com/spot/v1/symbols/book
     print(spotAPI.get_symbol_book(symbol, None))
