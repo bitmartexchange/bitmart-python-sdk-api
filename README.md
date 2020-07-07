@@ -1,6 +1,6 @@
 [![Logo](./logo.png)](https://bitmart.com)
 
-BitMart-Python-API
+BitMart-Python-SDK-API
 =========================
 <p align="left">
     <a href='#'><img src='https://travis-ci.org/meolu/walle-web.svg?branch=master' alt="Build Status"></a>  
@@ -13,12 +13,16 @@ Python client for the [BitMart Cloud API](http://developer-pro.bitmart.com).
 Feature
 =========================
 - Provides exchange quick trading API
+- Easier withdrawal
+- Efficiency, higher speeds, and lower latencies
+- Priority in development and maintenance
+- Dedicated and responsive technical support
 
 
 Installation
 =========================
 
-* 1.Python 3.6 support
+* 1.Python 3.6+ support
 
 * 2.Clone
 ```git
@@ -48,7 +52,7 @@ if __name__ == '__main__':
 
     spotAPI = APISpot(api_key, secret_key, memo)
 
-    spotAPI.post_submit_limit_buy_order('BTC_USDT', size=0.01, price=8800)
+    spotAPI.post_submit_limit_buy_order('BTC_USDT', size='0.01', price='8800')
 ```
 
 

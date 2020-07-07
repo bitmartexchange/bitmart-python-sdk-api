@@ -2,6 +2,7 @@ import requests
 import json
 from . import cloud_consts as c, cloud_utils, cloud_exceptions
 from .cloud_consts import Auth
+from .cloud_log import CloudLog, log
 
 
 class CloudClient(object):
@@ -13,6 +14,7 @@ class CloudClient(object):
         self.MEMO = memo
         self.URL = url
 
+    @log
     def _request(self, method, request_path, params, auth):
         if method == c.GET or method == c.DELETE:
             url = self.URL + request_path + cloud_utils.parse_params_to_str(params)
@@ -23,9 +25,8 @@ class CloudClient(object):
         body = json.dumps(params) if method == c.POST else ""
 
         # set header
-        header = None
         if auth == Auth.NONE:
-            pass
+            header = cloud_utils.get_header(api_key=None, sign=None, timestamp=None)
         elif auth == Auth.KEYED:
             header = cloud_utils.get_header(self.API_KEY, sign=None, timestamp=None)
         else:
@@ -33,10 +34,13 @@ class CloudClient(object):
             sign = cloud_utils.sign(cloud_utils.pre_substring(timestamp, self.MEMO, str(body)), self.SECRET_KEY)
             header = cloud_utils.get_header(self.API_KEY, sign, timestamp)
 
-        print("------------------------------------------")
-        print("[", method, "]", url)
-        print("headers:", header)
-        print("body:", body)
+        if CloudLog.is_debug():
+            print("------------------------------------------")
+            print("[", method, "]", url)
+            print("request")
+            print("\theaders:", header)
+            if body:
+                print("\tbody:", body)
 
         # send request
         response = None

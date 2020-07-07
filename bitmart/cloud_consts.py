@@ -5,12 +5,14 @@ API_URL = 'https://api-cloud.bitmart.com'
 
 # http header
 CONTENT_TYPE = 'Content-Type'
+USER_AGENT = 'User-Agent'
 X_BM_KEY = 'X-BM-KEY'
 X_BM_SIGN = 'X-BM-SIGN'
 X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
 # http header
 APPLICATION_JSON = 'application/json'
+VERSION = 'BitMart-Python-SDK/1.0.0'
 
 GET = "GET"
 POST = "POST"
@@ -19,6 +21,15 @@ DELETE = "DELETE"
 # system url
 API_SYSTEM_TIME_URL = '/system/time'
 API_SYSTEM_SERVICE_URL = '/system/service'
+
+# account url
+API_ACCOUNT_CURRENCIES_URL = '/account/v1/currencies'
+API_ACCOUNT_WALLET_URL = '/account/v1/wallet'
+API_ACCOUNT_DEPOSIT_ADDRESS_URL = '/account/v1/deposit/address'
+API_ACCOUNT_WITHDRAW_CHARGE_URL = '/account/v1/withdraw/charge'
+API_ACCOUNT_WITHDRAW_APPLY_URL = '/account/v1/withdraw/apply'
+API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL = '/account/v1/deposit-withdraw/history'
+API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
 
 # spot url
 API_SPOT_CURRENCIES_URL = '/spot/v1/currencies'
@@ -59,8 +70,6 @@ API_CONTRACT_USER_POSITIONS_URL = '/contract/v1/ifcontract/userPositions'
 API_CONTRACT_USER_LIQ_RECORDS_URL = '/contract/v1/ifcontract/userLiqRecords'
 API_CONTRACT_POSITION_FEE_URL = '/contract/v1/ifcontract/positionFee'
 API_CONTRACT_MARGIN_OPER_URL = '/contract/v1/ifcontract/marginOper'
-
-
 
 
 @unique

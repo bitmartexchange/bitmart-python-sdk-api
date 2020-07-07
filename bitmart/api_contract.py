@@ -30,7 +30,7 @@ class APIContract(CloudClient):
         return self._request_with_params(GET, API_CONTRACT_TICKERS_URL, param)
 
     # GET https://api-cloud.bitmart.com/contract/v1/ifcontract/quote
-    def get_quote(self, contractId: int, startTime: int, endTime: int, unit: int, resolution: int):
+    def get_quote(self, contractId: int, startTime: int, endTime: int, unit: int, resolution: str):
         param = {'contractID': contractId, 'startTime': startTime, 'endTime': endTime, 'unit': unit, 'resolution': resolution}
         return self._request_with_params(GET, API_CONTRACT_QUOTE_URL, param)
 
