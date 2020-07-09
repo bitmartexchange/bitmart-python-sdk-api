@@ -2,3 +2,4 @@ venv
 .idea
 bitmart/__pycache__
 *.pyc
+tests/.pytest_cache

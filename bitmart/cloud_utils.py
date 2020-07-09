@@ -17,6 +17,7 @@ def pre_substring(timestamp, memo, body):
 def get_header(api_key, sign, timestamp):
     header = dict()
     header[c.CONTENT_TYPE] = c.APPLICATION_JSON
+    header[c.USER_AGENT] = c.VERSION
 
     if api_key:
         header[c.X_BM_KEY] = api_key
