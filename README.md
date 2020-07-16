@@ -55,6 +55,13 @@ if __name__ == '__main__':
     spotAPI.post_submit_limit_buy_order('BTC_USDT', size='0.01', price='8800')
 ```
 
+Release Notes
+=========================
 
+** 2020-07-16 
+- Interface Spot API `Cancel Order` update to v2 version that is `POST https://api-cloud.bitmart.com/spot/v2/cancel_order`
+- UserAgent set "BitMart-Java-SDK/1.0.1"
+          
+          
 License
 =========================

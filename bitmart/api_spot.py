@@ -102,7 +102,7 @@ class APISpot(CloudClient):
         }
         return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 
-    # POST https://api-cloud.bitmart.com/spot/v1/cancel_order
+    # POST https://api-cloud.bitmart.com/spot/v2/cancel_order
     def post_cancel_order(self, symbol: str, orderId: int):
         param = {
             'symbol': symbol,

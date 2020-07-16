@@ -73,7 +73,7 @@ def test_post_submit_market_sell_order():
 
 
 def test_post_cancel_order():
-    """Test POST https://api-cloud.bitmart.com/spot/v1/cancel_orde"""
+    """Test POST https://api-cloud.bitmart.com/spot/v2/cancel_orde"""
     assert spotAPI.post_cancel_order(symbol='BTC_USDT', orderId=2147617164)[0]['code'] == 1000
 
 
