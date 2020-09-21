@@ -39,7 +39,7 @@ def test_get_symbol_kline():
 
 def test_get_symbol_book():
     """Test GET https://api-cloud.bitmart.com/spot/v1/symbols/book"""
-    assert spotAPI.get_symbol_book(symbol='BTC_USDT', precision=None)[0]['code'] == 1000
+    assert spotAPI.get_symbol_book(symbol='BTC_USDT', precision=None, size=200)[0]['code'] == 1000
 
 
 def test_get_symbol_trades():
