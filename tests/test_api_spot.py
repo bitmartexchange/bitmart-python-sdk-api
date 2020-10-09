@@ -2,7 +2,7 @@ from bitmart.api_spot import APISpot
 from tests import data as data
 
 # spot api
-spotAPI = APISpot(data.api_key, data.secret_key, data.memo, data.url)
+spotAPI = APISpot(data.api_key, data.secret_key, data.memo, data.url, timeout=data.timeout)
 
 
 def test_get_currencies():

@@ -4,8 +4,8 @@ from .cloud_consts import *
 
 class APISystem(CloudClient):
 
-    def __init__(self, url=API_URL):
-        CloudClient.__init__(self, '', '', '', url)
+    def __init__(self,  url: str = API_URL, timeout: tuple = TIMEOUT):
+        CloudClient.__init__(self, '', '', '', url, timeout)
 
     # get system time
     def get_system_time(self):

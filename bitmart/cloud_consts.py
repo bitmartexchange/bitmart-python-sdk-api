@@ -3,6 +3,10 @@ from enum import Enum, unique
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
 
+# connection timeout, read timeout
+TIMEOUT = (5, 10)
+
+
 # http header
 CONTENT_TYPE = 'Content-Type'
 USER_AGENT = 'User-Agent'
@@ -12,7 +16,7 @@ X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
 # http header
 APPLICATION_JSON = 'application/json'
-VERSION = 'BitMart-Python-SDK/1.0.1'
+VERSION = 'BitMart-Python-SDK/1.0.2'
 
 GET = "GET"
 POST = "POST"
