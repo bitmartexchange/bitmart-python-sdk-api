@@ -50,7 +50,7 @@ if __name__ == '__main__':
     secret_key = "Your Secret KEY"
     memo = "Your Memo"
 
-    spotAPI = APISpot(api_key, secret_key, memo)
+    spotAPI = APISpot(api_key, secret_key, memo, timeout=(3, 10))
 
     spotAPI.post_submit_limit_buy_order('BTC_USDT', size='0.01', price='8800')
 ```

@@ -4,8 +4,8 @@ from .cloud_consts import *
 
 class APIContract(CloudClient):
 
-    def __init__(self, api_key, secret_key, memo, url=API_URL):
-        CloudClient.__init__(self, api_key, secret_key, memo, url)
+    def __init__(self, api_key, secret_key, memo,  url: str = API_URL, timeout: tuple = TIMEOUT):
+        CloudClient.__init__(self, api_key, secret_key, memo, url, timeout)
 
     # basic API
     # GET https://api-cloud.bitmart.com/contract/v1/ifcontract/contracts

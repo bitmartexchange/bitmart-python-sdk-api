@@ -4,8 +4,8 @@ from .cloud_consts import *
 
 class APIAccount(CloudClient):
 
-    def __init__(self, api_key, secret_key, memo, url=API_URL):
-        CloudClient.__init__(self, api_key, secret_key, memo, url)
+    def __init__(self, api_key, secret_key, memo, url: str = API_URL, timeout: tuple = TIMEOUT):
+        CloudClient.__init__(self, api_key, secret_key, memo, url, timeout)
 
     # GET https://api-cloud.bitmart.com/account/v1/currencies
     def get_currencies(self):
@@ -54,7 +54,7 @@ class APIAccount(CloudClient):
         return self._request_with_params(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL, param, Auth.KEYED)
 
     # GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/detail
-    def get_deposit_withdraw_detail(self, id:str):
+    def get_deposit_withdraw_detail(self, id: str):
         param = {
             'id': id
         }

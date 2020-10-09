@@ -7,12 +7,20 @@ from .cloud_log import CloudLog, log
 
 class CloudClient(object):
 
-    def __init__(self, api_key, secret_key, memo, url: str = c.API_URL):
-
+    def __init__(self, api_key, secret_key, memo, url, timeout):
+        """
+        :param api_key: Get from bitmart API page.
+        :param secret_key: Get from bitmart API page.
+        :param memo: Get from bitmart API page.
+        :param url: Request Domain URL.
+        :param timeout: (connection timeout, read timeout).
+        """
         self.API_KEY = api_key
         self.SECRET_KEY = secret_key
         self.MEMO = memo
         self.URL = url
+        self.TIMEOUT = timeout
+
 
     @log
     def _request(self, method, request_path, params, auth):
@@ -45,11 +53,11 @@ class CloudClient(object):
         # send request
         response = None
         if method == c.GET:
-            response = requests.get(url, headers=header)
+            response = requests.get(url, headers=header, timeout=self.TIMEOUT)
         elif method == c.POST:
-            response = requests.post(url, data=body, headers=header)
+            response = requests.post(url, data=body, headers=header, timeout=self.TIMEOUT)
         elif method == c.DELETE:
-            response = requests.delete(url, headers=header)
+            response = requests.delete(url, headers=header, timeout=self.TIMEOUT)
 
         # exception handle
         if not str(response.status_code) == '200':
