@@ -17,7 +17,7 @@ Feature
 - Efficiency, higher speeds, and lower latencies
 - Priority in development and maintenance
 - Dedicated and responsive technical support
-
+- Provide webSocket apis calls
 
 Installation
 =========================
@@ -41,6 +41,8 @@ Usage
 * An example of a spot trade API
 * Replace it with your own API KEY
 * Run
+
+#### API Example
 ```python
 from bitmart.api_spot import APISpot
 
@@ -53,6 +55,39 @@ if __name__ == '__main__':
     spotAPI = APISpot(api_key, secret_key, memo, timeout=(3, 10))
 
     spotAPI.post_submit_limit_buy_order('BTC_USDT', size='0.01', price='8800')
+```
+
+
+
+#### WebSocket Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_client import CloudWSClient
+from bitmart.ws_spot import create_channel, create_spot_subscribe_params
+
+
+class WSTest(CloudWSClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+    ws.set_debug(True)
+    channels = [
+        # public channel
+        create_channel(cloud_consts.WS_PUBLIC_SPOT_TICKER, 'BTC_USDT'),
+        create_channel(cloud_consts.WS_PUBLIC_SPOT_KLINE_1M, 'BTC_USDT'),
+        create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT'),
+
+        # private channel
+        create_channel(cloud_consts.WS_USER_SPOT_ORDER, 'BTC_USDT')
+    ]
+
+    ws.spot_subscribe_with_login(create_spot_subscribe_params(channels))
+
 ```
 
 Release Notes
