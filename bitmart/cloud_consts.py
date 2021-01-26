@@ -2,7 +2,7 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
-WS_URL = 'wss://ws-manager-compress.bitmart.com'
+WS_URL = 'wss://ws-manager-compress.bitmart.com?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
