@@ -2,10 +2,10 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
+WS_URL = 'wss://ws-manager-compress.bitmart.com?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
-
 
 # http header
 CONTENT_TYPE = 'Content-Type'
@@ -74,6 +74,27 @@ API_CONTRACT_USER_POSITIONS_URL = '/contract/v1/ifcontract/userPositions'
 API_CONTRACT_USER_LIQ_RECORDS_URL = '/contract/v1/ifcontract/userLiqRecords'
 API_CONTRACT_POSITION_FEE_URL = '/contract/v1/ifcontract/positionFee'
 API_CONTRACT_MARGIN_OPER_URL = '/contract/v1/ifcontract/marginOper'
+
+# websocket
+# spot public
+WS_PUBLIC_SPOT_TICKER = 'spot/ticker'
+WS_PUBLIC_SPOT_TRADE = 'spot/trade'
+WS_PUBLIC_SPOT_DEPTH5 = 'spot/depth5'
+WS_PUBLIC_SPOT_DEPTH400 = 'spot/depth400'
+WS_PUBLIC_SPOT_KLINE_1M = 'spot/kline1m'
+WS_PUBLIC_SPOT_KLINE_3M = 'spot/kline3m'
+WS_PUBLIC_SPOT_KLINE_5M = 'spot/kline5m'
+WS_PUBLIC_SPOT_KLINE_15M = 'spot/kline15m'
+WS_PUBLIC_SPOT_KLINE_30M = 'spot/kline30m'
+WS_PUBLIC_SPOT_KLINE_1H = 'spot/kline1H'
+WS_PUBLIC_SPOT_KLINE_2H = 'spot/kline2H'
+WS_PUBLIC_SPOT_KLINE_4H = 'spot/kline4H'
+WS_PUBLIC_SPOT_KLINE_1D = 'spot/kline1D'
+WS_PUBLIC_SPOT_KLINE_1W = 'spot/kline1W'
+WS_PUBLIC_SPOT_KLINE_1MON = 'spot/kline1M'
+
+# spot user private
+WS_USER_SPOT_ORDER = 'spot/user/order'
 
 
 @unique
