@@ -100,5 +100,21 @@ Release Notes
 ** 2020-09-21
 - Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
 
+** 2021-11-09
+- Add the following API interfaces:
+
+| Interface | Interface Name |
+| - | - |
+|/account/v2/deposit-withdraw/history               | Get Deposit And Withdraw  History V2 |
+|/spot/v2/orders                                    | Get User Order History V2 |
+|/spot/v1/batch_orders                              | Batch Order ｜
+
+- Modify the following API interfaces:
+
+| Interface | Interface Name | Remark |
+| - | - | - |
+| /spot/v1/symbols/trades | Get Recent Trades | Add optional parameter N to return the number of items, the default is up to 50 items |
+| /account/v1/wallet | Get Account Balance | Remove the account_type,Only respond to currency accounts; you can bring currency parameters (optional) |
+
 License
 =========================

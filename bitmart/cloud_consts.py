@@ -33,6 +33,7 @@ API_ACCOUNT_DEPOSIT_ADDRESS_URL = '/account/v1/deposit/address'
 API_ACCOUNT_WITHDRAW_CHARGE_URL = '/account/v1/withdraw/charge'
 API_ACCOUNT_WITHDRAW_APPLY_URL = '/account/v1/withdraw/apply'
 API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL = '/account/v1/deposit-withdraw/history'
+API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_V2_URL = '/account/v2/deposit-withdraw/history'
 API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
 
 # spot url
@@ -46,10 +47,12 @@ API_SPOT_SYMBOLS_BOOK_URL = '/spot/v1/symbols/book'
 API_SPOT_SYMBOLS_TRADES_URL = '/spot/v1/symbols/trades'
 API_SPOT_WALLET_URL = '/spot/v1/wallet'
 API_SPOT_SUBMIT_ORDER_URL = '/spot/v1/submit_order'
+API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v1/batch_orders'
 API_SPOT_CANCEL_ORDER_URL = '/spot/v2/cancel_order'
 API_SPOT_CANCEL_ORDERS_URL = '/spot/v1/cancel_orders'
 API_SPOT_ORDER_DETAIL_URL = '/spot/v1/order_detail'
 API_SPOT_ORDERS_URL = '/spot/v1/orders'
+API_SPOT_ORDERS_V2_URL = '/spot/v2/orders'
 API_SPOT_TRADES_URL = '/spot/v1/trades'
 
 # contract url
