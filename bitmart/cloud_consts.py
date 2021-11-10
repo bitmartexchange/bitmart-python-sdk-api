@@ -16,7 +16,7 @@ X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
 # http header
 APPLICATION_JSON = 'application/json'
-VERSION = 'BitMart-Python-SDK/1.0.2'
+VERSION = 'BitMart-Python-SDK/1.0.3'
 
 GET = "GET"
 POST = "POST"
