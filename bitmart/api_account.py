@@ -43,16 +43,6 @@ class APIAccount(CloudClient):
         }
         return self._request_with_params(POST, API_ACCOUNT_WITHDRAW_APPLY_URL, param, Auth.SIGNED)
 
-    # GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/history
-    def get_deposit_withdraw_history(self, currency: str, operationType: str, offset: int, limit: int):
-        param = {
-            'currency': currency,
-            'operation_type': operationType,
-            'offset': offset,
-            'limit': limit
-        }
-        return self._request_with_params(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL, param, Auth.KEYED)
-
     # GET https://api-cloud.bitmart.com/account/v2/deposit-withdraw/history
     def get_deposit_withdraw_history_v2(self, currency: str, operationType: str, N: int):
         param = {

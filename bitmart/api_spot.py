@@ -111,16 +111,6 @@ class APISpot(CloudClient):
         }
         return self._request_with_params(GET, API_SPOT_ORDER_DETAIL_URL, param, Auth.KEYED)
 
-    # GET https://api-cloud.bitmart.com/spot/v1/orders
-    def get_user_orders(self, symbol: str, offset: int, limit: int, status: str):
-        param = {
-            'symbol': symbol,
-            'offset': offset,
-            'limit': limit,
-            'status': status
-        }
-        return self._request_with_params(GET, API_SPOT_ORDERS_URL, param, Auth.KEYED)
-
     # GET https://api-cloud.bitmart.com/spot/v2/orders
     def get_user_orders_v2(self, symbol: str, status: str, N: int):
         param = {

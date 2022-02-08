@@ -36,12 +36,6 @@ def test_post_withdraw_apply():
                'code'] == 1000
 
 
-def test_get_deposit_withdraw_history():
-    """Test GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/history"""
-    assert accountAPI.get_deposit_withdraw_history(
-        currency='USDT-ERC20', operationType='withdraw', offset=1, limit=50)[0]['code'] == 1000
-
-
 def test_get_deposit_withdraw_history_v2():
     """Test GET https://api-cloud.bitmart.com/account/v2/deposit-withdraw/history"""
     assert accountAPI.get_deposit_withdraw_history_v2(
