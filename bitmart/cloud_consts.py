@@ -2,7 +2,8 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
-WS_URL = 'wss://ws-manager-compress.bitmart.com?protocol=1.1'
+WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
+WS_URL_USER = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
@@ -61,7 +62,8 @@ API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
 WS_PUBLIC_SPOT_TICKER = 'spot/ticker'
 WS_PUBLIC_SPOT_TRADE = 'spot/trade'
 WS_PUBLIC_SPOT_DEPTH5 = 'spot/depth5'
-WS_PUBLIC_SPOT_DEPTH400 = 'spot/depth400'
+WS_PUBLIC_SPOT_DEPTH20 = 'spot/depth20'
+WS_PUBLIC_SPOT_DEPTH50 = 'spot/depth50'
 WS_PUBLIC_SPOT_KLINE_1M = 'spot/kline1m'
 WS_PUBLIC_SPOT_KLINE_3M = 'spot/kline3m'
 WS_PUBLIC_SPOT_KLINE_5M = 'spot/kline5m'

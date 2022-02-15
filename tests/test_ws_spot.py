@@ -40,6 +40,6 @@ def test_spot_subscribe_with_login():
         create_channel(WS_USER_SPOT_ORDER, 'BTC_USDT')
     ]
 
-    ws = WSTest(url=data.ws_url, api_key=data.api_key, memo=data.memo, secret_key=data.secret_key)
+    ws = WSTest(url=data.ws_url_user, api_key=data.api_key, memo=data.memo, secret_key=data.secret_key)
     ws.set_debug(True)
     ws.spot_subscribe_with_login(create_spot_subscribe_params(channels))
