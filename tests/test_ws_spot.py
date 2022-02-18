@@ -20,7 +20,7 @@ def test_spot_subscribe_without_login():
     ws = WSTest(data.ws_url, "", "", "")
     ws.set_debug(True)
     channels = [
-        # Support public channel
+        # Only support public channel
         # create_channel(cloud_consts.WS_PUBLIC_SPOT_TICKER, 'BTC_USDT')
         # create_channel(cloud_consts.WS_PUBLIC_SPOT_KLINE_1M, 'BTC_USDT')
         create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT')
@@ -36,7 +36,7 @@ def test_spot_subscribe_with_login():
         pytest --capture=no
     """
     channels = [
-        # Support public channel and private channel
+        # Only support private channel
         create_channel(WS_USER_SPOT_ORDER, 'BTC_USDT')
     ]
 
