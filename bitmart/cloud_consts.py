@@ -2,7 +2,8 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
-WS_URL = 'wss://ws-manager-compress.bitmart.com?protocol=1.1'
+WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
+WS_URL_USER = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
@@ -16,7 +17,7 @@ X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
 # http header
 APPLICATION_JSON = 'application/json'
-VERSION = 'BitMart-Python-SDK/1.0.2'
+VERSION = 'BitMart-Python-SDK/1.0.3'
 
 GET = "GET"
 POST = "POST"
@@ -32,7 +33,7 @@ API_ACCOUNT_WALLET_URL = '/account/v1/wallet'
 API_ACCOUNT_DEPOSIT_ADDRESS_URL = '/account/v1/deposit/address'
 API_ACCOUNT_WITHDRAW_CHARGE_URL = '/account/v1/withdraw/charge'
 API_ACCOUNT_WITHDRAW_APPLY_URL = '/account/v1/withdraw/apply'
-API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_URL = '/account/v1/deposit-withdraw/history'
+API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_V2_URL = '/account/v2/deposit-withdraw/history'
 API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
 
 # spot url
@@ -46,41 +47,23 @@ API_SPOT_SYMBOLS_BOOK_URL = '/spot/v1/symbols/book'
 API_SPOT_SYMBOLS_TRADES_URL = '/spot/v1/symbols/trades'
 API_SPOT_WALLET_URL = '/spot/v1/wallet'
 API_SPOT_SUBMIT_ORDER_URL = '/spot/v1/submit_order'
+API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v1/batch_orders'
 API_SPOT_CANCEL_ORDER_URL = '/spot/v2/cancel_order'
 API_SPOT_CANCEL_ORDERS_URL = '/spot/v1/cancel_orders'
 API_SPOT_ORDER_DETAIL_URL = '/spot/v1/order_detail'
-API_SPOT_ORDERS_URL = '/spot/v1/orders'
+API_SPOT_ORDERS_V2_URL = '/spot/v2/orders'
 API_SPOT_TRADES_URL = '/spot/v1/trades'
 
 # contract url
-API_CONTRACT_CURRENCIES_URL = '/contract/v1/ifcontract/contracts'
-API_CONTRACT_PNLS_URL = '/contract/v1/ifcontract/pnls'
-API_CONTRACT_INDEXES_URL = '/contract/v1/ifcontract/indexes'
-API_CONTRACT_TICKERS_URL = '/contract/v1/ifcontract/tickers'
-API_CONTRACT_QUOTE_URL = '/contract/v1/ifcontract/quote'
-API_CONTRACT_INDEX_QUOTE_URL = '/contract/v1/ifcontract/indexquote'
-API_CONTRACT_TRADES_URL = '/contract/v1/ifcontract/trades'
-API_CONTRACT_DEPTH_URL = '/contract/v1/ifcontract/depth'
-API_CONTRACT_FUNDING_RATE_URL = '/contract/v1/ifcontract/fundingrate'
-API_CONTRACT_USER_ORDERS_URL = '/contract/v1/ifcontract/userOrders'
-API_CONTRACT_USER_ORDER_INFO_URL = '/contract/v1/ifcontract/userOrderInfo'
-API_CONTRACT_USER_SUBMIT_ORDER_URL = '/contract/v1/ifcontract/submitOrder'
-API_CONTRACT_USER_BATCH_ORDERS_URL = '/contract/v1/ifcontract/batchOrders'
-API_CONTRACT_CANCEL_ORDERS_URL = '/contract/v1/ifcontract/cancelOrders'
-API_CONTRACT_USER_TRADES_URL = '/contract/v1/ifcontract/userTrades'
-API_CONTRACT_ORDER_TRADES_URL = '/contract/v1/ifcontract/orderTrades'
-API_CONTRACT_ACCOUNTS_URL = '/contract/v1/ifcontract/accounts'
-API_CONTRACT_USER_POSITIONS_URL = '/contract/v1/ifcontract/userPositions'
-API_CONTRACT_USER_LIQ_RECORDS_URL = '/contract/v1/ifcontract/userLiqRecords'
-API_CONTRACT_POSITION_FEE_URL = '/contract/v1/ifcontract/positionFee'
-API_CONTRACT_MARGIN_OPER_URL = '/contract/v1/ifcontract/marginOper'
+API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
 
 # websocket
 # spot public
 WS_PUBLIC_SPOT_TICKER = 'spot/ticker'
 WS_PUBLIC_SPOT_TRADE = 'spot/trade'
 WS_PUBLIC_SPOT_DEPTH5 = 'spot/depth5'
-WS_PUBLIC_SPOT_DEPTH400 = 'spot/depth400'
+WS_PUBLIC_SPOT_DEPTH20 = 'spot/depth20'
+WS_PUBLIC_SPOT_DEPTH50 = 'spot/depth50'
 WS_PUBLIC_SPOT_KLINE_1M = 'spot/kline1m'
 WS_PUBLIC_SPOT_KLINE_3M = 'spot/kline3m'
 WS_PUBLIC_SPOT_KLINE_5M = 'spot/kline5m'

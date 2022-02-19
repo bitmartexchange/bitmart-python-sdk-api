@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
 
 
-#### WebSocket Example
+#### WebSocket Public Channel Example
 ```python
 
 from bitmart import cloud_consts
@@ -74,14 +74,37 @@ class WSTest(CloudWSClient):
 
 
 if __name__ == '__main__':
-    ws = WSTest(api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+    ws = WSTest(cloud_consts.WS_URL, "", "", "")
     ws.set_debug(True)
     channels = [
         # public channel
         create_channel(cloud_consts.WS_PUBLIC_SPOT_TICKER, 'BTC_USDT'),
         create_channel(cloud_consts.WS_PUBLIC_SPOT_KLINE_1M, 'BTC_USDT'),
-        create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT'),
+        create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT')
+    ]
 
+    ws.spot_subscribe_without_login(create_spot_subscribe_params(channels))
+
+```
+
+#### WebSocket Private Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_client import CloudWSClient
+from bitmart.ws_spot import create_channel, create_spot_subscribe_params
+
+
+class WSTest(CloudWSClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+    ws.set_debug(True)
+    channels = [
         # private channel
         create_channel(cloud_consts.WS_USER_SPOT_ORDER, 'BTC_USDT')
     ]
@@ -89,6 +112,7 @@ if __name__ == '__main__':
     ws.spot_subscribe_with_login(create_spot_subscribe_params(channels))
 
 ```
+
 
 Release Notes
 =========================
@@ -100,5 +124,43 @@ Release Notes
 ** 2020-09-21
 - Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
 
+** 2021-01-19
+- New endpoints for Spot WebSocket
+  - Public - ticket channels
+  - Public - K channel
+  - Public - trading channels
+  - Public - depth channels
+  - Login
+  - User - Trading Channel
+
+** 2021-11-06
+- Update endpoints for Spot WebSocket
+  - Public-Depth Channel:
+    - spot/depth20     20 Level Depth Channel
+    - spot/depth50     50 Level Depth Channel
+  - User-Trade Channel:
+    - Eligible pushes add new orders successfully
+
+** 2021-11-24
+- New endpoints for Spot
+  - <code>/spot/v2/orders</code>Get User Order History V2
+  - <code>/spot/v1/batch_orders</code>Batch Order
+- Update endpoints for Spot
+  - <code>/spot/v1/symbols/kline</code>Add new field 'quote_volume'
+  - <code>/spot/v1/symbols/trades</code>Add optional parameter N to return the number of items, the default is up to 50 items
+  - <code>/spot/v1/order_detail</code>Add new field 'unfilled_volume'
+  - <code>/spot/v1/submit_order</code>The request parameter type added limit_maker and ioc order types
+- New endpoints for Account
+  - <code>/account/v2/deposit-withdraw/history</code>Get Deposit And Withdraw  History V2
+- Update endpoints for Account
+  - <code>/account/v1/wallet</code>Remove the account_type,Only respond to currency accounts; you can bring currency parameters (optional)
+
+** 2022-01-18
+- websocket public channel address<code>wss://ws-manager-compress.bitmart.com?protocol=1.1</code>will be taken down on 2022-02-28 UTC time,The new address is<code>wss://ws-manager-compress.bitmart.com/api?protocol=1.1</code>
+
+** 2022-01-20
+- Update endpoints for Spot
+  - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.
+  
 License
 =========================

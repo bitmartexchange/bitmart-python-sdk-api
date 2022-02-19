@@ -55,9 +55,10 @@ class APISpot(CloudClient):
         return self._request_with_params(GET, API_SPOT_SYMBOLS_BOOK_URL, param)
 
     # GET https://api-cloud.bitmart.com/spot/v1/symbols/trades
-    def get_symbol_trades(self, symbol: str):
+    def get_symbol_trades(self, symbol: str, N: int = 50):
         param = {
-            'symbol': symbol
+            'symbol': symbol,
+            'N': N
         }
         return self._request_with_params(GET, API_SPOT_SYMBOLS_TRADES_URL, param)
 
@@ -67,41 +68,21 @@ class APISpot(CloudClient):
     def get_wallet(self):
         return self._request_without_params(GET, API_SPOT_WALLET_URL, Auth.KEYED)
 
+    # POST https://api-cloud.bitmart.com/spot/v1/batch_orders
+    def post_batch_orders(self, orderParams: list):
+        param = {
+            'orderParams': orderParams
+        }
+        return self._request_with_params(POST, API_SPOT_SUBMIT_BATCH_ORDERS_URL, param, Auth.SIGNED)
+
     # POST https://api-cloud.bitmart.com/spot/v1/submit_order
-    def post_submit_limit_buy_order(self, symbol: str, size='', price=''):
+    def post_submit_order(self, symbol: str, side: str, type: str, size='', price='', notional=''):
         param = {
             'symbol': symbol,
-            'side': 'buy',
-            'type': 'limit',
+            'side': side,
+            'type': type,
             'size': size,
-            'price': price
-        }
-        return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
-
-    def post_submit_limit_sell_order(self, symbol: str, size='', price=''):
-        param = {
-            'symbol': symbol,
-            'side': 'sell',
-            'type': 'limit',
-            'size': size,
-            'price': price
-        }
-        return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
-
-    def post_submit_market_sell_order(self, symbol: str, size=''):
-        param = {
-            'symbol': symbol,
-            'side': 'sell',
-            'type': 'market',
-            'size': size
-        }
-        return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
-
-    def post_submit_market_buy_order(self, symbol: str, notional=''):
-        param = {
-            'symbol': symbol,
-            'side': 'buy',
-            'type': 'market',
+            'price': price,
             'notional': notional
         }
         return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
@@ -130,15 +111,14 @@ class APISpot(CloudClient):
         }
         return self._request_with_params(GET, API_SPOT_ORDER_DETAIL_URL, param, Auth.KEYED)
 
-    # GET https://api-cloud.bitmart.com/spot/v1/orders
-    def get_user_orders(self, symbol: str, offset: int, limit: int, status: str):
+    # GET https://api-cloud.bitmart.com/spot/v2/orders
+    def get_user_orders_v2(self, symbol: str, status: str, N: int):
         param = {
             'symbol': symbol,
-            'offset': offset,
-            'limit': limit,
+            'N': N,
             'status': status
         }
-        return self._request_with_params(GET, API_SPOT_ORDERS_URL, param, Auth.KEYED)
+        return self._request_with_params(GET, API_SPOT_ORDERS_V2_URL, param, Auth.KEYED)
 
     # GET https://api-cloud.bitmart.com/spot/v1/trades
     def get_user_order_trades(self, symbol: str, orderId: int):
