@@ -56,6 +56,19 @@ API_SPOT_TRADES_URL = '/spot/v1/trades'
 
 # contract url
 API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
+API_CONTRACT_DETAILS_URL = "/contract/public/details"
+API_CONTRACT_DEPTH_URL = "/contract/public/depth"
+API_CONTRACT_OPEN_INTEREST_URL = "/contract/public/open-interest"
+API_CONTRACT_FUNDING_RATE_URL = "/contract/public/funding-rate"
+API_CONTRACT_KLINE_URL = "/contract/public/kline"
+API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
+API_CONTRACT_ORDER_URL = "/contract/private/order"
+API_CONTRACT_ORDER_HISTORY_URL = "/contract/private/order-history"
+API_CONTRACT_POSITION_URL = "/contract/private/position"
+API_CONTRACT_TRADES_URL = "/contract/private/trades"
+API_CONTRACT_SUBMIT_ORDER_URL = "/contract/private/submit-order"
+API_CONTRACT_CANCEL_ORDER_URL = "/contract/private/cancel-order"
+API_CONTRACT_CANCEL_ORDERS_URL = "/contract/private/cancel-orders"
 
 # websocket
 # spot public
