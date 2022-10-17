@@ -163,20 +163,20 @@ Release Notes
   - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.
 
 ###### 2022-10-20
+- Upgrade endpoints for Spot
+    - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
+    - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
+    - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
+    - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
+    - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
+    - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
+    - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
 - New endpoints for Spot & Margin
     - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
     - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
     - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
     - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
-    - <code>/spot/v2/ticker</code>Applicable to query the latest ticker of all trading pairs, please note that the endpoint returns more data, please reduce the frequency of calls
-    - <code>/spot/v1/ticker_detail</code>Applicable for querying aggregated tickers of a particular trading pair
-    - <code>/spot/v2/submit_order</code>Applicable for spot order placement
     - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
-    - <code>/spot/v2/batch_orders</code>Batch order
-    - <code>/spot/v3/cancel_order</code>Applicable to the cancellation of a specified unfinished order
-    - <code>/spot/v2/order_detail</code>Applicable query a specified order detail
-    - <code>/spot/v3/orders</code>Applicable for searching the recent order history, up to 200 queries
-    - <code>/spot/v2/trades</code>Applicable for searching the recent trade history, up to 200 recent entries
     - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
     - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
     - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
