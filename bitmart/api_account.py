@@ -58,3 +58,34 @@ class APIAccount(CloudClient):
             'id': id
         }
         return self._request_with_params(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL, param, Auth.KEYED)
+
+    # GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account
+    def get_margin_account_details_isolated(self):
+        return self._request_without_params(GET, API_SPOT_MARGIN_ACCOUNT_DETAILS_ISOLATED, Auth.KEYED)
+
+    def get_margin_account_details_isolated_by_symbol(self, symbol: str):
+        param = {
+            'symbol': symbol
+        }
+        return self._request_with_params(GET, API_SPOT_MARGIN_ACCOUNT_DETAILS_ISOLATED, param, Auth.KEYED)
+
+    # POST https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer
+    def margin_asset_transfer(self, symbol: str, currency: str, amount: str, side: str):
+        param = {
+            'symbol': symbol,
+            'currency': currency,
+            'amount': amount,
+            'side': side
+        }
+        return self._request_with_params(POST, API_SPOT_MARGIN_ISOLATED_TRANSFER, param, Auth.SIGNED)
+
+    # GET https://api-cloud.bitmart.com/spot/v1/user_fee
+    def get_basic_fee_rate(self):
+        return self._request_without_params(GET, API_SPOT_BASIC_FEE_RATE, Auth.KEYED)
+
+    # GET https://api-cloud.bitmart.com/spot/v1/trade_fee
+    def get_actual_trade_fee_rate(self, symbol: str):
+        param = {
+            'symbol': symbol
+        }
+        return self._request_with_params(GET, API_SPOT_ACTUAL_TRADE_FEE_RATE, param, Auth.KEYED)

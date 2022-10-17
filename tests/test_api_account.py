@@ -45,3 +45,31 @@ def test_get_deposit_withdraw_history_v2():
 def test_get_deposit_withdraw_detail():
     """Test GET https://api-cloud.bitmart.com/account/v1/deposit-withdraw/detail"""
     assert accountAPI.get_deposit_withdraw_detail(id='1680001')[0]['code'] == 1000
+
+
+def test_get_margin_account_details_isolated():
+    """Test GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account"""
+    assert accountAPI.get_margin_account_details_isolated()[0]['code'] == 1000
+
+
+def test_get_margin_account_details_isolated_by_symbol():
+    """Test GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account"""
+    assert accountAPI.get_margin_account_details_isolated_by_symbol(
+        symbol='BTC_USDT')[0]['code'] == 1000
+
+
+def test_margin_asset_transfer():
+    """Test POST https://api-cloud.bitmart.com/spot/v1/margin/isolated/transfer"""
+    assert accountAPI.margin_asset_transfer(
+        symbol='BTC_USDT', currency='BTC', amount='1', side='in')[0]['code'] == 1000
+
+
+def test_get_basic_fee_rate():
+    """Test GET https://api-cloud.bitmart.com/spot/v1/user_fee"""
+    assert accountAPI.get_basic_fee_rate()[0]['code'] == 1000
+
+
+def test_get_actual_trade_fee_rate():
+    """Test GET https://api-cloud.bitmart.com/spot/v1/trade_fee"""
+    assert accountAPI.get_actual_trade_fee_rate(
+        symbol='BTC_USDT')[0]['code'] == 1000
