@@ -94,7 +94,7 @@ class APIContract(CloudClient):
             'price': price,
             'size': size
         }
-        return self._request_with_params(GET, API_CONTRACT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
+        return self._request_with_params(POST, API_CONTRACT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 
     # POST https://api-cloud.bitmart.com/contract/private/cancel-order
     def post_cancel_order(self, contract_symbol: str, order_id: str):
@@ -102,11 +102,11 @@ class APIContract(CloudClient):
             'symbol': contract_symbol,
             'order_id': order_id,
         }
-        return self._request_with_params(GET, API_CONTRACT_CANCEL_ORDER_URL, param, Auth.SIGNED)
+        return self._request_with_params(POST, API_CONTRACT_CANCEL_ORDER_URL, param, Auth.SIGNED)
 
     # POST https://api-cloud.bitmart.com/contract/private/cancel-orders
     def post_cancel_orders(self, contract_symbol: str):
         param = {
             'symbol': contract_symbol,
         }
-        return self._request_with_params(GET, API_CONTRACT_CANCEL_ORDERS_URL, param, Auth.SIGNED)
+        return self._request_with_params(POST, API_CONTRACT_CANCEL_ORDERS_URL, param, Auth.SIGNED)
