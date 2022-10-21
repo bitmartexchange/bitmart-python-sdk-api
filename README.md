@@ -117,14 +117,14 @@ if __name__ == '__main__':
 Release Notes
 =========================
 
-** 2020-07-16 
+###### 2020-07-16 
 - Interface Spot API `Cancel Order` update to v2 version that is `POST https://api-cloud.bitmart.com/spot/v2/cancel_order`
 - UserAgent set "BitMart-Java-SDK/1.0.1"
 
-** 2020-09-21
+###### 2020-09-21
 - Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
 
-** 2021-01-19
+###### 2021-01-19
 - New endpoints for Spot WebSocket
   - Public - ticket channels
   - Public - K channel
@@ -133,7 +133,7 @@ Release Notes
   - Login
   - User - Trading Channel
 
-** 2021-11-06
+###### 2021-11-06
 - Update endpoints for Spot WebSocket
   - Public-Depth Channel:
     - spot/depth20     20 Level Depth Channel
@@ -141,7 +141,7 @@ Release Notes
   - User-Trade Channel:
     - Eligible pushes add new orders successfully
 
-** 2021-11-24
+###### 2021-11-24
 - New endpoints for Spot
   - <code>/spot/v2/orders</code>Get User Order History V2
   - <code>/spot/v1/batch_orders</code>Batch Order
@@ -155,14 +155,14 @@ Release Notes
 - Update endpoints for Account
   - <code>/account/v1/wallet</code>Remove the account_type,Only respond to currency accounts; you can bring currency parameters (optional)
 
-** 2022-01-18
+###### 2022-01-18
 - websocket public channel address<code>wss://ws-manager-compress.bitmart.com?protocol=1.1</code>will be taken down on 2022-02-28 UTC time,The new address is<code>wss://ws-manager-compress.bitmart.com/api?protocol=1.1</code>
 
-** 2022-01-20
+###### 2022-01-20
 - Update endpoints for Spot
   - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.
 
-** 2022-10-18
+###### 2022-10-18
 - New endpoints for Contract Market
   - <code>/contract/public/details</code>Get contract details
   - <code>/contract/public/depth</code>Get contract depth
@@ -180,5 +180,26 @@ Release Notes
   - <code>/contract/private/cancel_order</code>Post contract cancel order
   - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
     
+###### 2022-10-20
+- Upgrade endpoints for Spot
+    - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
+    - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
+    - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
+    - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
+    - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
+    - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
+    - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
+- New endpoints for Spot & Margin
+    - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
+    - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
+    - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
+    - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
+    - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
+    - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
+    - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
+    - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
+    - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
+    - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
+
 License
 =========================
