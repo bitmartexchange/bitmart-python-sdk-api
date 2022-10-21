@@ -40,22 +40,48 @@ API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
 API_SPOT_CURRENCIES_URL = '/spot/v1/currencies'
 API_SPOT_SYMBOLS_URL = '/spot/v1/symbols'
 API_SPOT_SYMBOLS_DETAILS_URL = '/spot/v1/symbols/details'
-API_SPOT_TICKER_URL = '/spot/v1/ticker'
+API_SPOT_TICKER_URL = '/spot/v2/ticker'
+API_SPOT_TICKER_DETAIL_URL = '/spot/v1/ticker_detail'
 API_SPOT_STEPS_URL = '/spot/v1/steps'
 API_SPOT_SYMBOLS_KLINE_URL = '/spot/v1/symbols/kline'
 API_SPOT_SYMBOLS_BOOK_URL = '/spot/v1/symbols/book'
 API_SPOT_SYMBOLS_TRADES_URL = '/spot/v1/symbols/trades'
 API_SPOT_WALLET_URL = '/spot/v1/wallet'
-API_SPOT_SUBMIT_ORDER_URL = '/spot/v1/submit_order'
-API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v1/batch_orders'
-API_SPOT_CANCEL_ORDER_URL = '/spot/v2/cancel_order'
+API_SPOT_SUBMIT_ORDER_URL = '/spot/v2/submit_order'
+API_SPOT_MARGIN_ORDER_URL = '/spot/v1/margin/submit_order'
+API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v2/batch_orders'
+API_SPOT_CANCEL_ORDER_URL = '/spot/v3/cancel_order'
 API_SPOT_CANCEL_ORDERS_URL = '/spot/v1/cancel_orders'
-API_SPOT_ORDER_DETAIL_URL = '/spot/v1/order_detail'
-API_SPOT_ORDERS_V2_URL = '/spot/v2/orders'
-API_SPOT_TRADES_URL = '/spot/v1/trades'
+API_SPOT_ORDER_DETAIL_URL = '/spot/v2/order_detail'
+API_SPOT_ORDERS_URL = '/spot/v3/orders'
+API_SPOT_TRADES_URL = '/spot/v2/trades'
+API_SPOT_MARGIN_ACCOUNT_DETAILS_ISOLATED = '/spot/v1/margin/isolated/account'
+API_SPOT_MARGIN_ISOLATED_TRANSFER = '/spot/v1/margin/isolated/transfer'
+API_SPOT_BASIC_FEE_RATE = '/spot/v1/user_fee'
+API_SPOT_ACTUAL_TRADE_FEE_RATE = '/spot/v1/trade_fee'
+
+# margin loan url
+API_MARGIN_BORROW_ISOLATED_URL = '/spot/v1/margin/isolated/borrow'
+API_MARGIN_REPAY_ISOLATED_URL = '/spot/v1/margin/isolated/repay'
+API_BORROW_RECORD_ISOLATED_URL = '/spot/v1/margin/isolated/borrow_record'
+API_REPAYMENT_RECORD_ISOLATED_URL = '/spot/v1/margin/isolated/repay_record'
+API_TRADING_PAIR_BORROWING_RATE_AND_AMOUNT_URL = '/spot/v1/margin/isolated/pairs'
 
 # contract url
 API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
+API_CONTRACT_DETAILS_URL = "/contract/public/details"
+API_CONTRACT_DEPTH_URL = "/contract/public/depth"
+API_CONTRACT_OPEN_INTEREST_URL = "/contract/public/open-interest"
+API_CONTRACT_FUNDING_RATE_URL = "/contract/public/funding-rate"
+API_CONTRACT_KLINE_URL = "/contract/public/kline"
+API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
+API_CONTRACT_ORDER_URL = "/contract/private/order"
+API_CONTRACT_ORDER_HISTORY_URL = "/contract/private/order-history"
+API_CONTRACT_POSITION_URL = "/contract/private/position"
+API_CONTRACT_TRADES_URL = "/contract/private/trades"
+API_CONTRACT_SUBMIT_ORDER_URL = "/contract/private/submit-order"
+API_CONTRACT_CANCEL_ORDER_URL = "/contract/private/cancel-order"
+API_CONTRACT_CANCEL_ORDERS_URL = "/contract/private/cancel-orders"
 
 # websocket
 # spot public
