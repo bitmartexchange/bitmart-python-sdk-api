@@ -162,6 +162,24 @@ Release Notes
 - Update endpoints for Spot
   - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.
 
+###### 2022-10-18
+- New endpoints for Contract Market
+  - <code>/contract/public/details</code>Get contract details
+  - <code>/contract/public/depth</code>Get contract depth
+  - <code>/contract/public/open-interest</code>Get contract open interest
+  - <code>/contract/public/funding-rate</code>Get contract funding rate
+  - <code>/contract/public/kline</code>Get contract kline
+- New endpoints for Contract Account
+  - <code>/contract/private/assets-detail</code>Get contract user assets detail
+- New endpoints for Contract Trade
+  - <code>/contract/private/order</code>Get contract order detail
+  - <code>/contract/private/order-history</code>Get contract order history
+  - <code>/contract/private/position</code>Get contract position
+  - <code>/contract/private/trades</code>Get contract trades
+  - <code>/contract/private/submit_order</code>Post contract submit order
+  - <code>/contract/private/cancel_order</code>Post contract cancel order
+  - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
+    
 ###### 2022-10-20
 - Upgrade endpoints for Spot
     - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
