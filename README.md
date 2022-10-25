@@ -201,5 +201,9 @@ Release Notes
     - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
     - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
 
+###### 2022-11-03
+- New endpoints for API Broker
+    - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
+
 License
 =========================
