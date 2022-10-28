@@ -63,8 +63,8 @@ def test_get_position():
 
 def test_get_trades():
     """Test GET https://api-cloud.bitmart.com/contract/private/trades"""
-    assert contractAPI.get_trades(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)[0][
-               'code'] == 1000
+    trades = contractAPI.get_trades(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)
+    assert trades[0]['success'] == True
 
 
 def test_post_submit_order():
