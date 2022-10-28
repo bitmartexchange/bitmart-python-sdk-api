@@ -179,6 +179,10 @@ Release Notes
   - <code>/contract/private/submit_order</code>Post contract submit order
   - <code>/contract/private/cancel_order</code>Post contract cancel order
   - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
-    
+
+** 2022-10-28
+- contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
+- contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
+
 License
 =========================
