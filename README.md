@@ -113,6 +113,76 @@ if __name__ == '__main__':
 
 ```
 
+#### Contract API Example
+```python
+from bitmart.api_contract import APIContract
+
+if __name__ == '__main__':
+
+    api_key = "Your API KEY"
+    secret_key = "Your Secret KEY"
+    memo = "Your Memo"
+
+    contracAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
+
+    contracAPI.get_depth('ETHUSDT')
+```
+
+#### Contract WebSocket Public Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+
+
+class WSTest(CloudWSContractClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL, "", "", "")
+    ws.set_debug(True)
+    channels = [
+        # public channel
+        cloud_consts.WS_PUBLIC_CONTRACT_TICKER,
+        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_DEPTH5, 'BTCUSDT'),
+        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_KLINE_1M, 'BTCUSDT'),
+    ]
+
+    ws.contract_subscribe_without_login(create_contract_subscribe_params(channels))
+
+```
+
+#### Contract WebSocket Private Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+
+
+class WSTest(CloudWSContractClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+    ws.set_debug(True)
+    channels = [
+        # private channel
+        create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
+        cloud_consts.WS_USER_CONTRACT_POSITION,
+        cloud_consts.WS_USER_CONTRACT_UNICAST,
+    ]
+
+    ws.contract_subscribe_with_login(create_contract_subscribe_params(channels))
+
+```
 
 Release Notes
 =========================
