@@ -17,7 +17,7 @@ def test_get_details():
 
 def test_get_depth():
     """Test GET https://api-cloud.bitmart.com/contract/public/depth"""
-    assert contractAPI.get_details(contract_symbol='ETHUSDT')[0]['code'] == 1000
+    assert contractAPI.get_depth(contract_symbol='ETHUSDT')[0]['code'] == 1000
 
 
 def test_get_open_interest():
