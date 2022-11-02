@@ -21,8 +21,12 @@ def test_get_symbol_detail():
 
 
 def test_get_ticker():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/ticke"""
+    """Test GET https://api-cloud.bitmart.com/spot/v2/ticker"""
     assert spotAPI.get_ticker()[0]['code'] == 1000
+
+
+def test_get_ticker_detail():
+    """Test GET https://api-cloud.bitmart.com/spot/v1/ticker_detail"""
     assert spotAPI.get_symbol_ticker(symbol='BTC_USDT')[0]['code'] == 1000
 
 
@@ -53,20 +57,32 @@ def test_get_wallet():
 
 
 def test_post_submit_order():
-    """Test POST https://api-cloud.bitmart.com/spot/v1/submit_order"""
-    assert spotAPI.post_submit_order(symbol='BTC_USDT', side='buy', type='limit', size='0.01', price='8800')[0]['code'] == 1000
+    """Test POST https://api-cloud.bitmart.com/spot/v2/submit_order"""
+    assert spotAPI.post_submit_order(symbol='BTC_USDT', side='buy', type='limit', size='0.01', price='8800')[0][
+               'code'] == 1000
+
+
+def test_margin_order():
+    """Test POST https://api-cloud.bitmart.com/spot/v1/margin/submit_order"""
+    assert spotAPI.place_margin_order(symbol='BTC_USDT', side='buy', type='limit', size='0.01', price='8800')[0][
+               'code'] == 1000
 
 
 def test_post_batch_orders():
-    """Test POST https://api-cloud.bitmart.com/spot/v1/batch_orders"""
-    params = [{"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"},
-              {"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"}]
-    assert spotAPI.post_batch_orders(orderParams=params)[0]['code'] == 1000
+    """Test POST https://api-cloud.bitmart.com/spot/v2/batch_orders"""
+    order_params = [{"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"},
+                    {"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"}]
+    assert spotAPI.post_batch_orders(order_params=order_params)[0]['code'] == 1000
 
 
-def test_post_cancel_order():
-    """Test POST https://api-cloud.bitmart.com/spot/v2/cancel_order"""
-    assert spotAPI.post_cancel_order(symbol='BTC_USDT', orderId=2147617164)[0]['code'] == 1000
+def test_post_cancel_order_by_orderid():
+    """Test POST https://api-cloud.bitmart.com/spot/v3/cancel_order"""
+    assert spotAPI.post_cancel_order_by_orderid(symbol='BTC_USDT', order_id='2147617164')[0]['code'] == 1000
+
+
+def test_post_cancel_order_by_clientid():
+    """Test POST https://api-cloud.bitmart.com/spot/v3/cancel_order"""
+    assert spotAPI.post_cancel_order_by_clientid(symbol='BTC_USDT', client_order_id='ID125783')[0]['code'] == 1000
 
 
 def test_post_cancel_orders():
@@ -75,20 +91,20 @@ def test_post_cancel_orders():
 
 
 def test_get_user_order_detail():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/order_detail"""
-    assert spotAPI.get_user_order_detail(symbol='BTC_USDT', orderId=2147617164)[0]['code'] == 1000
+    """Test GET https://api-cloud.bitmart.com/spot/v2/order_detail"""
+    assert spotAPI.get_user_order_detail(order_id='2147617164')[0]['code'] == 1000
 
 
 def test_get_user_orders_v2():
-    """Test GET https://api-cloud.bitmart.com/spot/v2/orders"""
-    assert spotAPI.get_user_orders_v2(symbol='BTC_USDT', N=100, status="2")[0]['code'] == 1000
+    """Test GET https://api-cloud.bitmart.com/spot/v3/orders"""
+    assert spotAPI.get_user_orders(symbol='BTC_USDT', order_mode='spot', N=100, status="6")[0]['code'] == 1000
 
 
 def test_get_user_order_trades():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/trade"""
-    assert spotAPI.get_user_order_trades(symbol='BTC_USDT', orderId=2147617164)[0]['code'] == 1000
+    """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
+    assert spotAPI.get_user_order_trades(symbol='BTC_USDT', order_mode='spot', order_id='2147617164')[0]['code'] == 1000
 
 
 def test_get_user_trades():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/trade"""
-    assert spotAPI.get_user_trades(symbol='BTC_USDT', offset=1, limit=10)[0]['code'] == 1000
+    """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
+    assert spotAPI.get_user_trades(symbol='BTC_USDT', order_mode='spot', N=10)[0]['code'] == 1000
