@@ -42,7 +42,7 @@ Usage
 * Replace it with your own API KEY
 * Run
 
-#### API Example
+#### Spot API Example
 ```python
 from bitmart.api_spot import APISpot
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
 
 
-#### WebSocket Public Channel Example
+#### Spot WebSocket Public Channel Example
 ```python
 
 from bitmart import cloud_consts
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
 ```
 
-#### WebSocket Private Channel Example
+#### Spot WebSocket Private Channel Example
 ```python
 
 from bitmart import cloud_consts
@@ -113,6 +113,76 @@ if __name__ == '__main__':
 
 ```
 
+#### Contract API Example
+```python
+from bitmart.api_contract import APIContract
+
+if __name__ == '__main__':
+
+    api_key = "Your API KEY"
+    secret_key = "Your Secret KEY"
+    memo = "Your Memo"
+
+    contracAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
+
+    contracAPI.get_depth('ETHUSDT')
+```
+
+#### Contract WebSocket Public Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+
+
+class WSTest(CloudWSContractClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL, "", "", "")
+    ws.set_debug(True)
+    channels = [
+        # public channel
+        cloud_consts.WS_PUBLIC_CONTRACT_TICKER,
+        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_DEPTH5, 'BTCUSDT'),
+        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_KLINE_1M, 'BTCUSDT'),
+    ]
+
+    ws.contract_subscribe_without_login(create_contract_subscribe_params(channels))
+
+```
+
+#### Contract WebSocket Private Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+
+
+class WSTest(CloudWSContractClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+    ws.set_debug(True)
+    channels = [
+        # private channel
+        create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
+        cloud_consts.WS_USER_CONTRACT_POSITION,
+        cloud_consts.WS_USER_CONTRACT_UNICAST,
+    ]
+
+    ws.contract_subscribe_with_login(create_contract_subscribe_params(channels))
+
+```
 
 Release Notes
 =========================
@@ -179,27 +249,41 @@ Release Notes
   - <code>/contract/private/submit_order</code>Post contract submit order
   - <code>/contract/private/cancel_order</code>Post contract cancel order
   - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
+  
     
 ###### 2022-10-20
 - Upgrade endpoints for Spot
-    - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
-    - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
-    - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
-    - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
-    - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
-    - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
-    - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
+  - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
+  - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
+  - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
+  - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
+  - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
+  - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
+  - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
 - New endpoints for Spot & Margin
-    - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
-    - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
-    - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
-    - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
-    - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
-    - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
-    - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
-    - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
-    - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
-    - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
+  - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
+  - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
+  - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
+  - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
+  - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
+  - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
+  - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
+  - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
+  - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
+  - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
+
+###### 2022-10-28
+- contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
+- contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
+
+
+###### 2022-11-03
+- New endpoints for API Broker
+  - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
+- Update endpoints for Spot / Margin trading
+  - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
+  - add new order status 11 = Partially filled and canceled
+
 
 License
 =========================

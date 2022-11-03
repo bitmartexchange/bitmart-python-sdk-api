@@ -1,3 +1,5 @@
+import time
+
 from bitmart.api_spot import APISpot
 from tests import data as data
 
@@ -97,7 +99,14 @@ def test_get_user_order_detail():
 
 def test_get_user_orders_v2():
     """Test GET https://api-cloud.bitmart.com/spot/v3/orders"""
-    assert spotAPI.get_user_orders(symbol='BTC_USDT', order_mode='spot', N=100, status="6")[0]['code'] == 1000
+    assert spotAPI.get_user_orders(symbol='BTC_USDT', status="10")[0]['code'] == 1000
+
+
+def test_get_user_orders_v2_by_time():
+    """Test GET https://api-cloud.bitmart.com/spot/v3/orders"""
+    assert spotAPI.get_user_orders_by_time(symbol='BTC_USDT', order_mode='spot', status='10', N=10,
+                                           start_time=int(round(time.time() * 1000)) - 1000 * 60 * 60 * 24 * 7,
+                                           end_time=int(round(time.time() * 1000)))[0]['code'] == 1000
 
 
 def test_get_user_order_trades():
@@ -107,4 +116,11 @@ def test_get_user_order_trades():
 
 def test_get_user_trades():
     """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
-    assert spotAPI.get_user_trades(symbol='BTC_USDT', order_mode='spot', N=10)[0]['code'] == 1000
+    assert spotAPI.get_user_trades(symbol='BTC_USDT', order_mode='spot')[0]['code'] == 1000
+
+
+def test_get_user_trades_by_time():
+    """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
+    assert spotAPI.get_user_trades_by_time(symbol='BTC_USDT', order_mode='spot', N=10,
+                                           start_time=int(round(time.time() * 1000)) - 1000 * 60 * 60 * 24 * 7,
+                                           end_time=int(round(time.time() * 1000)))[0]['code'] == 1000

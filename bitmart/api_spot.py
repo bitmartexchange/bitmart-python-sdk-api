@@ -134,12 +134,22 @@ class APISpot(CloudClient):
         return self._request_with_params(GET, API_SPOT_ORDER_DETAIL_URL, param, Auth.KEYED)
 
     # GET https://api-cloud.bitmart.com/spot/v3/orders
-    def get_user_orders(self, symbol: str, order_mode: str, status: str, N: int):
+    def get_user_orders(self, symbol: str, status: str):
+        param = {
+            'symbol': symbol,
+            'status': status
+        }
+        return self._request_with_params(GET, API_SPOT_ORDERS_URL, param, Auth.KEYED)
+
+    def get_user_orders_by_time(self, symbol: str, order_mode: str, status: str, N: int, start_time: int,
+                                end_time: int):
         param = {
             'symbol': symbol,
             'order_mode': order_mode,
             'N': N,
-            'status': status
+            'status': status,
+            'start_time': start_time,
+            'end_time': end_time
         }
         return self._request_with_params(GET, API_SPOT_ORDERS_URL, param, Auth.KEYED)
 
@@ -152,10 +162,19 @@ class APISpot(CloudClient):
         }
         return self._request_with_params(GET, API_SPOT_TRADES_URL, param, Auth.KEYED)
 
-    def get_user_trades(self, symbol: str, order_mode: str, N: int):
+    def get_user_trades(self, symbol: str, order_mode: str):
+        param = {
+            'symbol': symbol,
+            'order_mode': order_mode
+        }
+        return self._request_with_params(GET, API_SPOT_TRADES_URL, param, Auth.KEYED)
+
+    def get_user_trades_by_time(self, symbol: str, order_mode: str, N: int, start_time: int, end_time: int):
         param = {
             'symbol': symbol,
             'order_mode': order_mode,
-            'N': N
+            'N': N,
+            'start_time': start_time,
+            'end_time': end_time
         }
         return self._request_with_params(GET, API_SPOT_TRADES_URL, param, Auth.KEYED)

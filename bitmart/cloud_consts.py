@@ -4,6 +4,8 @@ from enum import Enum, unique
 API_URL = 'https://api-cloud.bitmart.com'
 WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
 WS_URL_USER = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
+CONTRACT_WS_URL = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
+CONTRACT_WS_URL_USER = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
@@ -67,6 +69,9 @@ API_BORROW_RECORD_ISOLATED_URL = '/spot/v1/margin/isolated/borrow_record'
 API_REPAYMENT_RECORD_ISOLATED_URL = '/spot/v1/margin/isolated/repay_record'
 API_TRADING_PAIR_BORROWING_RATE_AND_AMOUNT_URL = '/spot/v1/margin/isolated/pairs'
 
+# broker url
+API_BROKER_REBATE = '/spot/v1/broker/rebate'
+
 # contract url
 API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
 API_CONTRACT_DETAILS_URL = "/contract/public/details"
@@ -104,6 +109,26 @@ WS_PUBLIC_SPOT_KLINE_1MON = 'spot/kline1M'
 
 # spot user private
 WS_USER_SPOT_ORDER = 'spot/user/order'
+
+# contract public
+WS_PUBLIC_CONTRACT_TICKER = 'futures/ticker'
+WS_PUBLIC_CONTRACT_DEPTH5 = 'futures/depth5'
+WS_PUBLIC_CONTRACT_DEPTH20 = 'futures/depth20'
+WS_PUBLIC_CONTRACT_DEPTH50 = 'futures/depth50'
+WS_PUBLIC_CONTRACT_KLINE_1M = 'futures/klineBin1m'
+WS_PUBLIC_CONTRACT_KLINE_5M = 'futures/klineBin5m'
+WS_PUBLIC_CONTRACT_KLINE_15M = 'futures/klineBin15m'
+WS_PUBLIC_CONTRACT_KLINE_30M = 'futures/klineBin30m'
+WS_PUBLIC_CONTRACT_KLINE_1H = 'futures/klineBin1H'
+WS_PUBLIC_CONTRACT_KLINE_2H = 'futures/klineBin2H'
+WS_PUBLIC_CONTRACT_KLINE_4H = 'futures/klineBin4H'
+WS_PUBLIC_CONTRACT_KLINE_1D = 'futures/klineBin1D'
+WS_PUBLIC_CONTRACT_KLINE_1W = 'futures/klineBin1W'
+
+# contract user private
+WS_USER_CONTRACT_ASSET = 'futures/asset'
+WS_USER_CONTRACT_POSITION = 'futures/position'
+WS_USER_CONTRACT_UNICAST = 'futures/unicast'
 
 
 @unique
