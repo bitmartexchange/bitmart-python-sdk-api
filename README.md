@@ -113,6 +113,76 @@ if __name__ == '__main__':
 
 ```
 
+#### Contract API Example
+```python
+from bitmart.api_contract import APIContract
+
+if __name__ == '__main__':
+
+    api_key = "Your API KEY"
+    secret_key = "Your Secret KEY"
+    memo = "Your Memo"
+
+    contracAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
+
+    contracAPI.get_depth('ETHUSDT')
+```
+
+#### Contract WebSocket Public Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+
+
+class WSTest(CloudWSContractClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL, "", "", "")
+    ws.set_debug(True)
+    channels = [
+        # public channel
+        cloud_consts.WS_PUBLIC_CONTRACT_TICKER,
+        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_DEPTH5, 'BTCUSDT'),
+        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_KLINE_1M, 'BTCUSDT'),
+    ]
+
+    ws.contract_subscribe_without_login(create_contract_subscribe_params(channels))
+
+```
+
+#### Contract WebSocket Private Channel Example
+```python
+
+from bitmart import cloud_consts
+from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+
+
+class WSTest(CloudWSContractClient):
+
+    def on_message(self, message):
+        print(f'[ReceiveServerMessage]-------->{message}')
+
+
+if __name__ == '__main__':
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+    ws.set_debug(True)
+    channels = [
+        # private channel
+        create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
+        cloud_consts.WS_USER_CONTRACT_POSITION,
+        cloud_consts.WS_USER_CONTRACT_UNICAST,
+    ]
+
+    ws.contract_subscribe_with_login(create_contract_subscribe_params(channels))
+
+```
 
 Release Notes
 =========================
@@ -179,6 +249,7 @@ Release Notes
   - <code>/contract/private/submit_order</code>Post contract submit order
   - <code>/contract/private/cancel_order</code>Post contract cancel order
   - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
+  
     
 ###### 2022-10-20
 - Upgrade endpoints for Spot
@@ -207,6 +278,10 @@ Release Notes
 - Update endpoints for Spot / Margin trading
   - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
   - add new order status 11 = Partially filled and canceled
+
+###### 2022-10-28
+- contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
+- contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
 
 License
 =========================
