@@ -42,7 +42,7 @@ Usage
 * Replace it with your own API KEY
 * Run
 
-#### API Example
+#### Spot API Example
 ```python
 from bitmart.api_spot import APISpot
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
 
 
-#### WebSocket Public Channel Example
+#### Spot WebSocket Public Channel Example
 ```python
 
 from bitmart import cloud_consts
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
 ```
 
-#### WebSocket Private Channel Example
+#### Spot WebSocket Private Channel Example
 ```python
 
 from bitmart import cloud_consts
