@@ -67,6 +67,9 @@ API_BORROW_RECORD_ISOLATED_URL = '/spot/v1/margin/isolated/borrow_record'
 API_REPAYMENT_RECORD_ISOLATED_URL = '/spot/v1/margin/isolated/repay_record'
 API_TRADING_PAIR_BORROWING_RATE_AND_AMOUNT_URL = '/spot/v1/margin/isolated/pairs'
 
+# broker url
+API_BROKER_REBATE = '/spot/v1/broker/rebate'
+
 # contract url
 API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
 API_CONTRACT_DETAILS_URL = "/contract/public/details"
