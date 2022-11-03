@@ -272,6 +272,11 @@ Release Notes
   - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
   - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
 
+###### 2022-10-28
+- contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
+- contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
+
+
 ###### 2022-11-03
 - New endpoints for API Broker
   - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
@@ -279,9 +284,6 @@ Release Notes
   - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
   - add new order status 11 = Partially filled and canceled
 
-###### 2022-10-28
-- contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
-- contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
 
 License
 =========================
