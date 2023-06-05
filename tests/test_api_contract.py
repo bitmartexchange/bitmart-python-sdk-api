@@ -3,11 +3,7 @@ from tests import data as data
 
 # contract api
 contractAPI = APIContract(data.api_key, data.secret_key, data.memo, data.url)
-
-
-def test_get_ticker():
-    """Test GET https://api-cloud.bitmart.com/contract/v1/tickers"""
-    assert contractAPI.get_ticker(contract_symbol='ETHUSDT')[0]['code'] == 1000
+# contractAPI = APIContract(timeout=(2,10))
 
 
 def test_get_details():
@@ -67,24 +63,53 @@ def test_get_trades():
     assert trades[0]['success'] == True
 
 
+def test_get_transfer_list():
+    """Test POST https://api-cloud.bitmart.com/account/v1/transfer-contract-list"""
+    trades = contractAPI.get_transfer_list(page=1, limit=10)
+    assert trades[0]['success'] == True
+
+
 def test_post_submit_order():
-    """Test GET https://api-cloud.bitmart.com/contract/private/submit-order"""
+    """Test POST https://api-cloud.bitmart.com/contract/private/submit-order"""
     assert \
-        contractAPI.post_submit_order(contract_symbol='ETHUSDT', side=4, type='limit', leverage='1',
+        contractAPI.post_submit_order(contract_symbol='BTCUSDT', side=4, type='limit', leverage='1',
                                       open_type='isolated',
-                                      size=10, price='2000')[0][
+                                      size=10, price='20000')[0][
             'code'] == 1000
 
 
 def test_post_cancel_order():
-    """Test GET https://api-cloud.bitmart.com/contract/private/cancel-order"""
+    """Test POST https://api-cloud.bitmart.com/contract/private/cancel-order"""
     assert \
         contractAPI.post_cancel_order(contract_symbol='ETHUSDT', order_id='220906179559421')[0][
             'code'] == 1000
 
 
 def test_post_cancel_orders():
-    """Test GET https://api-cloud.bitmart.com/contract/private/cancel-orders"""
+    """Test POST https://api-cloud.bitmart.com/contract/private/cancel-orders"""
     assert \
         contractAPI.post_cancel_orders(contract_symbol='ETHUSDT')[0][
+            'code'] == 1000
+
+
+def test_post_submit_plan_order():
+    """Test POST https://api-cloud.bitmart.com/contract/private/submit-plan-order"""
+    assert \
+        contractAPI.post_submit_plan_order(contract_symbol='BTCUSDT', type='limit', side=4,  leverage='1',
+                                      open_type='isolated', mode=1, size=10, trigger_price='3000',
+                                           price_type=1, price_way=1, executive_price='2800')[0][
+            'code'] == 1000
+
+
+def test_post_cancel_plan_order():
+    """Test POST https://api-cloud.bitmart.com/contract/private/cancel-plan-order"""
+    assert \
+        contractAPI.post_cancel_plan_order(contract_symbol='BTCUSDT',order_id='230602272118231')[0][
+            'code'] == 1000
+
+
+def test_post_transfer():
+    """Test POST https://api-cloud.bitmart.com/account/v1/transfer-contract"""
+    assert \
+        contractAPI.post_transfer(currency='USDT', amount='10', type='spot_to_contract')[0][
             'code'] == 1000

@@ -7,4 +7,4 @@ ws_url_user = "wss://ws-manager-compress.bitmart.com/user?protocol=1.1"  # ws pr
 contract_ws_url = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
 contract_ws_url_user = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
 
-timeout = (1, 2)  # connection timeout, read timeout
+timeout = (2, 5)  # connection timeout, read timeout

@@ -19,7 +19,7 @@ X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
 # http header
 APPLICATION_JSON = 'application/json'
-VERSION = 'BitMart-Python-SDK/1.0.3'
+VERSION = 'bitmart-python-sdk-api/'
 
 GET = "GET"
 POST = "POST"
@@ -54,9 +54,15 @@ API_SPOT_MARGIN_ORDER_URL = '/spot/v1/margin/submit_order'
 API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v2/batch_orders'
 API_SPOT_CANCEL_ORDER_URL = '/spot/v3/cancel_order'
 API_SPOT_CANCEL_ORDERS_URL = '/spot/v1/cancel_orders'
-API_SPOT_ORDER_DETAIL_URL = '/spot/v2/order_detail'
-API_SPOT_ORDERS_URL = '/spot/v3/orders'
-API_SPOT_TRADES_URL = '/spot/v2/trades'
+
+API_SPOT_V4_QUERY_ORDER_BY_ID_URL = '/spot/v4/query/order'
+API_SPOT_V4_QUERY_ORDER_BY_CLIENT_ID_URL = '/spot/v4/query/client-order'
+API_SPOT_V4_QUERY_OPEN_ORDERS_URL = '/spot/v4/query/open-orders'
+API_SPOT_V4_QUERY_HISTORY_ORDERS_URL = '/spot/v4/query/history-orders'
+API_SPOT_V4_QUERY_TRADES_URL = '/spot/v4/query/trades'
+API_SPOT_V4_QUERY_ORDER_TRADES_URL = '/spot/v4/query/order-trades'
+
+
 API_SPOT_MARGIN_ACCOUNT_DETAILS_ISOLATED = '/spot/v1/margin/isolated/account'
 API_SPOT_MARGIN_ISOLATED_TRANSFER = '/spot/v1/margin/isolated/transfer'
 API_SPOT_BASIC_FEE_RATE = '/spot/v1/user_fee'
@@ -73,7 +79,6 @@ API_TRADING_PAIR_BORROWING_RATE_AND_AMOUNT_URL = '/spot/v1/margin/isolated/pairs
 API_BROKER_REBATE = '/spot/v1/broker/rebate'
 
 # contract url
-API_CONTRACT_TICKER_URL = '/contract/v1/tickers'
 API_CONTRACT_DETAILS_URL = "/contract/public/details"
 API_CONTRACT_DEPTH_URL = "/contract/public/depth"
 API_CONTRACT_OPEN_INTEREST_URL = "/contract/public/open-interest"
@@ -87,6 +92,11 @@ API_CONTRACT_TRADES_URL = "/contract/private/trades"
 API_CONTRACT_SUBMIT_ORDER_URL = "/contract/private/submit-order"
 API_CONTRACT_CANCEL_ORDER_URL = "/contract/private/cancel-order"
 API_CONTRACT_CANCEL_ORDERS_URL = "/contract/private/cancel-orders"
+API_CONTRACT_SUBMIT_PLAN_ORDER_URL = "/contract/private/submit-plan-order"
+API_CONTRACT_CANCEL_PLAN_ORDER_URL = "/contract/private/cancel-plan-order"
+
+API_CONTRACT_TRANSFER_CONTRACT_LIST_URL = "/account/v1/transfer-contract-list"
+API_CONTRACT_TRANSFER_CONTRACT_URL = "/account/v1/transfer-contract"
 
 # websocket
 # spot public

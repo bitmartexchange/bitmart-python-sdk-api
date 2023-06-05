@@ -1,7 +1,7 @@
 import hmac
 import datetime
-
-from . import cloud_consts as c
+from bitmart.__version__ import __version__
+from bitmart.lib import cloud_consts as c
 
 
 def sign(message, secret_key):
@@ -17,7 +17,7 @@ def pre_substring(timestamp, memo, body):
 def get_header(api_key, sign, timestamp):
     header = dict()
     header[c.CONTENT_TYPE] = c.APPLICATION_JSON
-    header[c.USER_AGENT] = c.VERSION
+    header[c.USER_AGENT] = c.VERSION + __version__
 
     if api_key:
         header[c.X_BM_KEY] = api_key

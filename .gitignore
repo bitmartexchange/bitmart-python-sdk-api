@@ -1,5 +1,24 @@
 venv
-.idea
+.pytest_cache
 bitmart/__pycache__
 *.pyc
 tests/.pytest_cache
+build
+dist
+bitmart_python_sdk_api.egg-info
+.DS_Store
+
+# Environments
+.env
+.venv
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# document build
+docs/_build
+
+examples/*.ini

@@ -1,10 +1,18 @@
-from .cloud_client import CloudClient
-from .cloud_consts import *
+from bitmart.lib.cloud_client import CloudClient
+from bitmart.lib.cloud_consts import *
 
 
 class APIBroker(CloudClient):
 
-    def __init__(self, api_key, secret_key, memo, url: str = API_URL, timeout: tuple = TIMEOUT):
+    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT):
+        """
+        Create api key from https://www.bitmart.com/api-config/en-US
+        :param api_key: your access key
+        :param secret_key: your secret key
+        :param memo: your memo
+        :param url: https://api-cloud.bitmart.com
+        :param timeout: (2, 10)
+        """
         CloudClient.__init__(self, api_key, secret_key, memo, url, timeout)
 
     # GET https://api-cloud.bitmart.com/spot/v1/broker/rebate
