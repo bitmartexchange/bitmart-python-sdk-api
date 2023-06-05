@@ -1,5 +1,3 @@
-import time
-
 from bitmart.api_spot import APISpot
 from tests import data as data
 
@@ -39,7 +37,7 @@ def test_get_steps():
 
 def test_get_symbol_kline():
     """Test GET https://api-cloud.bitmart.com/spot/v1/symbols/kline"""
-    assert spotAPI.get_symbol_kline(symbol='BTC_USDT', fromTime=1591789435, toTime=1591875835, step=60)[0][
+    assert spotAPI.get_symbol_kline(symbol='BTC_USDT', from_time=1591789435, to_time=1591875835, step=60)[0][
                'code'] == 1000
 
 
@@ -90,37 +88,37 @@ def test_post_cancel_order_by_clientid():
 def test_post_cancel_orders():
     """Test POST https://api-cloud.bitmart.com/spot/v1/cancel_orders"""
     assert spotAPI.post_cancel_orders(symbol='BTC_USDT', side='buy')[0]['code'] == 1000
+    assert spotAPI.post_cancel_orders()[0]['code'] == 1000
 
 
-def test_get_user_order_detail():
-    """Test GET https://api-cloud.bitmart.com/spot/v2/order_detail"""
-    assert spotAPI.get_user_order_detail(order_id='2147617164')[0]['code'] == 1000
+def test_v4_query_order_by_id():
+    """Test POST https://api-cloud.bitmart.com/spot/v4/query/order"""
+    assert spotAPI.v4_query_order_by_id(order_id='118100034543076010', query_state='open')[0]['code'] == 1000
 
 
-def test_get_user_orders_v2():
-    """Test GET https://api-cloud.bitmart.com/spot/v3/orders"""
-    assert spotAPI.get_user_orders(symbol='BTC_USDT', status="10")[0]['code'] == 1000
+def test_v4_query_order_by_order_client_id():
+    """Test POST https://api-cloud.bitmart.com/spot/v4/query/client-order"""
+    assert spotAPI.v4_query_order_by_order_client_id(client_order_id='118100034543076010', query_state='open')[0]['code'] == 1000
 
 
-def test_get_user_orders_v2_by_time():
-    """Test GET https://api-cloud.bitmart.com/spot/v3/orders"""
-    assert spotAPI.get_user_orders_by_time(symbol='BTC_USDT', order_mode='spot', status='10', N=10,
-                                           start_time=int(round(time.time() * 1000)) - 1000 * 60 * 60 * 24 * 7,
-                                           end_time=int(round(time.time() * 1000)))[0]['code'] == 1000
+def test_v4_query_open_orders():
+    """Test POST https://api-cloud.bitmart.com/spot/v4/query/open-orders"""
+    assert spotAPI.v4_query_open_orders()[0]['code'] == 1000
+    assert spotAPI.v4_query_open_orders(symbol='BTC_USDT')[0]['code'] == 1000
 
 
-def test_get_user_order_trades():
-    """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
-    assert spotAPI.get_user_order_trades(symbol='BTC_USDT', order_mode='spot', order_id='2147617164')[0]['code'] == 1000
+def test_v4_query_account_orders():
+    """Test POST https://api-cloud.bitmart.com/spot/v4/query/history-orders"""
+    assert spotAPI.v4_query_account_orders()[0]['code'] == 1000
+    assert spotAPI.v4_query_account_orders(symbol='BTC_USDT')[0]['code'] == 1000
 
 
-def test_get_user_trades():
-    """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
-    assert spotAPI.get_user_trades(symbol='BTC_USDT', order_mode='spot')[0]['code'] == 1000
+def test_v4_query_account_trade_list():
+    """Test POST https://api-cloud.bitmart.com/spot/v4/query/trades"""
+    assert spotAPI.v4_query_account_trade_list()[0]['code'] == 1000
+    assert spotAPI.v4_query_account_trade_list(symbol='BTC_USDT')[0]['code'] == 1000
 
 
-def test_get_user_trades_by_time():
-    """Test GET https://api-cloud.bitmart.com/spot/v2/trade"""
-    assert spotAPI.get_user_trades_by_time(symbol='BTC_USDT', order_mode='spot', N=10,
-                                           start_time=int(round(time.time() * 1000)) - 1000 * 60 * 60 * 24 * 7,
-                                           end_time=int(round(time.time() * 1000)))[0]['code'] == 1000
+def test_v4_query_order_trade_listt():
+    """Test POST https://api-cloud.bitmart.com/spot/v4/query/order-trades"""
+    assert spotAPI.v4_query_order_trade_list(order_id='118100034543076010')[0]['code'] == 1000

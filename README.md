@@ -1,12 +1,13 @@
-[![Logo](./logo.png)](https://bitmart.com)
+[![Logo](https://img.bitmart.com/static-file/public/sdk/sdk_logo.png)](https://bitmart.com)
 
 BitMart-Python-SDK-API
 =========================
-<p align="left">
-    <a href='#'><img src='https://travis-ci.org/meolu/walle-web.svg?branch=master' alt="Build Status"></a>  
-</p>
+[![PyPI version](https://img.shields.io/badge/pypi-v1.0.0-blue)](https://pypi.org/project/bitmart-python-sdk-api)
+[![Python version](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9-blue)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Python client for the [BitMart Cloud API](http://developer-pro.bitmart.com).
+
+[BitMart Exchange official](https://bitmart.com) Python client for the [BitMart Cloud API](http://developer-pro.bitmart.com).
 
 
 
@@ -18,21 +19,22 @@ Feature
 - Priority in development and maintenance
 - Dedicated and responsive technical support
 - Provide webSocket apis calls
+- Supported APIs:
+    - `/spot/*`
+    - `/contract/*`
+    - `/account/*`
+    - Spot WebSocket Market Stream
+    - Spot User Data Stream
+    - Contract User Data Stream
+    - Contract WebSocket Market Stream
+- Test cases and examples
+
+
 
 Installation
 =========================
-
-* 1.Python 3.6+ support
-
-* 2.Clone
-```git
-git clone https://github.com/bitmartexchange/bitmart-python-sdk-api.git
-pip3 install -r requirements.txt
-```
-
-* 3.Copy 
 ```bash
-mv bitmart-python-sdk-api/bitmart /Your Working Directory
+pip install bitmart-python-sdk-api
 ```
 
 
@@ -42,9 +44,30 @@ Usage
 * Replace it with your own API KEY
 * Run
 
+#### Spot Public API Example
+```python
+from bitmart.api_spot import APISpot
+
+if __name__ == '__main__':
+
+    spotAPI = APISpot(timeout=(2, 10))
+    
+    # Get a list of all cryptocurrencies on the platform
+    spotAPI.get_currencies()
+    
+    # Querying aggregated tickers of a particular trading pair
+    spotAPI.get_symbol_ticker(symbol='BTC_USDT')
+    
+    # Get the latest trade records of the specified trading pair
+    spotAPI.get_symbol_trades(symbol='BTC_USDT', N=50)
+```
+
+
 #### Spot API Example
 ```python
 from bitmart.api_spot import APISpot
+from bitmart.lib import cloud_exceptions
+from bitmart.lib.cloud_log import CloudLog
 
 if __name__ == '__main__':
 
@@ -52,18 +75,40 @@ if __name__ == '__main__':
     secret_key = "Your Secret KEY"
     memo = "Your Memo"
 
-    spotAPI = APISpot(api_key, secret_key, memo, timeout=(3, 10))
+    try:
+        spotAPI = APISpot(api_key, secret_key, memo, timeout=(3, 10))
+        CloudLog.set_logger_level('info')
 
-    spotAPI.post_submit_limit_buy_order('BTC_USDT', size='0.01', price='8800')
+        response = spotAPI.post_submit_order(
+            symbol='BTC_USDT',
+            side='sell',
+            type='limit',
+            size='10000',
+            price='1000000'
+        )
+
+    except cloud_exceptions.APIException as apiException:
+        print("Error[HTTP<>200]:", apiException.response)
+    except Exception as exception:
+        print("Error[Exception]:", exception)
+    else:
+        if response[0]['code'] == 1000:
+            print('Call Success:', response[0])
+        else:
+            print('Call Failed:', response[0]['message'])
+    
 ```
 
+More Example: [test_api_spot.py](https://github.com/bitmartexchange/bitmart-python-sdk-api/blob/master/tests/test_api_spot.py)
+More Example: [test_api_account.py](https://github.com/bitmartexchange/bitmart-python-sdk-api/blob/master/tests/test_api_account.py)
 
 
 #### Spot WebSocket Public Channel Example
+
 ```python
 
-from bitmart import cloud_consts
-from bitmart.cloud_ws_client import CloudWSClient
+from bitmart.lib import cloud_consts
+from bitmart.lib.cloud_ws_client import CloudWSClient
 from bitmart.ws_spot import create_channel, create_spot_subscribe_params
 
 
@@ -74,13 +119,18 @@ class WSTest(CloudWSClient):
 
 
 if __name__ == '__main__':
-    ws = WSTest(cloud_consts.WS_URL, "", "", "")
-    ws.set_debug(True)
+    ws = WSTest(url=cloud_consts.WS_URL)
+    ws.set_debug(False)
     channels = [
         # public channel
         create_channel(cloud_consts.WS_PUBLIC_SPOT_TICKER, 'BTC_USDT'),
         create_channel(cloud_consts.WS_PUBLIC_SPOT_KLINE_1M, 'BTC_USDT'),
         create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT')
+        
+        # or  public channel
+        #"spot/ticker:BTC_USDT",
+        #"spot/kline1m:BTC_USDT",
+        #"spot/depth5:BTC_USDT"
     ]
 
     ws.spot_subscribe_without_login(create_spot_subscribe_params(channels))
@@ -88,10 +138,11 @@ if __name__ == '__main__':
 ```
 
 #### Spot WebSocket Private Channel Example
+
 ```python
 
-from bitmart import cloud_consts
-from bitmart.cloud_ws_client import CloudWSClient
+from bitmart.lib import cloud_consts
+from bitmart.lib.cloud_ws_client import CloudWSClient
 from bitmart.ws_spot import create_channel, create_spot_subscribe_params
 
 
@@ -113,6 +164,31 @@ if __name__ == '__main__':
 
 ```
 
+#### Contract Public API Example
+```python
+from bitmart.api_contract import APIContract
+
+if __name__ == '__main__':
+
+    contractAPI = APIContract(timeout=(2, 10))
+
+    # query contract details
+    contractAPI.get_details(contract_symbol='ETHUSDT')
+    
+    # Get full depth of trading pairs.
+    contractAPI.get_depth(contract_symbol='ETHUSDT')
+
+    # Querying the open interest and open interest value data of the specified contract
+    contractAPI.get_open_interest(contract_symbol='ETHUSDT')
+
+    # Applicable for checking the current funding rate of a specified contract
+    contractAPI.get_funding_rate(contract_symbol='ETHUSDT')
+    
+    # querying K-line data
+    contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=1662518172, end_time=1662518172)
+
+```
+
 #### Contract API Example
 ```python
 from bitmart.api_contract import APIContract
@@ -123,16 +199,25 @@ if __name__ == '__main__':
     secret_key = "Your Secret KEY"
     memo = "Your Memo"
 
-    contracAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
+    contractAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
 
-    contracAPI.get_depth('ETHUSDT')
+    contractAPI.post_submit_order(contract_symbol='BTCUSDT', 
+                                  side=4, 
+                                  type='limit', 
+                                  leverage='1',
+                                  open_type='isolated',
+                                  size=10, 
+                                  price='20000')
 ```
+
+More Example: [test_api_contract.py](https://github.com/bitmartexchange/bitmart-python-sdk-api/blob/master/tests/test_api_contract.py)
+
 
 #### Contract WebSocket Public Channel Example
 ```python
 
-from bitmart import cloud_consts
-from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.lib import cloud_consts
+from bitmart.lib.cloud_ws_contract_client import CloudWSContractClient
 from bitmart.ws_contract import create_channel, create_contract_subscribe_params
 
 
@@ -143,8 +228,8 @@ class WSTest(CloudWSContractClient):
 
 
 if __name__ == '__main__':
-    ws = WSTest(cloud_consts.CONTRACT_WS_URL, "", "", "")
-    ws.set_debug(True)
+    ws = WSTest(cloud_consts.CONTRACT_WS_URL)
+    ws.set_debug(False)
     channels = [
         # public channel
         cloud_consts.WS_PUBLIC_CONTRACT_TICKER,
@@ -159,8 +244,8 @@ if __name__ == '__main__':
 #### Contract WebSocket Private Channel Example
 ```python
 
-from bitmart import cloud_consts
-from bitmart.cloud_ws_contract_client import CloudWSContractClient
+from bitmart.lib import cloud_consts
+from bitmart.lib.cloud_ws_contract_client import CloudWSContractClient
 from bitmart.ws_contract import create_channel, create_contract_subscribe_params
 
 
@@ -172,7 +257,7 @@ class WSTest(CloudWSContractClient):
 
 if __name__ == '__main__':
     ws = WSTest(cloud_consts.CONTRACT_WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
-    ws.set_debug(True)
+    ws.set_debug(False)
     channels = [
         # private channel
         create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
@@ -184,106 +269,3 @@ if __name__ == '__main__':
 
 ```
 
-Release Notes
-=========================
-
-###### 2020-07-16 
-- Interface Spot API `Cancel Order` update to v2 version that is `POST https://api-cloud.bitmart.com/spot/v2/cancel_order`
-- UserAgent set "BitMart-Java-SDK/1.0.1"
-
-###### 2020-09-21
-- Interface Spot API `/spot/v1/symbols/book` add `size` parameter, which represents the number of depths
-
-###### 2021-01-19
-- New endpoints for Spot WebSocket
-  - Public - ticket channels
-  - Public - K channel
-  - Public - trading channels
-  - Public - depth channels
-  - Login
-  - User - Trading Channel
-
-###### 2021-11-06
-- Update endpoints for Spot WebSocket
-  - Public-Depth Channel:
-    - spot/depth20     20 Level Depth Channel
-    - spot/depth50     50 Level Depth Channel
-  - User-Trade Channel:
-    - Eligible pushes add new orders successfully
-
-###### 2021-11-24
-- New endpoints for Spot
-  - <code>/spot/v2/orders</code>Get User Order History V2
-  - <code>/spot/v1/batch_orders</code>Batch Order
-- Update endpoints for Spot
-  - <code>/spot/v1/symbols/kline</code>Add new field 'quote_volume'
-  - <code>/spot/v1/symbols/trades</code>Add optional parameter N to return the number of items, the default is up to 50 items
-  - <code>/spot/v1/order_detail</code>Add new field 'unfilled_volume'
-  - <code>/spot/v1/submit_order</code>The request parameter type added limit_maker and ioc order types
-- New endpoints for Account
-  - <code>/account/v2/deposit-withdraw/history</code>Get Deposit And Withdraw  History V2
-- Update endpoints for Account
-  - <code>/account/v1/wallet</code>Remove the account_type,Only respond to currency accounts; you can bring currency parameters (optional)
-
-###### 2022-01-18
-- websocket public channel address<code>wss://ws-manager-compress.bitmart.com?protocol=1.1</code>will be taken down on 2022-02-28 UTC time,The new address is<code>wss://ws-manager-compress.bitmart.com/api?protocol=1.1</code>
-
-###### 2022-01-20
-- Update endpoints for Spot
-  - <code>/spot/v1/symbols/details</code>Add a new respond parameter trade_status, to show the trading status of a trading pair symbol.
-
-###### 2022-10-18
-- New endpoints for Contract Market
-  - <code>/contract/public/details</code>Get contract details
-  - <code>/contract/public/depth</code>Get contract depth
-  - <code>/contract/public/open-interest</code>Get contract open interest
-  - <code>/contract/public/funding-rate</code>Get contract funding rate
-  - <code>/contract/public/kline</code>Get contract kline
-- New endpoints for Contract Account
-  - <code>/contract/private/assets-detail</code>Get contract user assets detail
-- New endpoints for Contract Trade
-  - <code>/contract/private/order</code>Get contract order detail
-  - <code>/contract/private/order-history</code>Get contract order history
-  - <code>/contract/private/position</code>Get contract position
-  - <code>/contract/private/trades</code>Get contract trades
-  - <code>/contract/private/submit_order</code>Post contract submit order
-  - <code>/contract/private/cancel_order</code>Post contract cancel order
-  - <code>/contract/private/cancel_orders</code>Post contract batch cancel orders
-  
-    
-###### 2022-10-20
-- Upgrade endpoints for Spot
-  - <code>/spot/v1/ticker</code> has been upgraded to <code>/spot/v2/ticker</code> and <code>/spot/v1/ticker_detail</code>
-  - <code>/spot/v1/submit_order</code> has been upgraded to <code>/spot/v2/submit_order</code>
-  - <code>/spot/v1/batch_orders</code> has been upgraded to <code>/spot/v2/batch_orders</code>
-  - <code>/spot/v2/cancel_order</code> has been upgraded to <code>/spot/v3/cancel_order</code>
-  - <code>/spot/v1/order_detail</code> has been upgraded to <code>/spot/v2/order_detail</code>
-  - <code>/spot/v2/orders</code> has been upgraded to <code>/spot/v3/orders</code>
-  - <code>/spot/v1/trades</code> has been upgraded to <code>/spot/v2/trades</code>
-- New endpoints for Spot & Margin
-  - <code>/spot/v1/margin/isolated/account</code>Applicable for isolated margin account inquiries
-  - <code>/spot/v1/margin/isolated/transfer</code>For fund transfers between a margin account and spot account
-  - <code>/spot/v1/user_fee</code>For querying the base rate of the current user
-  - <code>/spot/v1/trade_fee</code>For the actual fee rate of the trading pairs
-  - <code>/spot/v1/margin/submit_order</code>Applicable for margin order placement
-  - <code>/spot/v1/margin/isolated/borrow</code>Applicable to isolated margin account borrowing operations
-  - <code>/spot/v1/margin/isolated/repay</code>Applicable to isolated margin account repayment operations
-  - <code>/spot/v1/margin/isolated/borrow_record</code>Applicable to the inquiry of borrowing records of an isolated margin account
-  - <code>/spot/v1/margin/isolated/repay_record</code>Applicable to the inquiry of repayment records of isolated margin account
-  - <code>/spot/v1/margin/isolated/pairs</code>Applicable for checking the borrowing rate and borrowing amount of trading pairs
-
-###### 2022-10-28
-- contract websocket public channel address<code>wss://openapi-ws.bitmart.com/api?protocol=1.1</code>
-- contract websocket private channel address<code>wss://openapi-ws.bitmart.com/user?protocol=1.1</code>
-
-
-###### 2022-11-03
-- New endpoints for API Broker
-  - <code>/spot/v1/broker/rebate</code>Applicable to query API Broker's rebate records
-- Update endpoints for Spot / Margin trading
-  - <code>/spot/v3/orders</code> <code>/spot/v2/trades</code>add start_time and end_time field for flexible querying
-  - add new order status 11 = Partially filled and canceled
-
-
-License
-=========================

@@ -1,7 +1,7 @@
 import asyncio
 
 
-from bitmart.cloud_consts import WS_URL
+from bitmart.lib.cloud_consts import WS_URL
 from bitmart.ws_spot import spot_subscribe_with_login, spot_subscribe_without_login
 
 
@@ -9,10 +9,11 @@ class CloudWSClient(object):
 
     def __init__(self, url: str = WS_URL, api_key: str = '', secret_key: str = '', memo: str = ''):
         """
-        :param url: Request Domain URL.
-        :param api_key: Get from bitmart API page.
-        :param secret_key: Get from bitmart API page.
-        :param memo: Get from bitmart API page.
+        Create api key from https://www.bitmart.com/api-config/en-US
+        :param url: Websocket Domain URL.
+        :param api_key: your access key
+        :param secret_key: your secret key
+        :param memo: your memo
         """
         self.API_KEY = api_key
         self.SECRET_KEY = secret_key
@@ -59,4 +60,16 @@ class CloudWSClient(object):
         :param param: Public channels. eg. {"op": "subscribe", "args": ["spot/ticker:BMX_BTC", "spot/user/ticker:ETH_BTC"]}
         :return:
         """
-        asyncio.get_event_loop().run_until_complete(spot_subscribe_without_login(self.on_message, self.URL, self.DEBUG, self.TIME_OUT, param))
+        asyncio.run(spot_subscribe_without_login(self.on_message, self.URL, self.DEBUG, self.TIME_OUT, param))
+
+    async def spot_subscribe_without_login_ext(self, params):
+        """
+        Subscribe
+        :param params: Public channels. eg. [{"op": "subscribe", "args": ["spot/ticker:BMX_BTC", "spot/user/ticker:ETH_BTC"]},{"op": "subscribe", "args": ["spot/ticker:BMX_USDT", "spot/user/ticker:ETH_USDT"]}]
+        :return:
+        """
+        task = []
+        for param in params:
+            task.append(asyncio.create_task(spot_subscribe_without_login(self.on_message, self.URL, self.DEBUG, self.TIME_OUT, param)))
+
+        await asyncio.gather(*task)

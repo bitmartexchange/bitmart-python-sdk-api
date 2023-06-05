@@ -4,7 +4,7 @@ import zlib
 
 import websockets
 
-from bitmart import cloud_utils
+from bitmart.lib import cloud_utils
 
 
 def create_channel(channel, symbol):
@@ -45,7 +45,7 @@ async def contract_subscribe_without_login(read, uri, is_debug, time_out, param)
     """
     print(f'[websockets] Connecting to {uri}')
     try:
-        async with websockets.client.connect(uri, ping_interval=10, ping_timeout=10) as websocket:
+        async with websockets.connect(uri, ping_interval=10, ping_timeout=10) as websocket:
             print(f'[websockets] Connected {uri}')
             if is_debug:
                 print(f"[websockets] Send:{param}")
@@ -53,7 +53,7 @@ async def contract_subscribe_without_login(read, uri, is_debug, time_out, param)
             await wait_for_recv(websocket, read, is_debug, time_out)
     except (OSError, asyncio.TimeoutError) as e:
         print(e)
-    except (websockets.exceptions.ConnectionClosed, websockets.exceptions.InvalidHandshake):
+    except (websockets.ConnectionClosed, websockets.InvalidHandshake):
         print(f'[websockets] Reconnecting to {uri}')
         await contract_subscribe_without_login(read, uri, is_debug, time_out, param)
 
@@ -75,7 +75,7 @@ async def contract_subscribe_with_login(read, uri, api_key, memo, secret_key, is
     """
     print(f'[websockets] Connecting to {uri}')
     try:
-        async with websockets.client.connect(uri, ping_interval=10, ping_timeout=10) as websocket:
+        async with websockets.connect(uri, ping_interval=10, ping_timeout=10) as websocket:
             print(f'[websockets] Connected {uri}')
             login_params = create_contract_login_params(api_key, memo, secret_key)
             if is_debug:
@@ -95,7 +95,7 @@ async def contract_subscribe_with_login(read, uri, api_key, memo, secret_key, is
             await wait_for_recv(websocket, read, is_debug, time_out)
     except (OSError, asyncio.TimeoutError) as e:
         print(e)
-    except (websockets.exceptions.ConnectionClosed, websockets.exceptions.InvalidHandshake):
+    except (websockets.ConnectionClosed, websockets.InvalidHandshake):
         print('[websockets] ConnectionClosed')
         if reconnect:
             print(f'[websockets] Reconnecting to {uri}')
@@ -112,7 +112,7 @@ async def wait_for_recv(websocket, read, is_debug, time_out):
             read(message)
         except asyncio.TimeoutError:
             continue
-        except websockets.exceptions.ConnectionClosed as e:
+        except websockets.ConnectionClosed as e:
             print('[websockets] ConnectionClosed')
             raise e
 

@@ -1,5 +1,4 @@
 from bitmart.api_account import APIAccount
-from bitmart.cloud_log import CloudLog
 from tests import data as data
 
 # account api
@@ -49,12 +48,7 @@ def test_get_deposit_withdraw_detail():
 
 def test_get_margin_account_details_isolated():
     """Test GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account"""
-    assert accountAPI.get_margin_account_details_isolated()[0]['code'] == 1000
-
-
-def test_get_margin_account_details_isolated_by_symbol():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/margin/isolated/account"""
-    assert accountAPI.get_margin_account_details_isolated_by_symbol(
+    assert accountAPI.get_margin_account_details_isolated(
         symbol='BTC_USDT')[0]['code'] == 1000
 
 
