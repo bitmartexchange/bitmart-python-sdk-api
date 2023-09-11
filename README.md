@@ -7,7 +7,7 @@ BitMart-Python-SDK-API
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-[BitMart Exchange official](https://bitmart.com) Python client for the [BitMart Cloud API](http://developer-pro.bitmart.com).
+[BitMart Exchange official](https://bitmart.com) Python client for the BitMart Cloud API.
 
 
 
@@ -37,12 +37,13 @@ Installation
 pip install bitmart-python-sdk-api
 ```
 
-
-Usage
+Documentation
 =========================
-* An example of a spot trade API
-* Replace it with your own API KEY
-* Run
+[API Documentation](https://developer-pro.bitmart.com/en/spot/#change-log)
+
+
+Example
+=========================
 
 #### Spot Public API Example
 ```python
@@ -56,10 +57,10 @@ if __name__ == '__main__':
     spotAPI.get_currencies()
     
     # Querying aggregated tickers of a particular trading pair
-    spotAPI.get_symbol_ticker(symbol='BTC_USDT')
+    spotAPI.get_v3_ticker(symbol='BTC_USDT')
     
     # Get the latest trade records of the specified trading pair
-    spotAPI.get_symbol_trades(symbol='BTC_USDT', N=50)
+    spotAPI.get_v3_trades(symbol='BTC_USDT', limit=10)
 ```
 
 
@@ -269,3 +270,48 @@ if __name__ == '__main__':
 
 ```
 
+Extra Options
+=========================
+
+### Authentication
+How to set API KEY?
+
+```python
+from bitmart.api_spot import APISpot
+from bitmart.api_contract import APIContract
+
+spotAPI = APISpot(api_key="your api access key", secret_key="your api secret key", memo="your api memo")
+contractAPI = APIContract(api_key="your api access key", secret_key="your api secret key", memo="your api memo")
+```
+
+### Timeout
+Set HTTP `connection timeout` and `read timeout`.
+
+```python
+from bitmart.api_spot import APISpot
+from bitmart.api_contract import APIContract
+spotAPI = APISpot(timeout=(2, 10))
+contractAPI = APIContract(timeout=(2, 10))
+```
+
+### Logging
+If you want to `debug` the data requested by the API and the corresponding data returned by the API,
+you can set it like this:
+
+```python
+from bitmart.lib.cloud_log import CloudLog
+CloudLog.set_logger_level('debug')
+```
+
+
+
+### Domain
+How to set API domain name? The domain name parameter is optional,
+the default domain name is `https://api-cloud.bitmart.com`.
+
+```python
+from bitmart.api_spot import APISpot
+from bitmart.api_contract import APIContract
+spotAPI = APISpot(url='https://api-cloud.bitmart.com')
+contractAPI = APIContract(url='https://api-cloud.bitmart.com')
+```

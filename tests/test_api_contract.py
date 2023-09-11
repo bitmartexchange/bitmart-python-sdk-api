@@ -3,6 +3,8 @@ from tests import data as data
 
 # contract api
 contractAPI = APIContract(data.api_key, data.secret_key, data.memo, data.url)
+
+
 # contractAPI = APIContract(timeout=(2,10))
 
 
@@ -45,9 +47,15 @@ def test_get_order():
                'code'] == 1000
 
 
-def test_get_order_history():
+def test_ge1t_order_history():
     """Test GET https://api-cloud.bitmart.com/contract/private/order-history"""
     assert contractAPI.get_order_history(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)[0][
+               'code'] == 1000
+
+
+def test_get_open_order():
+    """Test GET https://api-cloud.bitmart.com/contract/private/get-open-orders"""
+    assert contractAPI.get_open_order(contract_symbol='BTCUSDT', type='limit', order_state='all', limit=5)[0][
                'code'] == 1000
 
 
@@ -95,8 +103,8 @@ def test_post_cancel_orders():
 def test_post_submit_plan_order():
     """Test POST https://api-cloud.bitmart.com/contract/private/submit-plan-order"""
     assert \
-        contractAPI.post_submit_plan_order(contract_symbol='BTCUSDT', type='limit', side=4,  leverage='1',
-                                      open_type='isolated', mode=1, size=10, trigger_price='3000',
+        contractAPI.post_submit_plan_order(contract_symbol='BTCUSDT', type='limit', side=4, leverage='1',
+                                           open_type='isolated', mode=1, size=10, trigger_price='3000',
                                            price_type=1, price_way=1, executive_price='2800')[0][
             'code'] == 1000
 
@@ -104,7 +112,7 @@ def test_post_submit_plan_order():
 def test_post_cancel_plan_order():
     """Test POST https://api-cloud.bitmart.com/contract/private/cancel-plan-order"""
     assert \
-        contractAPI.post_cancel_plan_order(contract_symbol='BTCUSDT',order_id='230602272118231')[0][
+        contractAPI.post_cancel_plan_order(contract_symbol='BTCUSDT', order_id='230602272118231')[0][
             'code'] == 1000
 
 
@@ -112,4 +120,11 @@ def test_post_transfer():
     """Test POST https://api-cloud.bitmart.com/account/v1/transfer-contract"""
     assert \
         contractAPI.post_transfer(currency='USDT', amount='10', type='spot_to_contract')[0][
+            'code'] == 1000
+
+
+def test_post_submit_leverage():
+    """post_submit_leverage"""
+    assert \
+        contractAPI.post_submit_leverage(contract_symbol='BTCUSDT', open_type='cross', leverage="1")[0][
             'code'] == 1000
