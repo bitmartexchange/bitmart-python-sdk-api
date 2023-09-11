@@ -130,6 +130,36 @@ class APIContract(CloudClient):
         }
         return self._request_with_params(GET, API_CONTRACT_ORDER_HISTORY_URL, param, Auth.KEYED)
 
+    def get_open_order(self, contract_symbol: str, type=None, order_state=None, limit=None):
+        """Get All Open Orders (KEYED)
+        Applicable for querying contract all open orders
+
+        GET https://api-cloud.bitmart.com/contract/private/get-open-orders
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param type: Order type
+                        -limit
+                        - market
+        :param order_state: Order state
+                        -all(default)
+                        - partially_filled
+        :param limit: The number of returned results, with a maximum of 100 and a default of 100
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+
+        if type:
+            param['type'] = type
+
+        if order_state:
+            param['order_state'] = order_state
+
+        if limit:
+            param['limit'] = limit
+        return self._request_with_params(GET, API_CONTRACT_OPEN_ORDER_URL, param, Auth.KEYED)
+
     def get_position(self, contract_symbol: str):
         """Get Current Position (KEYED)
         Applicable for checking the position details a specified contract
@@ -363,4 +393,27 @@ class APIContract(CloudClient):
             param['recvWindow'] = recv_window
 
         return self._request_with_params(POST, API_CONTRACT_TRANSFER_CONTRACT_URL, param, Auth.SIGNED)
+
+    def post_submit_leverage(self, contract_symbol: str, open_type: str, leverage=None):
+        """Submit Leverage (SIGNED)
+        Applicable for adjust contract leverage
+
+        POST https://api-cloud.bitmart.com/contract/private/submit-leverage
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param open_type: Open type, required at close position
+                            -cross
+                            -isolated
+        :param leverage: Order leverage
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'open_type': open_type,
+        }
+
+        if leverage:
+            param['leverage'] = leverage
+
+        return self._request_with_params(POST, API_CONTRACT_SUBMIT_LEVERAGE_URL, param, Auth.SIGNED)
 

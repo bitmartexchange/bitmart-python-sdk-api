@@ -1,10 +1,13 @@
+import warnings
+
 from bitmart.lib.cloud_client import CloudClient
 from bitmart.lib.cloud_consts import *
 
 
 class APISpot(CloudClient):
 
-    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT):
+    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL,
+                 timeout: tuple = TIMEOUT):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
         :param api_key: your access key
@@ -50,7 +53,19 @@ class APISpot(CloudClient):
         GET https://api-cloud.bitmart.com/spot/v2/ticker
         :return:
         """
+        warnings.warn("This function will be removed soon, "
+                      "please use the alternative function `get_v3_tickers()`", DeprecationWarning)
         return self._request_without_params(GET, API_SPOT_TICKER_URL)
+
+    def get_v3_tickers(self):
+        """
+        Get the quotations of all trading pairs, including: snapshot information of the latest transaction price, first bid price, first ask price and 24-hour trading volume.
+            Note that the interface is not real-time data, if you need real-time data, please use websocket to subscribe Ticker channel
+
+        GET https://api-cloud.bitmart.com/spot/quotation/v3/tickers
+        :return:
+        """
+        return self._request_without_params(GET, API_SPOT_V3_TICKERS_URL)
 
     def get_symbol_ticker(self, symbol: str):
         """
@@ -60,7 +75,22 @@ class APISpot(CloudClient):
         :param symbol: Trading pair (e.g. BMX_USDT)
         :return:
         """
+        warnings.warn("This function will be removed soon, "
+                      "please use the alternative function `get_v3_ticker(symbol)`", DeprecationWarning)
         return self._request_with_params(GET, API_SPOT_TICKER_DETAIL_URL, {'symbol': symbol})
+
+    def get_v3_ticker(self, symbol: str):
+        """
+        Applicable to query the aggregated market price of a certain trading pair,
+            and return the latest ticker information.
+        Note that the interface is not real-time data, if you need real-time data,
+         please use websocket to subscribe Ticker channel
+
+        GET https://api-cloud.bitmart.com/spot/quotation/v3/ticker
+        :param symbol: Trading pair (e.g. BMX_USDT)
+        :return:
+        """
+        return self._request_with_params(GET, API_SPOT_V3_TICKER_URL, {'symbol': symbol})
 
     def get_steps(self):
         """
@@ -69,6 +99,9 @@ class APISpot(CloudClient):
         GET https://api-cloud.bitmart.com/spot/v1/steps
         :return:
         """
+        warnings.warn("This function will be removed soon, "
+                      "k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, "
+                      "180, 240, 1440, 10080, 43200]", DeprecationWarning)
         return self._request_without_params(GET, API_SPOT_STEPS_URL)
 
     def get_symbol_kline(self, symbol: str, from_time: int, to_time: int, step: int = 1):
@@ -89,7 +122,80 @@ class APISpot(CloudClient):
             'to': to_time,
             'step': step
         }
+        warnings.warn("This function will be removed soon, "
+                      "please use the alternative function "
+                      "`get_v3_latest_kline() or get_v3_history_kline()`", DeprecationWarning)
         return self._request_with_params(GET, API_SPOT_SYMBOLS_KLINE_URL, param)
+
+    def get_v3_latest_kline(self, symbol: str, before=None, after=None, step=None, limit=None):
+        """
+        Query the latest K-line and return a maximum of 1000 data.
+        Note that the latest K-line of the interface is not real-time data.
+        If you want real-time data, please use websocket to subscribe to K-line channel
+
+
+        GET https://api-cloud.bitmart.com/spot/quotation/v3/lite-klines
+
+        :param symbol: Trading pair (e.g. BMX_USDT)
+        :param before: Query timestamp (unit: second), query the data before this time
+        :param after: Query timestamp (unit: second), query the data after this time
+        :param step: k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200] unit: minute, default 1
+        :param limit: Return number, the maximum value is 200, default is 100
+        :return:
+        """
+        param = {
+            'symbol': symbol,
+        }
+
+        if before:
+            param['before'] = before
+
+        if after:
+            param['after'] = after
+
+        if step:
+            param['step'] = step
+
+        if limit:
+            param['limit'] = limit
+
+        return self._request_with_params(GET, API_SPOT_V3_LATEST_KLINE_URL, param)
+
+    def get_v3_history_kline(self, symbol: str, before=None, after=None, step=None, limit=None):
+        """
+        Get History K-Line (V3)
+
+        Get k-line data within a specified time range of a specified trading pair.
+        Note that the interface is not real-time data, if you need real-time data,
+        please use websocket to subscribe KLine channel
+
+
+        GET https://api-cloud.bitmart.com/spot/quotation/v3/klines
+
+        :param symbol: Trading pair (e.g. BMX_USDT)
+        :param before: Query timestamp (unit: second), query the data before this time
+        :param after: Query timestamp (unit: second), query the data after this time
+        :param step: k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, 180, 240, 1440, 10080, 43200] unit: minute, default 1
+        :param limit: Return number, the maximum value is 200, default is 100
+        :return:
+        """
+        param = {
+            'symbol': symbol,
+        }
+
+        if before:
+            param['before'] = before
+
+        if after:
+            param['after'] = after
+
+        if step:
+            param['step'] = step
+
+        if limit:
+            param['limit'] = limit
+
+        return self._request_with_params(GET, API_SPOT_V3_HISTORY_KLINE_URL, param)
 
     def get_symbol_book(self, symbol: str, precision: int, size: int):
         """
@@ -111,7 +217,34 @@ class APISpot(CloudClient):
 
         if size:
             param['size'] = size
+        warnings.warn("This function will be removed soon, "
+                      "please use the alternative function `get_v3_depth()`",
+                      DeprecationWarning)
         return self._request_with_params(GET, API_SPOT_SYMBOLS_BOOK_URL, param)
+
+    def get_v3_depth(self, symbol: str, limit=None):
+        """
+        Get full depth of trading pairs.
+        Note that the interface is not real-time data, if you need real-time data,
+         please use websocket to subscribe Depth channel
+
+
+
+        GET https://api-cloud.bitmart.com/spot/quotation/v3/books
+
+        :param symbol: Trading pair (e.g. BMX_USDT)
+        :param limit: Order book depth per side. Maximum 50, e.g. 50 bids + 50 asks.
+                        Default returns to 35 depth data, e.g. 35 bids + 35 asks.
+        :return:
+        """
+        param = {
+            'symbol': symbol
+        }
+
+        if limit:
+            param['limit'] = limit
+
+        return self._request_with_params(GET, API_SPOT_V3_BOOKS_URL, param)
 
     def get_symbol_trades(self, symbol: str, N: int = 50):
         """
@@ -127,7 +260,30 @@ class APISpot(CloudClient):
             'symbol': symbol,
             'N': N
         }
+        warnings.warn("This function will be removed soon, "
+                      "please use the alternative function `get_v3_trades()`",
+                      DeprecationWarning)
         return self._request_with_params(GET, API_SPOT_SYMBOLS_TRADES_URL, param)
+
+    def get_v3_trades(self, symbol: str, limit=None):
+        """
+        Get the latest trade records of the specified trading pair.
+            Note that the interface is not real-time data,
+            if you need real-time data, please use websocket to subscribe Trade channel
+
+        GET https://api-cloud.bitmart.com/spot/quotation/v3/trades
+
+        :param symbol: Trading pair (e.g. BMX_USDT)
+        :param limit: Number of returned items, maximum is 50, default 50
+        :return:
+        """
+        param = {
+            'symbol': symbol,
+        }
+
+        if limit:
+            param['limit'] = limit
+        return self._request_with_params(GET, API_SPOT_V3_TRADES_URL, param)
 
     # trade API
 

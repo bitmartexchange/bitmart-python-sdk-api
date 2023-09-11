@@ -48,6 +48,15 @@ API_SPOT_STEPS_URL = '/spot/v1/steps'
 API_SPOT_SYMBOLS_KLINE_URL = '/spot/v1/symbols/kline'
 API_SPOT_SYMBOLS_BOOK_URL = '/spot/v1/symbols/book'
 API_SPOT_SYMBOLS_TRADES_URL = '/spot/v1/symbols/trades'
+
+API_SPOT_V3_TICKERS_URL = '/spot/quotation/v3/tickers'
+API_SPOT_V3_TICKER_URL = '/spot/quotation/v3/ticker'
+API_SPOT_V3_LATEST_KLINE_URL = '/spot/quotation/v3/lite-klines'
+API_SPOT_V3_HISTORY_KLINE_URL = '/spot/quotation/v3/klines'
+API_SPOT_V3_BOOKS_URL = '/spot/quotation/v3/books'
+API_SPOT_V3_TRADES_URL = '/spot/quotation/v3/trades'
+
+
 API_SPOT_WALLET_URL = '/spot/v1/wallet'
 API_SPOT_SUBMIT_ORDER_URL = '/spot/v2/submit_order'
 API_SPOT_MARGIN_ORDER_URL = '/spot/v1/margin/submit_order'
@@ -87,6 +96,7 @@ API_CONTRACT_KLINE_URL = "/contract/public/kline"
 API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
 API_CONTRACT_ORDER_URL = "/contract/private/order"
 API_CONTRACT_ORDER_HISTORY_URL = "/contract/private/order-history"
+API_CONTRACT_OPEN_ORDER_URL = "/contract/private/get-open-orders"
 API_CONTRACT_POSITION_URL = "/contract/private/position"
 API_CONTRACT_TRADES_URL = "/contract/private/trades"
 API_CONTRACT_SUBMIT_ORDER_URL = "/contract/private/submit-order"
@@ -94,9 +104,11 @@ API_CONTRACT_CANCEL_ORDER_URL = "/contract/private/cancel-order"
 API_CONTRACT_CANCEL_ORDERS_URL = "/contract/private/cancel-orders"
 API_CONTRACT_SUBMIT_PLAN_ORDER_URL = "/contract/private/submit-plan-order"
 API_CONTRACT_CANCEL_PLAN_ORDER_URL = "/contract/private/cancel-plan-order"
+API_CONTRACT_SUBMIT_LEVERAGE_URL = "/contract/private/submit-leverage"
 
 API_CONTRACT_TRANSFER_CONTRACT_LIST_URL = "/account/v1/transfer-contract-list"
 API_CONTRACT_TRANSFER_CONTRACT_URL = "/account/v1/transfer-contract"
+
 
 # websocket
 # spot public

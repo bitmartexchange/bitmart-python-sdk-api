@@ -1,8 +1,11 @@
+import time
+
 from bitmart.api_spot import APISpot
 from tests import data as data
 
 # spot api
-spotAPI = APISpot(data.api_key, data.secret_key, data.memo, data.url, timeout=data.timeout)
+# spotAPI = APISpot(data.api_key, data.secret_key, data.memo, data.url, timeout=data.timeout)
+spotAPI = APISpot(data.api_key, data.secret_key, data.memo)
 
 
 def test_get_currencies():
@@ -20,35 +23,41 @@ def test_get_symbol_detail():
     assert spotAPI.get_symbol_detail()[0]['code'] == 1000
 
 
-def test_get_ticker():
+def test_get_v3_tickers():
     """Test GET https://api-cloud.bitmart.com/spot/v2/ticker"""
-    assert spotAPI.get_ticker()[0]['code'] == 1000
+    assert spotAPI.get_v3_tickers()[0]['code'] == 1000
 
 
-def test_get_ticker_detail():
+def test_get_v3_ticker():
     """Test GET https://api-cloud.bitmart.com/spot/v1/ticker_detail"""
-    assert spotAPI.get_symbol_ticker(symbol='BTC_USDT')[0]['code'] == 1000
+    assert spotAPI.get_v3_ticker(symbol='BTC_USDT')[0]['code'] == 1000
 
 
-def test_get_steps():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/steps"""
-    assert spotAPI.get_steps()[0]['code'] == 1000
-
-
-def test_get_symbol_kline():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/symbols/kline"""
-    assert spotAPI.get_symbol_kline(symbol='BTC_USDT', from_time=1591789435, to_time=1591875835, step=60)[0][
+def test_get_v3_latest_kline():
+    """Test GET https://api-cloud.bitmart.com/spot/quotation/v3/lite-klines"""
+    before = int(time.time())
+    after = before - 3600
+    assert spotAPI.get_v3_latest_kline(symbol='BTC_USDT', before=before, after=after, step=60, limit=5)[0][
                'code'] == 1000
 
 
-def test_get_symbol_book():
-    """Test GET https://api-cloud.bitmart.com/spot/v1/symbols/book"""
-    assert spotAPI.get_symbol_book(symbol='BTC_USDT', precision=None, size=200)[0]['code'] == 1000
+def test_get_v3_history_kline():
+    """Test GET https://api-cloud.bitmart.com/spot/quotation/v3/klines"""
+    before = int(time.time())
+    after = before - 3600
+    assert spotAPI.get_v3_history_kline(symbol='BTC_USDT', before=before, after=after, step=60, limit=5)[0][
+               'code'] == 1000
 
 
-def test_get_symbol_trades():
+def test_get_v3_depth():
+    """Test GET https://api-cloud.bitmart.com/spot/quotation/v3/books"""
+    assert spotAPI.get_v3_depth(symbol='BTC_USDT')[0]['code'] == 1000
+    assert spotAPI.get_v3_depth(symbol='BTC_USDT', limit=1)[0]['code'] == 1000
+
+
+def test_get_v3_trades():
     """Test GET https://api-cloud.bitmart.com/spot/v1/symbols/trades"""
-    assert spotAPI.get_symbol_trades(symbol='BTC_USDT', N=1)[0]['code'] == 1000
+    assert spotAPI.get_v3_trades(symbol='BTC_USDT', limit=1)[0]['code'] == 1000
 
 
 def test_get_wallet():
@@ -98,7 +107,8 @@ def test_v4_query_order_by_id():
 
 def test_v4_query_order_by_order_client_id():
     """Test POST https://api-cloud.bitmart.com/spot/v4/query/client-order"""
-    assert spotAPI.v4_query_order_by_order_client_id(client_order_id='118100034543076010', query_state='open')[0]['code'] == 1000
+    assert spotAPI.v4_query_order_by_order_client_id(client_order_id='118100034543076010', query_state='open')[0][
+               'code'] == 1000
 
 
 def test_v4_query_open_orders():
@@ -119,6 +129,6 @@ def test_v4_query_account_trade_list():
     assert spotAPI.v4_query_account_trade_list(symbol='BTC_USDT')[0]['code'] == 1000
 
 
-def test_v4_query_order_trade_listt():
+def test_v4_query_order_trade_list():
     """Test POST https://api-cloud.bitmart.com/spot/v4/query/order-trades"""
     assert spotAPI.v4_query_order_trade_list(order_id='118100034543076010')[0]['code'] == 1000
