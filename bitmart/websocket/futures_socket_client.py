@@ -76,7 +76,7 @@ class FuturesSocketClient:
         json_msg = json.dumps({"action": "unsubscribe", "args": args})
         self.socket_manager.send_message(json_msg)
 
-    def login(self):
+    def login(self, timeout=5):
         if not self.API_KEY:
             raise ValueError("Invalid API KEY")
         if not self.API_SECRET_KEY:
@@ -87,7 +87,8 @@ class FuturesSocketClient:
         sign = cloud_utils.sign(cloud_utils.pre_substring(
             timestamp, self.API_MEMO, 'bitmart.WebSocket'), self.API_SECRET_KEY)
         self.socket_manager.send_message(json.dumps({"action": "access", "args": [self.API_KEY, timestamp, sign, "web"]}))
-        time.sleep(5)
+        # timeout
+        time.sleep(timeout)
 
     def ping(self):
         self.socket_manager.ping()

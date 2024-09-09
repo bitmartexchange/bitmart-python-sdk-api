@@ -108,33 +108,39 @@ More Example: [test_api_account.py](https://github.com/bitmartexchange/bitmart-p
 
 ```python
 
-from bitmart.lib import cloud_consts
-from bitmart.lib.cloud_ws_client import CloudWSClient
-from bitmart.ws_spot import create_channel, create_spot_subscribe_params
+import logging
+import time
 
+from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL
+from bitmart.lib.cloud_utils import config_logging
+from bitmart.websocket.spot_socket_client import SpotSocketClient
 
-class WSTest(CloudWSClient):
-
-    def on_message(self, message):
-        print(f'[ReceiveServerMessage]-------->{message}')
-
-
+def message_handler(_, message):
+    logging.info(message)
+      
 if __name__ == '__main__':
-    ws = WSTest(url=cloud_consts.SPOT_PUBLIC_WS_URL)
-    ws.set_debug(False)
-    channels = [
-        # public channel
-        create_channel(cloud_consts.WS_PUBLIC_SPOT_TICKER, 'BTC_USDT'),
-        create_channel(cloud_consts.WS_PUBLIC_SPOT_KLINE_1M, 'BTC_USDT'),
-        create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT')
+  config_logging(logging, logging.DEBUG)
+  
+  
+  my_client = SpotSocketClient(stream_url=SPOT_PUBLIC_WS_URL,
+                               on_message=message_handler)
+  
+  # Subscribe to a single symbol stream
+  my_client.subscribe(args="spot/ticker:BMX_USDT")
+  
+  # Subscribe to multiple symbol streams
+  my_client.subscribe(args=["spot/ticker:BMX_USDT", "spot/ticker:BTC_USDT"])
+  
+  # Send the original subscription message
+  my_client.send({"op": "subscribe", "args": ["spot/ticker:ETH_USDT"]})
+  
+  time.sleep(5)
+  
+  # Unsubscribe
+  my_client.unsubscribe(args="spot/ticker:BMX_USDT")
+  
+  my_client.send({"op": "unsubscribe", "args": ["spot/ticker:BMX_USDT"]})
 
-        # or  public channel
-        # "spot/ticker:BTC_USDT",
-        # "spot/kline1m:BTC_USDT",
-        # "spot/depth5:BTC_USDT"
-    ]
-
-    ws.spot_subscribe_without_login(create_spot_subscribe_params(channels))
 
 ```
 
@@ -142,26 +148,32 @@ if __name__ == '__main__':
 
 ```python
 
-from bitmart.lib import cloud_consts
-from bitmart.lib.cloud_ws_client import CloudWSClient
-from bitmart.ws_spot import create_channel, create_spot_subscribe_params
+import logging
 
+from bitmart.lib.cloud_consts import SPOT_PRIVATE_WS_URL
+from bitmart.lib.cloud_utils import config_logging
+from bitmart.websocket.spot_socket_client import SpotSocketClient
 
-class WSTest(CloudWSClient):
-
-  def on_message(self, message):
-    print(f'[ReceiveServerMessage]-------->{message}')
-
-
+def message_handler(_, message):
+    logging.info(message)
+    
 if __name__ == '__main__':
-  ws = WSTest(cloud_consts.SPOT_PRIVATE_WS_URL, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
-  ws.set_debug(True)
-  channels = [
-    # private channel
-    create_channel(cloud_consts.WS_USER_SPOT_ORDER, 'BTC_USDT')
-  ]
+    config_logging(logging, logging.DEBUG)
 
-  ws.spot_subscribe_with_login(create_spot_subscribe_params(channels))
+    my_client = SpotSocketClient(stream_url=SPOT_PRIVATE_WS_URL,
+                             on_message=message_handler,
+                             api_key="your_api_key",
+                             api_secret_key="your_secret_key",
+                             api_memo="your_api_memo")
+
+    # Login
+    my_client.login()
+
+    # Subscribe to a single symbol stream
+    my_client.subscribe(args="spot/user/balance:BALANCE_UPDATE")
+
+    # Stop
+    # my_client.stop()
 
 ```
 
@@ -218,28 +230,46 @@ More Example: [test_api_contract.py](https://github.com/bitmartexchange/bitmart-
 
 ```python
 
-from bitmart.lib import cloud_consts
-from bitmart.lib.cloud_ws_contract_client import CloudWSContractClient
-from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+import logging
+import time
 
+from bitmart.lib.cloud_consts import FUTURES_PUBLIC_WS_URL
+from bitmart.lib.cloud_utils import config_logging
+from bitmart.websocket.futures_socket_client import FuturesSocketClient
 
-class WSTest(CloudWSContractClient):
-
-    def on_message(self, message):
-        print(f'[ReceiveServerMessage]-------->{message}')
-
+def message_handler(_, message):
+    logging.info(message)
+    
+    
 
 if __name__ == '__main__':
-    ws = WSTest(cloud_consts.FUTURES_PUBLIC_WS_URL)
-    ws.set_debug(False)
-    channels = [
-        # public channel
-        cloud_consts.WS_PUBLIC_CONTRACT_TICKER,
-        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_DEPTH5, 'BTCUSDT'),
-        create_channel(cloud_consts.WS_PUBLIC_CONTRACT_KLINE_1M, 'BTCUSDT'),
-    ]
+    config_logging(logging, logging.DEBUG)
+    
+    my_client = FuturesSocketClient(stream_url=FUTURES_PUBLIC_WS_URL,
+                                on_message=message_handler)
 
-    ws.contract_subscribe_without_login(create_contract_subscribe_params(channels))
+    # Example 1:
+    # Subscribe to a single symbol stream
+    my_client.subscribe(args="futures/ticker")
+
+    time.sleep(2)
+
+    # Unsubscribe
+    my_client.unsubscribe(args="futures/ticker")
+
+    time.sleep(5)
+    # Example 2:
+    # Send the original subscription message
+    my_client.send({"action": "subscribe", "args": ["futures/ticker"]})
+
+    time.sleep(2)
+
+    # Unsubscribe
+    my_client.send({"action": "unsubscribe", "args": ["futures/ticker"]})
+
+    # Stop
+    # my_client.stop()
+
 
 ```
 
@@ -247,30 +277,36 @@ if __name__ == '__main__':
 
 ```python
 
-from bitmart.lib import cloud_consts
-from bitmart.lib.cloud_ws_contract_client import CloudWSContractClient
-from bitmart.ws_contract import create_channel, create_contract_subscribe_params
+import logging
 
+from bitmart.lib.cloud_consts import FUTURES_PRIVATE_WS_URL
+from bitmart.lib.cloud_utils import config_logging
+from bitmart.websocket.futures_socket_client import FuturesSocketClient
 
-class WSTest(CloudWSContractClient):
-
-  def on_message(self, message):
-    print(f'[ReceiveServerMessage]-------->{message}')
+def message_handler(_, message):
+    logging.info(message)
 
 
 if __name__ == '__main__':
-  ws = WSTest(cloud_consts.FUTURES_PRIVATE_WS_URL, api_key="Your API KEY", secret_key="Your Secret KEY",
-              memo="Your Memo")
-  ws.set_debug(False)
-  channels = [
-    # private channel
-    create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
-    cloud_consts.WS_USER_CONTRACT_POSITION,
-    cloud_consts.WS_USER_CONTRACT_UNICAST,
-  ]
+    config_logging(logging, logging.INFO)
+  
+    my_client = FuturesSocketClient(stream_url=FUTURES_PRIVATE_WS_URL,
+                                on_message=message_handler,
+                                api_key="your_api_key",
+                                api_secret_key="your_secret_key",
+                                api_memo="your_api_memo")
 
-  ws.contract_subscribe_with_login(create_contract_subscribe_params(channels))
+    # Login
+    my_client.login()
 
+    # Subscribe to a single symbol stream
+    my_client.subscribe(args="futures/asset:USDT")
+
+    # Subscribe to multiple symbol streams
+    my_client.subscribe(args=["futures/asset:BTC", "futures/asset:ETH"])
+
+    # Stop
+    # my_client.stop()
 ```
 
 Extra Options

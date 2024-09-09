@@ -18,7 +18,7 @@ my_client = FuturesSocketClient(stream_url=FUTURES_PRIVATE_WS_URL,
                                 api_memo="your_api_memo")
 
 # Login
-my_client.login()
+my_client.login(timeout=5)
 
 # Subscribe to a single symbol stream
 my_client.subscribe(args="futures/asset:USDT")

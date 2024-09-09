@@ -1,7 +1,6 @@
 import logging
-import time
 
-from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL, SPOT_PRIVATE_WS_URL
+from bitmart.lib.cloud_consts import SPOT_PRIVATE_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.spot_socket_client import SpotSocketClient
 
@@ -19,7 +18,7 @@ my_client = SpotSocketClient(stream_url=SPOT_PRIVATE_WS_URL,
                              api_memo="your_api_memo")
 
 # Login
-my_client.login()
+my_client.login(timeout=5)
 
 # Subscribe to a single symbol stream
 my_client.subscribe(args="spot/user/balance:BALANCE_UPDATE")
