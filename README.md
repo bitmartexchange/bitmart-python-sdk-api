@@ -369,3 +369,42 @@ You can add your own request header information here, but please do not fill in 
 from bitmart.api_spot import APISpot
 spotAPI = APISpot(headers={'Your-Custom-Header': 'xxxxxxx'})
 ```
+
+
+### Response Metadata
+
+The bitmart API server provides the endpoint rate limit usage in the header of each response. 
+This information can be obtained from the headers property. 
+`x-bm-ratelimit-remaining` indicates the number of times the current window has been used, 
+`x-bm-ratelimit-limit` indicates the maximum number of times the current window can be used, 
+and `x-bm-ratelimit-reset` indicates the current window time.
+
+
+##### Example:
+
+```
+x-bm-ratelimit-mode: IP
+x-bm-ratelimit-remaining: 10
+x-bm-ratelimit-limit: 600
+x-bm-ratelimit-reset: 60
+```
+
+This means that this IP can call the endpoint 600 times within 60 seconds, and has called 10 times so far.
+
+
+```python
+
+import logging
+
+from bitmart.api_spot import APISpot
+logger = logging.getLogger(__name__)
+spotAPI = APISpot()
+
+response = spotAPI.get_currencies()[0]
+limit = spotAPI.get_currencies()[1]
+logger.info(f"x-bm-ratelimit-remaining={limit['Remaining']},"
+            f"x-bm-ratelimit-limit={limit['Limit']},"
+            f"x-bm-ratelimit-reset={limit['Reset']},"
+            f"x-bm-ratelimit-mode={limit['Mode']}")
+
+```

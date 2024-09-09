@@ -59,7 +59,6 @@ class CloudClient(object):
             header = cloud_utils.get_header(self.API_KEY, sign, timestamp, headers=self.HEADERS)
 
         self._logger.debug(f"[{method}] url={url}")
-        self._logger.debug(f"header={header}")
         if body:
             self._logger.debug(f"[PARAMS]:\n header: {header}\nbody: {body}\n")
 
@@ -82,6 +81,7 @@ class CloudClient(object):
                 r['Remaining'] = res_header['X-BM-RateLimit-Remaining']
                 r['Limit'] = res_header['X-BM-RateLimit-Limit']
                 r['Reset'] = res_header['X-BM-RateLimit-Reset']
+                r['Mode'] = res_header['X-BM-RateLimit-Mode']
             except:
                 pass
             result = response.json()

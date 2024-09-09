@@ -3,7 +3,6 @@ import datetime
 import time
 import zlib
 
-from bitmart.__version__ import __version__
 from bitmart.lib import cloud_consts as c
 
 

@@ -5,7 +5,7 @@ from bitmart.api_spot import APISpot
 from bitmart.lib.cloud_exceptions import APIException
 from bitmart.lib.cloud_utils import config_logging
 
-config_logging(logging, logging.DEBUG)
+config_logging(logging, logging.INFO)
 logger = logging.getLogger(__name__)
 
 spotAPI = APISpot(logger=logger)
