@@ -82,6 +82,8 @@ async def spot_subscribe_with_login(read, uri, api_key, memo, secret_key, is_deb
                 print(f'[websockets] Send:{login_params}')
             await websocket.send(login_params)
             message = await websocket.recv()
+            # Fixed: If the message is compressed, it needs to be decompressed
+            message = convert(message)
             if is_debug:
                 print(f'[websockets] Recv:{message}')
             read(message)
@@ -126,7 +128,7 @@ def convert(message):
 
 def inflate(data):
     decompress = zlib.decompressobj(
-            -zlib.MAX_WBITS
+        -zlib.MAX_WBITS
     )
     inflated = decompress.decompress(data)
     inflated += decompress.flush()

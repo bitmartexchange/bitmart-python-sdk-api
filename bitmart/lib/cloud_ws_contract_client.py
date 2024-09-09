@@ -1,13 +1,13 @@
 import asyncio
 
 
-from bitmart.lib.cloud_consts import CONTRACT_WS_URL
+from bitmart.lib.cloud_consts import FUTURES_PUBLIC_WS_URL
 from bitmart.ws_contract import contract_subscribe_with_login, contract_subscribe_without_login
 
 
 class CloudWSContractClient(object):
 
-    def __init__(self, url: str = CONTRACT_WS_URL, api_key: str = '', secret_key: str = '', memo: str = ''):
+    def __init__(self, url: str = FUTURES_PUBLIC_WS_URL, api_key: str = '', secret_key: str = '', memo: str = ''):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
         :param url: Websocket Domain URL.

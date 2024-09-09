@@ -2,24 +2,21 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
-WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
-WS_URL_USER = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
-CONTRACT_WS_URL = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
-CONTRACT_WS_URL_USER = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
+
+SPOT_PUBLIC_WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
+SPOT_PRIVATE_WS_URL = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
+
+FUTURES_PUBLIC_WS_URL = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
+FUTURES_PRIVATE_WS_URL = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
 
 # http header
-CONTENT_TYPE = 'Content-Type'
-USER_AGENT = 'User-Agent'
 X_BM_KEY = 'X-BM-KEY'
 X_BM_SIGN = 'X-BM-SIGN'
 X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
-# http header
-APPLICATION_JSON = 'application/json'
-VERSION = 'bitmart-python-sdk-api/'
 
 GET = "GET"
 POST = "POST"

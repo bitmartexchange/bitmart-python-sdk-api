@@ -1,0 +1,122 @@
+import logging
+import threading
+from websocket import (
+    ABNF,
+    create_connection,
+    WebSocketException,
+    WebSocketConnectionClosedException,
+    WebSocketTimeoutException,
+)
+
+from bitmart.lib.cloud_utils import inflate
+
+
+class SocketManager(threading.Thread):
+    def __init__(
+        self,
+        stream_url,
+        on_message=None,
+        on_open=None,
+        on_close=None,
+        on_error=None,
+        on_ping=None,
+        on_pong=None,
+        logger=None,
+        timeout=None,
+    ):
+        threading.Thread.__init__(self)
+        if not logger:
+            logger = logging.getLogger(__name__)
+        self.logger = logger
+        self.ws = None
+        self.stream_url = stream_url
+        self.on_message = on_message
+        self.on_open = on_open
+        self.on_close = on_close
+        self.on_ping = on_ping
+        self.on_pong = on_pong
+        self.on_error = on_error
+        self.timeout = timeout
+
+        self.create_ws_connection()
+
+    def create_ws_connection(self):
+        self.logger.debug(
+            f"Creating connection with WebSocket Server: {self.stream_url}",
+        )
+
+        self.ws = create_connection(
+            self.stream_url, timeout=self.timeout
+        )
+        self.logger.debug(
+            f"WebSocket connection has been established: {self.stream_url}",
+        )
+        self._callback(self.on_open)
+
+    def run(self):
+        self.read_data()
+
+    def send_message(self, message):
+        self.logger.debug("Sending message to BitMart WebSocket Server: %s", message)
+        self.ws.send(message)
+
+    def ping(self):
+        if self.ws.connected:
+            self.logger.debug("Sending ping to BitMart WebSocket Server")
+            self.ws.ping()
+
+    def read_data(self):
+        while True:
+            try:
+                op_code, frame = self.ws.recv_data_frame(True)
+            except WebSocketException as e:
+                if isinstance(e, WebSocketConnectionClosedException):
+                    self.logger.error("Lost websocket connection")
+                elif isinstance(e, WebSocketTimeoutException):
+                    self.logger.error("Websocket connection timeout")
+                else:
+                    self.logger.error("Websocket exception: {}".format(e))
+                raise e
+            except Exception as e:
+                self.logger.error("Exception in read_data: {}".format(e))
+                raise e
+
+            self._handle_data(op_code, frame)
+
+            if op_code == ABNF.OPCODE_CLOSE:
+                self.logger.warning(
+                    "CLOSE frame received, closing websocket connection"
+                )
+                self._callback(self.on_close)
+                break
+
+    def _handle_data(self, op_code, frame):
+        if op_code == ABNF.OPCODE_TEXT:
+            data = frame.data.decode("utf-8")
+            self._callback(self.on_message, data)
+        elif op_code == ABNF.OPCODE_BINARY:
+            data = inflate(frame.data)
+            self._callback(self.on_message, data)
+        elif op_code == ABNF.OPCODE_PING:
+            self._callback(self.on_ping, frame.data)
+            self.ws.pong("")
+            self.logger.debug("Received Ping; PONG frame sent back")
+        elif op_code == ABNF.OPCODE_PONG:
+            self.logger.debug("Received PONG frame")
+            self._callback(self.on_pong)
+
+    def close(self):
+        if not self.ws.connected:
+            self.logger.warning("Websocket already closed")
+        else:
+            self.ws.send_close()
+        return
+
+    def _callback(self, callback, *args):
+        if callback:
+            try:
+                callback(self, *args)
+            except Exception as e:
+                self.logger.error("Error from callback {}: {}".format(callback, e))
+                if self.on_error:
+                    self.on_error(self, e)

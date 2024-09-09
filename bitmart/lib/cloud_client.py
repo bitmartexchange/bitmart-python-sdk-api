@@ -1,14 +1,16 @@
+import logging
+
 import requests
 import json
 from bitmart.lib import cloud_utils, cloud_exceptions
 from . import cloud_consts as c
+from bitmart.__version__ import __version__
 from .cloud_consts import Auth
-from .cloud_log import CloudLog, log
 
 
 class CloudClient(object):
 
-    def __init__(self, api_key, secret_key, memo, url, timeout):
+    def __init__(self, api_key, secret_key, memo, url, timeout, logger=None):
         """
         :param api_key: Get from bitmart API page.
         :param secret_key: Get from bitmart API page.
@@ -21,9 +23,19 @@ class CloudClient(object):
         self.MEMO = memo
         self.URL = url
         self.TIMEOUT = timeout
+        self.session = requests.Session()
+        self.session.headers.update(
+            {
+                "Content-Type": "application/json",
+                "User-Agent": "bitmart-python-sdk-api/" + __version__,
+            }
+        )
 
+        if not logger:
+            self._logger = logging.getLogger(__name__)
+        else:
+            self._logger = logger
 
-    @log
     def _request(self, method, request_path, params, auth):
         if method == c.GET or method == c.DELETE:
             url = self.URL + request_path + cloud_utils.parse_params_to_str(params)
@@ -43,22 +55,18 @@ class CloudClient(object):
             sign = cloud_utils.sign(cloud_utils.pre_substring(timestamp, self.MEMO, str(body)), self.SECRET_KEY)
             header = cloud_utils.get_header(self.API_KEY, sign, timestamp)
 
-        if CloudLog.is_debug():
-            print("------------------------------------------")
-            print("[", method, "]", url)
-            print("request")
-            print("\theaders:", header)
-            if body:
-                print("\tbody:", body)
+        self._logger.debug(f"[{method}] url={url}", )
+        if body:
+            self._logger.debug(f"[PARAMS]:\n header: {header}\nbody: {body}\n")
 
         # send request
         response = None
         if method == c.GET:
-            response = requests.get(url, headers=header, timeout=self.TIMEOUT)
+            response = self.session.get(url, headers=header, timeout=self.TIMEOUT)
         elif method == c.POST:
-            response = requests.post(url, data=body, headers=header, timeout=self.TIMEOUT)
+            response = self.session.post(url, data=body, headers=header, timeout=self.TIMEOUT)
         elif method == c.DELETE:
-            response = requests.delete(url, headers=header, timeout=self.TIMEOUT)
+            response = self.session.delete(url, headers=header, timeout=self.TIMEOUT)
 
         # exception handle
         if not str(response.status_code) == '200':
@@ -72,7 +80,9 @@ class CloudClient(object):
                 r['Reset'] = res_header['X-BM-RateLimit-Reset']
             except:
                 pass
-            return response.json(), r
+            result = response.json()
+            self._logger.debug(f"response: {result}\n ")
+            return result, r
 
         except ValueError:
             raise cloud_exceptions.RequestException('Invalid Response: %s' % response.text)

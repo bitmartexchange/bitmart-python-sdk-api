@@ -1,13 +1,13 @@
 import asyncio
 
 
-from bitmart.lib.cloud_consts import WS_URL
+from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL
 from bitmart.ws_spot import spot_subscribe_with_login, spot_subscribe_without_login
 
 
 class CloudWSClient(object):
 
-    def __init__(self, url: str = WS_URL, api_key: str = '', secret_key: str = '', memo: str = ''):
+    def __init__(self, url: str = SPOT_PUBLIC_WS_URL, api_key: str = '', secret_key: str = '', memo: str = ''):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
         :param url: Websocket Domain URL.

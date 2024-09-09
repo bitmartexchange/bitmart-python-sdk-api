@@ -82,7 +82,7 @@ def test_post_submit_order():
     assert \
         contractAPI.post_submit_order(contract_symbol='BTCUSDT', side=4, type='limit', leverage='1',
                                       open_type='isolated',
-                                      size=10, price='20000')[0][
+                                      size=10, price='20000', mode=1)[0][
             'code'] == 1000
 
 

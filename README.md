@@ -120,18 +120,18 @@ class WSTest(CloudWSClient):
 
 
 if __name__ == '__main__':
-    ws = WSTest(url=cloud_consts.WS_URL)
+    ws = WSTest(url=cloud_consts.SPOT_PUBLIC_WS_URL)
     ws.set_debug(False)
     channels = [
         # public channel
         create_channel(cloud_consts.WS_PUBLIC_SPOT_TICKER, 'BTC_USDT'),
         create_channel(cloud_consts.WS_PUBLIC_SPOT_KLINE_1M, 'BTC_USDT'),
         create_channel(cloud_consts.WS_PUBLIC_SPOT_DEPTH5, 'BTC_USDT')
-        
+
         # or  public channel
-        #"spot/ticker:BTC_USDT",
-        #"spot/kline1m:BTC_USDT",
-        #"spot/depth5:BTC_USDT"
+        # "spot/ticker:BTC_USDT",
+        # "spot/kline1m:BTC_USDT",
+        # "spot/depth5:BTC_USDT"
     ]
 
     ws.spot_subscribe_without_login(create_spot_subscribe_params(channels))
@@ -149,19 +149,19 @@ from bitmart.ws_spot import create_channel, create_spot_subscribe_params
 
 class WSTest(CloudWSClient):
 
-    def on_message(self, message):
-        print(f'[ReceiveServerMessage]-------->{message}')
+  def on_message(self, message):
+    print(f'[ReceiveServerMessage]-------->{message}')
 
 
 if __name__ == '__main__':
-    ws = WSTest(cloud_consts.WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
-    ws.set_debug(True)
-    channels = [
-        # private channel
-        create_channel(cloud_consts.WS_USER_SPOT_ORDER, 'BTC_USDT')
-    ]
+  ws = WSTest(cloud_consts.SPOT_PRIVATE_WS_URL, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
+  ws.set_debug(True)
+  channels = [
+    # private channel
+    create_channel(cloud_consts.WS_USER_SPOT_ORDER, 'BTC_USDT')
+  ]
 
-    ws.spot_subscribe_with_login(create_spot_subscribe_params(channels))
+  ws.spot_subscribe_with_login(create_spot_subscribe_params(channels))
 
 ```
 
@@ -215,6 +215,7 @@ More Example: [test_api_contract.py](https://github.com/bitmartexchange/bitmart-
 
 
 #### Contract WebSocket Public Channel Example
+
 ```python
 
 from bitmart.lib import cloud_consts
@@ -229,7 +230,7 @@ class WSTest(CloudWSContractClient):
 
 
 if __name__ == '__main__':
-    ws = WSTest(cloud_consts.CONTRACT_WS_URL)
+    ws = WSTest(cloud_consts.FUTURES_PUBLIC_WS_URL)
     ws.set_debug(False)
     channels = [
         # public channel
@@ -243,6 +244,7 @@ if __name__ == '__main__':
 ```
 
 #### Contract WebSocket Private Channel Example
+
 ```python
 
 from bitmart.lib import cloud_consts
@@ -252,21 +254,22 @@ from bitmart.ws_contract import create_channel, create_contract_subscribe_params
 
 class WSTest(CloudWSContractClient):
 
-    def on_message(self, message):
-        print(f'[ReceiveServerMessage]-------->{message}')
+  def on_message(self, message):
+    print(f'[ReceiveServerMessage]-------->{message}')
 
 
 if __name__ == '__main__':
-    ws = WSTest(cloud_consts.CONTRACT_WS_URL_USER, api_key="Your API KEY", secret_key="Your Secret KEY", memo="Your Memo")
-    ws.set_debug(False)
-    channels = [
-        # private channel
-        create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
-        cloud_consts.WS_USER_CONTRACT_POSITION,
-        cloud_consts.WS_USER_CONTRACT_UNICAST,
-    ]
+  ws = WSTest(cloud_consts.FUTURES_PRIVATE_WS_URL, api_key="Your API KEY", secret_key="Your Secret KEY",
+              memo="Your Memo")
+  ws.set_debug(False)
+  channels = [
+    # private channel
+    create_channel(cloud_consts.WS_USER_CONTRACT_ASSET, 'USDT'),
+    cloud_consts.WS_USER_CONTRACT_POSITION,
+    cloud_consts.WS_USER_CONTRACT_UNICAST,
+  ]
 
-    ws.contract_subscribe_with_login(create_contract_subscribe_params(channels))
+  ws.contract_subscribe_with_login(create_contract_subscribe_params(channels))
 
 ```
 
@@ -299,8 +302,14 @@ If you want to `debug` the data requested by the API and the corresponding data 
 you can set it like this:
 
 ```python
-from bitmart.lib.cloud_log import CloudLog
-CloudLog.set_logger_level('debug')
+import logging
+from bitmart.api_spot import APISpot
+from bitmart.lib.cloud_utils import config_logging
+
+config_logging(logging, logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+spotAPI = APISpot(logger=logger)
 ```
 
 

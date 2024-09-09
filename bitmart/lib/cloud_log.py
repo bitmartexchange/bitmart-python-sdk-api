@@ -14,13 +14,3 @@ class CloudLog:
     def set_logger_level(logger_level: str):
         CloudLog.logger_level = logger_level
 
-
-def log(func):
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
-        if CloudLog.is_debug():
-            print('response')
-            print('\tbody:{}'.format(result[0]))
-            print('\tlimit:{}'.format(result[1]))
-        return result
-    return wrapper

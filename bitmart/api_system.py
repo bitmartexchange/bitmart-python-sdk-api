@@ -4,12 +4,12 @@ from bitmart.lib.cloud_consts import *
 
 class APISystem(CloudClient):
 
-    def __init__(self,  url: str = API_URL, timeout: tuple = TIMEOUT):
+    def __init__(self,  url: str = API_URL, timeout: tuple = TIMEOUT, logger=None):
         """
         :param url: https://api-cloud.bitmart.com
         :param timeout: (2, 10)
         """
-        CloudClient.__init__(self, '', '', '', url, timeout)
+        CloudClient.__init__(self, '', '', '', url, timeout, logger)
 
     def get_system_time(self):
         """Get System Time
