@@ -17,8 +17,8 @@ def pre_substring(timestamp, memo, body):
     return f'{str(timestamp)}#{memo}#{body}'
 
 
-def get_header(api_key, sign, timestamp):
-    header = dict()
+def get_header(api_key, sign, timestamp, headers=None):
+    header = headers if headers is not None else {}
 
     if api_key:
         header[c.X_BM_KEY] = api_key

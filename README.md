@@ -360,3 +360,12 @@ from bitmart.api_contract import APIContract
 spotAPI = APISpot(url='https://api-cloud.bitmart.com')
 contractAPI = APIContract(url='https://api-cloud.bitmart.com')
 ```
+
+
+### Custom request headers
+You can add your own request header information here, but please do not fill in `X-BM-KEY, X-BM-SIGN, X-BM-TIMESTAMP`
+
+```python
+from bitmart.api_spot import APISpot
+spotAPI = APISpot(headers={'Your-Custom-Header': 'xxxxxxx'})
+```

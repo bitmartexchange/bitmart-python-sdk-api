@@ -10,6 +10,7 @@ Changelog
 - Removed
 #### Improvements
 - Support Custom Logger Integration
+- Support Custom request headers
 - Dependency upgrade, websockets used are replaced with websocket-client 
 - Remove the asynchronous call mechanism and support customers’ more convenient custom asynchronous subscriptions.
 - Log upgrade, replace print with logging

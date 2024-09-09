@@ -10,19 +10,22 @@ from .cloud_consts import Auth
 
 class CloudClient(object):
 
-    def __init__(self, api_key, secret_key, memo, url, timeout, logger=None):
+    def __init__(self, api_key, secret_key, memo, url, timeout, headers=None, logger=None):
         """
         :param api_key: Get from bitmart API page.
         :param secret_key: Get from bitmart API page.
         :param memo: Get from bitmart API page.
         :param url: Request Domain URL.
         :param timeout: (connection timeout, read timeout).
+        :param headers: Custom request headers
+        :param logger: Logging
         """
         self.API_KEY = api_key
         self.SECRET_KEY = secret_key
         self.MEMO = memo
         self.URL = url
         self.TIMEOUT = timeout
+        self.HEADERS = headers
         self.session = requests.Session()
         self.session.headers.update(
             {
@@ -47,15 +50,16 @@ class CloudClient(object):
 
         # set header
         if auth == Auth.NONE:
-            header = cloud_utils.get_header(api_key=None, sign=None, timestamp=None)
+            header = cloud_utils.get_header(api_key=None, sign=None, timestamp=None, headers=self.HEADERS)
         elif auth == Auth.KEYED:
-            header = cloud_utils.get_header(self.API_KEY, sign=None, timestamp=None)
+            header = cloud_utils.get_header(self.API_KEY, sign=None, timestamp=None, headers=self.HEADERS)
         else:
             timestamp = cloud_utils.get_timestamp()
             sign = cloud_utils.sign(cloud_utils.pre_substring(timestamp, self.MEMO, str(body)), self.SECRET_KEY)
-            header = cloud_utils.get_header(self.API_KEY, sign, timestamp)
+            header = cloud_utils.get_header(self.API_KEY, sign, timestamp, headers=self.HEADERS)
 
-        self._logger.debug(f"[{method}] url={url}", )
+        self._logger.debug(f"[{method}] url={url}")
+        self._logger.debug(f"header={header}")
         if body:
             self._logger.debug(f"[PARAMS]:\n header: {header}\nbody: {body}\n")
 
