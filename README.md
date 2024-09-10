@@ -68,7 +68,6 @@ if __name__ == '__main__':
 ```python
 from bitmart.api_spot import APISpot
 from bitmart.lib import cloud_exceptions
-from bitmart.lib.cloud_log import CloudLog
 
 if __name__ == '__main__':
 
@@ -78,7 +77,6 @@ if __name__ == '__main__':
 
     try:
         spotAPI = APISpot(api_key, secret_key, memo, timeout=(3, 10))
-        CloudLog.set_logger_level('info')
 
         response = spotAPI.post_submit_order(
             symbol='BTC_USDT',
