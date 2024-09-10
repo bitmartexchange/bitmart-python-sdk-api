@@ -9,9 +9,14 @@ Changelog
   - `/spot/v4/batch_orders`
   - `/spot/v4/cancel_orders`
   - `/spot/v4/cancel_all`
+  - `/contract/private/position-risk`
+  - `/contract/private/current-plan-order`
 - Updated 
   - `/account/v1/withdraw/apply`
   - `/account/v2/deposit-withdraw/history`
+  - `/contract/private/position`
+  - `/contract/private/trades`
+  - `/contract/private/submit-order`
 - Removed
   - `/spot/v2/ticker`
   - `/spot/v1/ticker_detail`

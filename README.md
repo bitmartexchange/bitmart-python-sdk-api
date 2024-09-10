@@ -220,7 +220,9 @@ if __name__ == '__main__':
     contractAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
 
     contractAPI.post_submit_order(contract_symbol='BTCUSDT', 
+                                  client_order_id="BM1234",
                                   side=4, 
+                                  mode=1, 
                                   type='limit', 
                                   leverage='1',
                                   open_type='isolated',
