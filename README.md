@@ -64,7 +64,7 @@ if __name__ == '__main__':
 ```
 
 
-#### Spot API Example
+#### Spot Trade API Example
 ```python
 from bitmart.api_spot import APISpot
 from bitmart.lib import cloud_exceptions
@@ -100,8 +100,8 @@ if __name__ == '__main__':
     
 ```
 
-More Example: [test_api_spot.py](https://github.com/bitmartexchange/bitmart-python-sdk-api/blob/master/tests/test_api_spot.py)
-More Example: [test_api_account.py](https://github.com/bitmartexchange/bitmart-python-sdk-api/blob/master/tests/test_api_account.py)
+
+Please find `examples/spot/` folder to check for more endpoints.
 
 
 #### Spot WebSocket Public Channel Example
@@ -144,6 +144,7 @@ if __name__ == '__main__':
 
 ```
 
+
 #### Spot WebSocket Private Channel Example
 
 ```python
@@ -177,6 +178,9 @@ if __name__ == '__main__':
 
 ```
 
+Please find `examples/websocket/spot/websocket_stream/` folder to check for more endpoints.
+
+
 #### Contract Public API Example
 ```python
 from bitmart.api_contract import APIContract
@@ -202,7 +206,8 @@ if __name__ == '__main__':
 
 ```
 
-#### Contract API Example
+
+#### Contract Trade API Example
 ```python
 from bitmart.api_contract import APIContract
 
@@ -223,7 +228,7 @@ if __name__ == '__main__':
                                   price='20000')
 ```
 
-More Example: [test_api_contract.py](https://github.com/bitmartexchange/bitmart-python-sdk-api/blob/master/tests/test_api_contract.py)
+Please find `examples/futures/` folder to check for more endpoints.
 
 
 #### Contract WebSocket Public Channel Example
@@ -273,6 +278,7 @@ if __name__ == '__main__':
 
 ```
 
+
 #### Contract WebSocket Private Channel Example
 
 ```python
@@ -308,6 +314,9 @@ if __name__ == '__main__':
     # Stop
     # my_client.stop()
 ```
+
+Please find `examples/websocket/futures/websocket_stream/` folder to check for more endpoints.
+
 
 Extra Options
 =========================

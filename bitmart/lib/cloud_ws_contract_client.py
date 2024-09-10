@@ -52,7 +52,8 @@ class CloudWSContractClient(object):
         :param param: Private channels. eg. {"action": "subscribe", "args": ["futures/position:BTCUSDT"]}
         :return:
         """
-        warnings.warn("contract_subscribe_with_login is deprecated, see examples/websocket/futures/websocket_stream/", DeprecationWarning)
+        warnings.warn("Function contract_subscribe_with_login() is deprecated, "
+                      "see examples/websocket/futures/websocket_stream/", DeprecationWarning)
         asyncio.get_event_loop().run_until_complete(contract_subscribe_with_login(self.on_message, self.URL, self.API_KEY, self.MEMO, self.SECRET_KEY, self.DEBUG, self.TIME_OUT, param))
 
     def contract_subscribe_without_login(self, param):
@@ -61,6 +62,7 @@ class CloudWSContractClient(object):
         :param param: Public channels. eg. {"action": "subscribe", "args": ["futures/kline1m:BTCUSDT"]}
         :return:
         """
-        warnings.warn("contract_subscribe_without_login is deprecated, see examples/websocket/futures/websocket_stream/", DeprecationWarning)
+        warnings.warn("Function contract_subscribe_without_login() is deprecated, "
+                      "see examples/websocket/futures/websocket_stream/", DeprecationWarning)
 
         asyncio.get_event_loop().run_until_complete(contract_subscribe_without_login(self.on_message, self.URL, self.DEBUG, self.TIME_OUT, param))

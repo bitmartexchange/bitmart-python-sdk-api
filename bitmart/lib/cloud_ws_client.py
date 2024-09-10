@@ -52,7 +52,8 @@ class CloudWSClient(object):
         :param param: Private channels. eg. {"op": "subscribe", "args": ["spot/user/order:BMX_BTC", "spot/user/order:ETH_BTC"]}
         :return:
         """
-        warnings.warn("spot_subscribe_with_login is deprecated, see examples/websocket/spot/websocket_stream/", DeprecationWarning)
+        warnings.warn("Function spot_subscribe_with_login() is deprecated, "
+                      "see examples/websocket/spot/websocket_stream/", DeprecationWarning)
         asyncio.get_event_loop().run_until_complete(spot_subscribe_with_login(self.on_message, self.URL, self.API_KEY, self.MEMO, self.SECRET_KEY, self.DEBUG, self.TIME_OUT, param))
 
     def spot_subscribe_without_login(self, param):
@@ -61,7 +62,8 @@ class CloudWSClient(object):
         :param param: Public channels. eg. {"op": "subscribe", "args": ["spot/ticker:BMX_BTC", "spot/user/ticker:ETH_BTC"]}
         :return:
         """
-        warnings.warn("spot_subscribe_without_login is deprecated, see examples/websocket/spot/websocket_stream/", DeprecationWarning)
+        warnings.warn("Function spot_subscribe_without_login() is deprecated, "
+                      "see examples/websocket/spot/websocket_stream/", DeprecationWarning)
         asyncio.run(spot_subscribe_without_login(self.on_message, self.URL, self.DEBUG, self.TIME_OUT, param))
 
     async def spot_subscribe_without_login_ext(self, params):
@@ -70,7 +72,8 @@ class CloudWSClient(object):
         :param params: Public channels. eg. [{"op": "subscribe", "args": ["spot/ticker:BMX_BTC", "spot/user/ticker:ETH_BTC"]},{"op": "subscribe", "args": ["spot/ticker:BMX_USDT", "spot/user/ticker:ETH_USDT"]}]
         :return:
         """
-        warnings.warn("spot_subscribe_without_login_ext is deprecated, see examples/websocket/spot/websocket_stream/", DeprecationWarning)
+        warnings.warn("Function spot_subscribe_without_login_ext() is deprecated, "
+                      "see examples/websocket/spot/websocket_stream/", DeprecationWarning)
         task = []
         for param in params:
             task.append(asyncio.create_task(spot_subscribe_without_login(self.on_message, self.URL, self.DEBUG, self.TIME_OUT, param)))

@@ -6,8 +6,21 @@ Changelog
 ### v2.0.0 Release
 #### New Features
 - New
+  - `/spot/v4/batch_orders`
+  - `/spot/v4/cancel_orders`
+  - `/spot/v4/cancel_all`
 - Updated 
+  - `/account/v1/withdraw/apply`
+  - `/account/v2/deposit-withdraw/history`
 - Removed
+  - `/spot/v2/ticker`
+  - `/spot/v1/ticker_detail`
+  - `/spot/v1/steps`
+  - `/spot/v1/symbols/kline`
+  - `/spot/v1/symbols/book`
+  - `/spot/v1/symbols/trades`
+  - `/spot/v2/batch_orders`
+  - `/spot/v1/cancel_orders`
 #### Improvements
 - Support Custom Logger Integration
 - Support Custom request headers

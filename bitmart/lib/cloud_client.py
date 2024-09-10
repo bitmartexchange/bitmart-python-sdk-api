@@ -60,7 +60,7 @@ class CloudClient(object):
 
         self._logger.debug(f"[{method}] url={url}")
         if body:
-            self._logger.debug(f"[PARAMS]:\n header: {header}\nbody: {body}\n")
+            self._logger.debug(f"[PARAMS]:\nheader: {header}\nbody: {body}\n")
 
         # send request
         response = None
@@ -85,7 +85,7 @@ class CloudClient(object):
             except:
                 pass
             result = response.json()
-            self._logger.debug(f"response: {result}\n ")
+            self._logger.debug(f"response: {result}\n")
             return result, r
 
         except ValueError:

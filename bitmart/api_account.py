@@ -25,7 +25,7 @@ class APIAccount(CloudClient):
         """
         return self._request_without_params(GET, API_ACCOUNT_CURRENCIES_URL)
 
-    def get_wallet(self, currency: str):
+    def get_wallet(self, currency: str = None):
         """Get Account Balance (KEYED)
         Gets Account Balance
 
@@ -34,9 +34,11 @@ class APIAccount(CloudClient):
         :param currency: Token symbol, e.g., 'BTC'
         :return:
         """
-        param = {
-            'currency': currency
-        }
+        param = {}
+
+        if currency:
+            param['currency'] = currency
+
         return self._request_with_params(GET, API_ACCOUNT_WALLET_URL, param, Auth.KEYED)
 
     def get_deposit_address(self, currency: str):
@@ -67,7 +69,9 @@ class APIAccount(CloudClient):
         }
         return self._request_with_params(GET, API_ACCOUNT_WITHDRAW_CHARGE_URL, param, Auth.KEYED)
 
-    def post_withdraw_apply(self, currency: str, amount: str, destination: str, address: str, address_memo: str):
+    def post_withdraw_apply(self, currency: str, amount: str,
+                            destination: str = None, address: str = None, address_memo: str = None,
+                            type: int = None, value: str = None, area_code: str = None):
         """Withdraw (SIGNED)
         Creates a withdraw request from spot account to an external address
 
@@ -79,18 +83,37 @@ class APIAccount(CloudClient):
                         -To Digital Address=Withdraw to the digital currency address
         :param address: Address (only the address added on the official website is supported)
         :param address_memo: Tag(tag Or payment_id Or memo)
+        :param type: Account type 1=CID 2=Email 3=Phone
+        :param value: Account
+        :param area_code: Phone area code, required when account type is phone, e.g.: 61
         :return:
         """
         param = {
             'currency': currency,
             'amount': amount,
-            'destination': destination,
-            'address': address,
-            'address_memo': address_memo
         }
+
+        # Parameters for Withdraw to the blockchain
+        if address:
+            param['address'] = address
+
+        if address_memo:
+            param['address_memo'] = address_memo
+
+        if destination:
+            param['destination'] = destination
+
+        # Parameters for Withdraw to BitMart account
+        if type:
+            param['type'] = type
+        if value:
+            param['value'] = value
+        if area_code:
+            param['areaCode'] = area_code
+
         return self._request_with_params(POST, API_ACCOUNT_WITHDRAW_APPLY_URL, param, Auth.SIGNED)
 
-    def get_deposit_withdraw_history_v2(self, currency: str, operationType: str, N: int):
+    def get_deposit_withdraw_history_v2(self, operation_type: str, n: int, currency: str = None):
         """Get Deposit And Withdraw History (KEYED)
         Search for all existed withdraws and deposits and return their latest status.
 
@@ -98,17 +121,20 @@ class APIAccount(CloudClient):
 
 
         :param currency: Token symbol, e.g., 'BTC'
-        :param operationType: type
+        :param operation_type: type
                     -deposit=deposit
                     -withdraw=withdraw
-        :param N: Recent N records (value range 1-100)
+        :param n: Recent N records (value range 1-100)
         :return:
         """
         param = {
-            'currency': currency,
-            'operation_type': operationType,
-            'N': N
+            'operation_type': operation_type,
+            'N': n
         }
+
+        if currency:
+            param['currency'] = currency
+
         return self._request_with_params(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_V2_URL, param, Auth.KEYED)
 
     def get_deposit_withdraw_detail(self, id: str):

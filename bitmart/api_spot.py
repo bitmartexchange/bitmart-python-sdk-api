@@ -46,17 +46,6 @@ class APISpot(CloudClient):
         """
         return self._request_without_params(GET, API_SPOT_SYMBOLS_DETAILS_URL)
 
-    def get_ticker(self):
-        """
-        Applicable to query the latest ticker of all trading pairs, please note that the endpoint returns more data, please reduce the frequency of calls
-
-        GET https://api-cloud.bitmart.com/spot/v2/ticker
-        :return:
-        """
-        warnings.warn("This function will be removed soon, "
-                      "please use the alternative function `get_v3_tickers()`", DeprecationWarning)
-        return self._request_without_params(GET, API_SPOT_TICKER_URL)
-
     def get_v3_tickers(self):
         """
         Get the quotations of all trading pairs, including: snapshot information of the latest transaction price, first bid price, first ask price and 24-hour trading volume.
@@ -66,18 +55,6 @@ class APISpot(CloudClient):
         :return:
         """
         return self._request_without_params(GET, API_SPOT_V3_TICKERS_URL)
-
-    def get_symbol_ticker(self, symbol: str):
-        """
-        Applicable for querying aggregated tickers of a particular trading pair
-
-        GET https://api-cloud.bitmart.com/spot/v1/ticker_detail
-        :param symbol: Trading pair (e.g. BMX_USDT)
-        :return:
-        """
-        warnings.warn("This function will be removed soon, "
-                      "please use the alternative function `get_v3_ticker(symbol)`", DeprecationWarning)
-        return self._request_with_params(GET, API_SPOT_TICKER_DETAIL_URL, {'symbol': symbol})
 
     def get_v3_ticker(self, symbol: str):
         """
@@ -91,41 +68,6 @@ class APISpot(CloudClient):
         :return:
         """
         return self._request_with_params(GET, API_SPOT_V3_TICKER_URL, {'symbol': symbol})
-
-    def get_steps(self):
-        """
-        Get all k-line steps supported by the platform, expressed in minutes, minimum 1 minute.
-
-        GET https://api-cloud.bitmart.com/spot/v1/steps
-        :return:
-        """
-        warnings.warn("This function will be removed soon, "
-                      "k-line step, value [1, 3, 5, 15, 30, 45, 60, 120, "
-                      "180, 240, 1440, 10080, 43200]", DeprecationWarning)
-        return self._request_without_params(GET, API_SPOT_STEPS_URL)
-
-    def get_symbol_kline(self, symbol: str, from_time: int, to_time: int, step: int = 1):
-        """
-        Get k-line data within a specified time range of a specified trading pair
-
-        GET https://api-cloud.bitmart.com/spot/v1/symbols/kline
-
-        :param symbol: Trading pair (e.g. BMX_USDT)
-        :param from_time: Start timestamp (in seconds, UTC+0 TimeZome)
-        :param to_time: End timestamp (in seconds, UTC+0 TimeZome)
-        :param step: k-line step Steps (in minutes, default 1 minute)
-        :return:
-        """
-        param = {
-            'symbol': symbol,
-            'from': from_time,
-            'to': to_time,
-            'step': step
-        }
-        warnings.warn("This function will be removed soon, "
-                      "please use the alternative function "
-                      "`get_v3_latest_kline() or get_v3_history_kline()`", DeprecationWarning)
-        return self._request_with_params(GET, API_SPOT_SYMBOLS_KLINE_URL, param)
 
     def get_v3_latest_kline(self, symbol: str, before=None, after=None, step=None, limit=None):
         """
@@ -197,31 +139,6 @@ class APISpot(CloudClient):
 
         return self._request_with_params(GET, API_SPOT_V3_HISTORY_KLINE_URL, param)
 
-    def get_symbol_book(self, symbol: str, precision: int, size: int):
-        """
-        Get full depth of trading pairs.
-
-        GET https://api-cloud.bitmart.com/spot/v1/symbols/book
-
-        :param symbol: Trading pair (e.g. BMX_USDT)
-        :param precision: Price precision, the range is defined in trading pair details
-        :param size: Number of results per request. The value can be transmitted [1-50], there are altogether [2-100] buying and selling depths
-        :return:
-        """
-        param = {
-            'symbol': symbol
-        }
-
-        if precision:
-            param['precision'] = precision
-
-        if size:
-            param['size'] = size
-        warnings.warn("This function will be removed soon, "
-                      "please use the alternative function `get_v3_depth()`",
-                      DeprecationWarning)
-        return self._request_with_params(GET, API_SPOT_SYMBOLS_BOOK_URL, param)
-
     def get_v3_depth(self, symbol: str, limit=None):
         """
         Get full depth of trading pairs.
@@ -245,25 +162,6 @@ class APISpot(CloudClient):
             param['limit'] = limit
 
         return self._request_with_params(GET, API_SPOT_V3_BOOKS_URL, param)
-
-    def get_symbol_trades(self, symbol: str, N: int = 50):
-        """
-        Get the latest trade records of the specified trading pair
-
-        GET https://api-cloud.bitmart.com/spot/v1/symbols/trades
-
-        :param symbol: Trading pair (e.g. BMX_USDT)
-        :param N: Number of returned items, the default maximum is 50
-        :return:
-        """
-        param = {
-            'symbol': symbol,
-            'N': N
-        }
-        warnings.warn("This function will be removed soon, "
-                      "please use the alternative function `get_v3_trades()`",
-                      DeprecationWarning)
-        return self._request_with_params(GET, API_SPOT_SYMBOLS_TRADES_URL, param)
 
     def get_v3_trades(self, symbol: str, limit=None):
         """
@@ -297,20 +195,6 @@ class APISpot(CloudClient):
         """
         return self._request_without_params(GET, API_SPOT_WALLET_URL, Auth.KEYED)
 
-    def post_batch_orders(self, order_params: list):
-        """
-        Batch order
-
-        POST https://api-cloud.bitmart.com/spot/v2/batch_orders
-
-        :param order_params: Order parameters, the number of transactions cannot exceed 10
-        :return:
-        """
-        param = {
-            'order_params': order_params
-        }
-        return self._request_with_params(POST, API_SPOT_SUBMIT_BATCH_ORDERS_URL, param, Auth.SIGNED)
-
     def post_submit_order(self, symbol: str, side: str, type: str, client_order_id='', size='', price='', notional=''):
         """
         Send in a new order.
@@ -328,15 +212,24 @@ class APISpot(CloudClient):
         param = {
             'symbol': symbol,
             'side': side,
-            'type': type,
-            'client_order_id': client_order_id,
-            'size': size,
-            'price': price,
-            'notional': notional
+            'type': type
         }
+
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+
+        if size:
+            param['size'] = size
+
+        if price:
+            param['price'] = price
+
+        if notional:
+            param['notional'] = notional
+
         return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 
-    def place_margin_order(self, symbol: str, side: str, type: str, clientOrderId='', size='', price='',
+    def place_margin_order(self, symbol: str, side: str, type: str, client_order_id='', size='', price='',
                            notional=''):
         """
         Applicable for margin order placement
@@ -346,7 +239,7 @@ class APISpot(CloudClient):
         :param symbol: Trading pair (e.g. BTC_USDT)
         :param side: -buy=Buy order  -sell=Sell order
         :param type: order type -limit=Limit order -market=Market order -limit_maker=PostOnly order -ioc=IOC order
-        :param clientOrderId: Client-defined OrderId(A combination of numbers and letters, less than 32 bits)
+        :param client_order_id: Client-defined OrderId(A combination of numbers and letters, less than 32 bits)
         :param size: Quantity sold, required when selling at market price size
         :param price: Price
         :param notional: Quantity bought, required when buying at market price notional
@@ -355,12 +248,21 @@ class APISpot(CloudClient):
         param = {
             'symbol': symbol,
             'side': side,
-            'type': type,
-            'clientOrderId': clientOrderId,
-            'size': size,
-            'price': price,
-            'notional': notional
+            'type': type
         }
+
+        if client_order_id:
+            param['clientOrderId'] = client_order_id
+
+        if size:
+            param['size'] = size
+
+        if price:
+            param['price'] = price
+
+        if notional:
+            param['notional'] = notional
+
         return self._request_with_params(POST, API_SPOT_MARGIN_ORDER_URL, param, Auth.SIGNED)
 
     def post_cancel_order_by_orderid(self, symbol: str, order_id: str):
@@ -395,11 +297,60 @@ class APISpot(CloudClient):
         }
         return self._request_with_params(POST, API_SPOT_CANCEL_ORDER_URL, param, Auth.SIGNED)
 
-    def post_cancel_orders(self, symbol=None, side=None):
+    def post_batch_orders(self, symbol: str, order_params: list, recv_window=None):
+        """
+        Batch order
+
+        POST https://api-cloud.bitmart.com/spot/v4/batch_orders
+
+        :param symbol: Trading pair (e.g. BTC_USDT)
+        :param order_params: Order parameters, the number of transactions cannot exceed 10
+        :param recv_window: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+        :return:
+        """
+        param = {
+            'symbol': symbol,
+            'orderParams': order_params
+        }
+
+        if recv_window:
+            param['recvWindow'] = recv_window
+
+        return self._request_with_params(POST, API_SPOT_SUBMIT_BATCH_ORDERS_URL, param, Auth.SIGNED)
+
+    def post_cancel_orders(self, symbol=None, order_ids: list = None, client_order_ids: list = None, recv_window=None):
         """
         Cancel all outstanding orders in the specified side for a trading pair
 
-        POST https://api-cloud.bitmart.com/spot/v1/cancel_orders
+        POST https://api-cloud.bitmart.com/spot/v4/cancel_orders
+
+        :param symbol: Trading pair (e.g. BTC_USDT)
+        :param order_ids: Order Id List (Either orderIds or clientOrderIds must be provided)
+        :param client_order_ids: Client-defined OrderId List (Either orderIds or clientOrderIds must be provided)
+        :param recv_window: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+        :return:
+        """
+
+        param = {
+            'symbol': symbol
+        }
+
+        if order_ids:
+            param['orderIds'] = order_ids
+
+        if client_order_ids:
+            param['clientOrderIds'] = client_order_ids
+
+        if recv_window:
+            param['recvWindow'] = recv_window
+
+        return self._request_with_params(POST, API_SPOT_CANCEL_ORDERS_URL, param, Auth.SIGNED)
+
+    def post_cancel_all_order(self, symbol=None, side=None):
+        """
+        Cancel all outstanding orders in the specified side for a trading pair
+
+        POST https://api-cloud.bitmart.com/spot/v4/cancel_all
 
         :param symbol: Trading pair (e.g. BTC_USDT)
         :param side: Order side -buy -sell
@@ -414,7 +365,7 @@ class APISpot(CloudClient):
         if side:
             param['side'] = side
 
-        return self._request_with_params(POST, API_SPOT_CANCEL_ORDERS_URL, param, Auth.SIGNED)
+        return self._request_with_params(POST, API_SPOT_CANCEL_ALL_ORDER_URL, param, Auth.SIGNED)
 
     def v4_query_order_by_id(self, order_id: str, query_state: str, recv_window=None):
         """
