@@ -4,7 +4,7 @@ from bitmart.lib.cloud_consts import *
 
 class APIContract(CloudClient):
 
-    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT):
+    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT, headers=None, logger=None):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
         :param api_key: your access key
@@ -13,10 +13,10 @@ class APIContract(CloudClient):
         :param url: https://api-cloud.bitmart.com
         :param timeout: (2, 10)
         """
-        CloudClient.__init__(self, api_key, secret_key, memo, url, timeout)
+        CloudClient.__init__(self, api_key, secret_key, memo, url, timeout, headers, logger)
 
     # basic API
-    def get_details(self, contract_symbol):
+    def get_details(self, contract_symbol: str = None):
         """Get Contract Details
         Applicable to query contract details
 
@@ -25,7 +25,9 @@ class APIContract(CloudClient):
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
         """
-        param = {'symbol': contract_symbol}
+        param = {}
+        if contract_symbol:
+            param['symbol'] = contract_symbol
         return self._request_with_params(GET, API_CONTRACT_DETAILS_URL, param)
 
     def get_depth(self, contract_symbol):
@@ -130,7 +132,7 @@ class APIContract(CloudClient):
         }
         return self._request_with_params(GET, API_CONTRACT_ORDER_HISTORY_URL, param, Auth.KEYED)
 
-    def get_open_order(self, contract_symbol: str, type=None, order_state=None, limit=None):
+    def get_open_order(self, contract_symbol: str = None, type=None, order_state=None, limit=None):
         """Get All Open Orders (KEYED)
         Applicable for querying contract all open orders
 
@@ -146,9 +148,10 @@ class APIContract(CloudClient):
         :param limit: The number of returned results, with a maximum of 100 and a default of 100
         :return:
         """
-        param = {
-            'symbol': contract_symbol,
-        }
+        param = {}
+
+        if contract_symbol:
+            param['symbol'] = contract_symbol
 
         if type:
             param['type'] = type
@@ -160,7 +163,32 @@ class APIContract(CloudClient):
             param['limit'] = limit
         return self._request_with_params(GET, API_CONTRACT_OPEN_ORDER_URL, param, Auth.KEYED)
 
-    def get_position(self, contract_symbol: str):
+    def get_current_plan_order(self, contract_symbol: str = None, type=None, limit=None):
+        """Get All Current Plan Orders (KEYED)
+        Applicable for querying contract all plan orders
+
+        GET https://api-cloud.bitmart.com/contract/private/current-plan-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param type: Order type
+                        -limit
+                        - market
+        :param limit: The number of returned results, with a maximum of 100 and a default of 100
+        :return:
+        """
+        param = {}
+
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+
+        if type:
+            param['type'] = type
+
+        if limit:
+            param['limit'] = limit
+        return self._request_with_params(GET, API_CONTRACT_CURRENT_PLAN_ORDER_URL, param, Auth.KEYED)
+
+    def get_position(self, contract_symbol: str = None):
         """Get Current Position (KEYED)
         Applicable for checking the position details a specified contract
 
@@ -170,12 +198,28 @@ class APIContract(CloudClient):
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
         """
-        param = {
-            'symbol': contract_symbol,
-        }
+        param = {}
+
+        if contract_symbol:
+            param['symbol'] = contract_symbol
         return self._request_with_params(GET, API_CONTRACT_POSITION_URL, param, Auth.KEYED)
 
-    def get_trades(self, contract_symbol: str, start_time: int, end_time: int):
+    def get_position_risk(self, contract_symbol: str = None):
+        """Get Current Position Risk Details(KEYED)
+        Applicable for checking the position risk details a specified contract
+
+        GET https://api-cloud.bitmart.com/contract/private/position-risk
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :return:
+        """
+        param = {}
+
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+        return self._request_with_params(GET, API_CONTRACT_POSITION_RISK_URL, param, Auth.KEYED)
+
+    def get_trades(self, contract_symbol: str, start_time: int = None, end_time: int = None):
         """Get Order Trade (KEYED)
         Applicable for querying contract order trade detail
 
@@ -188,9 +232,13 @@ class APIContract(CloudClient):
         """
         param = {
             'symbol': contract_symbol,
-            'start_time': start_time,
-            'end_time': end_time,
         }
+
+        if start_time:
+            param['start_time'] = start_time
+        if end_time:
+            param['end_time'] = end_time
+
         return self._request_with_params(GET, API_CONTRACT_TRADES_URL, param, Auth.KEYED)
 
     def get_transfer_list(self, page: int, limit: int, currency=None, time_start=None, time_end=None, recv_window=None):
@@ -227,17 +275,24 @@ class APIContract(CloudClient):
 
         return self._request_with_params(POST, API_CONTRACT_TRANSFER_CONTRACT_LIST_URL, param, Auth.SIGNED)
 
-    def post_submit_order(self, contract_symbol: str, type: str, side: int, leverage: str, open_type: str, price: str,
-                          size: int, mode: int):
+    def post_submit_order(self, contract_symbol: str, client_order_id: str = None,
+                          type: str = None, side: int = None, leverage: str = None, open_type: str = None,
+                          mode: int = None, price: str = None, size: int = None,
+                          activation_price: str = None, callback_rate: str = None, activation_price_type: int = None,
+                          preset_take_profit_price_type: int = None, preset_stop_loss_price_type: int = None,
+                          preset_take_profit_price: str = None, preset_stop_loss_price: str = None
+                          ):
         """Submit Order (SIGNED)
         Applicable for placing contract orders
 
         POST https://api-cloud.bitmart.com/contract/private/submit-order
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param client_order_id: Client-defined OrderId(A combination of numbers and letters, less than 32 bits)
         :param type: Order type
                     -limit(default)
                     -market
+                    -trailing
         :param side: Order side
                     -1=buy_open_long
                     -2=buy_close_short
@@ -247,26 +302,62 @@ class APIContract(CloudClient):
         :param open_type: Open type, required at close position
                         -cross
                         -isolated
-        :param price: Order price, required at limit order
-        :param size: Order size. Size refers to the order amount in the unit of contracts
         :param mode: Order mode
                         -1=GTC(default)
                         -2=FOK
                         -3=IOC
                         -4=Maker Only
+        :param price: Order price, required at limit order
+        :param size: Order size. Size refers to the order amount in the unit of contracts
+        :param activation_price: Activation price, required at trailing order
+        :param callback_rate: Callback rate, required at trailing order, min 0.1, max 5 where 1 for 1%
+        :param activation_price_type	: Activation price type, required at trailing order
+                                            -1=last_price
+                                            -2=fair_price
+        :param preset_take_profit_price_type: Pre-set TP price type
+                                            -1=last_price(default)
+                                            -2=fair_price
+        :param preset_stop_loss_price_type: Pre-set SL price type
+                                            -1=last_price(default)
+                                            -2=fair_price
+        :param preset_take_profit_price: Pre-set TP price
+        :param preset_stop_loss_price: Pre-set SL price
         :return:
         """
         param = {
             'symbol': contract_symbol,
-            'type': type,
-            'side': side,
-            'leverage': leverage,
-            'open_type': open_type,
-            'mode': mode,
-            'price': price,
-            'size': size
         }
 
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+        if type:
+            param['type'] = type
+        if side:
+            param['side'] = side
+        if leverage:
+            param['leverage'] = leverage
+        if open_type:
+            param['open_type'] = open_type
+        if mode:
+            param['mode'] = mode
+        if price:
+            param['price'] = price
+        if size:
+            param['size'] = size
+        if activation_price:
+            param['activation_price'] = activation_price
+        if callback_rate:
+            param['callback_rate'] = callback_rate
+        if activation_price_type:
+            param['activation_price_type'] = activation_price_type
+        if preset_take_profit_price_type:
+            param['preset_take_profit_price_type'] = preset_take_profit_price_type
+        if preset_stop_loss_price_type:
+            param['preset_stop_loss_price_type'] = preset_stop_loss_price_type
+        if preset_take_profit_price:
+            param['preset_take_profit_price'] = preset_take_profit_price
+        if preset_stop_loss_price:
+            param['preset_stop_loss_price'] = preset_stop_loss_price
         return self._request_with_params(POST, API_CONTRACT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 
     def post_cancel_order(self, contract_symbol: str, order_id: str):
@@ -300,8 +391,11 @@ class APIContract(CloudClient):
         }
         return self._request_with_params(POST, API_CONTRACT_CANCEL_ORDERS_URL, param, Auth.SIGNED)
 
-    def post_submit_plan_order(self, contract_symbol: str, type: str, side: int, leverage: str, open_type: str,
-                               mode:int, size: int, trigger_price: str, price_way: int, price_type: int, executive_price=None):
+    def post_submit_plan_order(self, contract_symbol: str, type: str = None, side: int = None, leverage: str = None,
+                               open_type: str = None, mode: int = None, size: int = None, trigger_price: str = None,
+                               executive_price=None, price_way: int = None, price_type: int = None, plan_category: int = None,
+                               preset_take_profit_price_type: int = None, preset_stop_loss_price_type: int = None,
+                               preset_take_profit_price: str = None, preset_stop_loss_price: str = None):
         """Submit Plan Order (SIGNED)
         Applicable for placing contract plan orders
 
@@ -311,6 +405,8 @@ class APIContract(CloudClient):
         :param type: Order type
                     -limit(default)
                     -market
+                    -take_profit
+                    -stop_loss
         :param side: Order side
                     -1=buy_open_long
                     -2=buy_close_short
@@ -326,6 +422,7 @@ class APIContract(CloudClient):
                     -3=IOC
                     -4=Maker Only
         :param size: Order size. Size refers to the order amount in the unit of contracts
+        :param executive_price: Order price, required at limit order
         :param trigger_price: Trigger price
         :param price_way: Yes	Price way
                 -1=price_way_long
@@ -333,24 +430,58 @@ class APIContract(CloudClient):
         :param price_type: Trigger price type
                 -1=last_price
                 -2=fair_price
-        :param executive_price: Order price, required at limit order
+        :param price_way: Price way
+                            -1=price_way_long
+                            -2=price_way_short
+        :param price_type: Trigger price type
+                            -1=last_price
+                            -2=fair_price
+        :param plan_category: TP/SL type
+                            -1=TP/SL
+                            -2=Position TP/SL
+        :param preset_take_profit_price_type: Pre-set TP price type
+                            -1=last_price(default)
+                            -2=fair_price
+        :param preset_stop_loss_price_type: Pre-set SL price type
+                            -1=last_price(default)
+                            -2=fair_price way
+        :param preset_take_profit_price: Pre-set TP price
+        :param preset_stop_loss_price: Pre-set SL price
         :return:
         """
         param = {
             'symbol': contract_symbol,
-            'type': type,
-            'side': side,
-            'leverage': leverage,
-            'open_type': open_type,
-            'mode': mode,
-            'size': size,
-            'trigger_price': trigger_price,
-            'price_way': price_way,
-            'price_type': price_type
         }
-
+        if type:
+            param['type'] = type
+        if side:
+            param['side'] = side
+        if leverage:
+            param['leverage'] = leverage
+        if open_type:
+            param['open_type'] = open_type
+        if mode:
+            param['mode'] = mode
+        if size:
+            param['size'] = size
+        if trigger_price:
+            param['trigger_price'] = trigger_price
         if executive_price:
             param['executive_price'] = executive_price
+        if price_way:
+            param['price_way'] = price_way
+        if price_type:
+            param['price_type'] = price_type
+        if plan_category:
+            param['plan_category'] = plan_category
+        if preset_take_profit_price_type:
+            param['preset_take_profit_price_type'] = preset_take_profit_price_type
+        if preset_stop_loss_price_type:
+            param['preset_stop_loss_price_type'] = preset_stop_loss_price_type
+        if preset_take_profit_price:
+            param['preset_take_profit_price'] = preset_take_profit_price
+        if preset_stop_loss_price:
+            param['preset_stop_loss_price'] = preset_stop_loss_price
         return self._request_with_params(POST, API_CONTRACT_SUBMIT_PLAN_ORDER_URL, param, Auth.SIGNED)
 
     def post_cancel_plan_order(self, contract_symbol: str, order_id: str):
@@ -394,7 +525,7 @@ class APIContract(CloudClient):
 
         return self._request_with_params(POST, API_CONTRACT_TRANSFER_CONTRACT_URL, param, Auth.SIGNED)
 
-    def post_submit_leverage(self, contract_symbol: str, open_type: str, leverage=None):
+    def post_submit_leverage(self, contract_symbol: str, open_type: str, leverage: str = None):
         """Submit Leverage (SIGNED)
         Applicable for adjust contract leverage
 

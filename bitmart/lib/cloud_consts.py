@@ -2,24 +2,21 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
-WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
-WS_URL_USER = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
-CONTRACT_WS_URL = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
-CONTRACT_WS_URL_USER = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
+
+SPOT_PUBLIC_WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
+SPOT_PRIVATE_WS_URL = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
+
+FUTURES_PUBLIC_WS_URL = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
+FUTURES_PRIVATE_WS_URL = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
 
 # http header
-CONTENT_TYPE = 'Content-Type'
-USER_AGENT = 'User-Agent'
 X_BM_KEY = 'X-BM-KEY'
 X_BM_SIGN = 'X-BM-SIGN'
 X_BM_TIMESTAMP = 'X-BM-TIMESTAMP'
 
-# http header
-APPLICATION_JSON = 'application/json'
-VERSION = 'bitmart-python-sdk-api/'
 
 GET = "GET"
 POST = "POST"
@@ -42,13 +39,6 @@ API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
 API_SPOT_CURRENCIES_URL = '/spot/v1/currencies'
 API_SPOT_SYMBOLS_URL = '/spot/v1/symbols'
 API_SPOT_SYMBOLS_DETAILS_URL = '/spot/v1/symbols/details'
-API_SPOT_TICKER_URL = '/spot/v2/ticker'
-API_SPOT_TICKER_DETAIL_URL = '/spot/v1/ticker_detail'
-API_SPOT_STEPS_URL = '/spot/v1/steps'
-API_SPOT_SYMBOLS_KLINE_URL = '/spot/v1/symbols/kline'
-API_SPOT_SYMBOLS_BOOK_URL = '/spot/v1/symbols/book'
-API_SPOT_SYMBOLS_TRADES_URL = '/spot/v1/symbols/trades'
-
 API_SPOT_V3_TICKERS_URL = '/spot/quotation/v3/tickers'
 API_SPOT_V3_TICKER_URL = '/spot/quotation/v3/ticker'
 API_SPOT_V3_LATEST_KLINE_URL = '/spot/quotation/v3/lite-klines'
@@ -60,9 +50,10 @@ API_SPOT_V3_TRADES_URL = '/spot/quotation/v3/trades'
 API_SPOT_WALLET_URL = '/spot/v1/wallet'
 API_SPOT_SUBMIT_ORDER_URL = '/spot/v2/submit_order'
 API_SPOT_MARGIN_ORDER_URL = '/spot/v1/margin/submit_order'
-API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v2/batch_orders'
+API_SPOT_SUBMIT_BATCH_ORDERS_URL = '/spot/v4/batch_orders'
 API_SPOT_CANCEL_ORDER_URL = '/spot/v3/cancel_order'
-API_SPOT_CANCEL_ORDERS_URL = '/spot/v1/cancel_orders'
+API_SPOT_CANCEL_ORDERS_URL = '/spot/v4/cancel_orders'
+API_SPOT_CANCEL_ALL_ORDER_URL = '/spot/v4/cancel_all'
 
 API_SPOT_V4_QUERY_ORDER_BY_ID_URL = '/spot/v4/query/order'
 API_SPOT_V4_QUERY_ORDER_BY_CLIENT_ID_URL = '/spot/v4/query/client-order'
@@ -97,7 +88,9 @@ API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
 API_CONTRACT_ORDER_URL = "/contract/private/order"
 API_CONTRACT_ORDER_HISTORY_URL = "/contract/private/order-history"
 API_CONTRACT_OPEN_ORDER_URL = "/contract/private/get-open-orders"
+API_CONTRACT_CURRENT_PLAN_ORDER_URL = "/contract/private/current-plan-order"
 API_CONTRACT_POSITION_URL = "/contract/private/position"
+API_CONTRACT_POSITION_RISK_URL = "/contract/private/position-risk"
 API_CONTRACT_TRADES_URL = "/contract/private/trades"
 API_CONTRACT_SUBMIT_ORDER_URL = "/contract/private/submit-order"
 API_CONTRACT_CANCEL_ORDER_URL = "/contract/private/cancel-order"

@@ -4,7 +4,7 @@ from bitmart.lib.cloud_consts import *
 
 class APIMarginLoan(CloudClient):
 
-    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT):
+    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT, headers=None, logger=None):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
         :param api_key: your access key
@@ -13,7 +13,7 @@ class APIMarginLoan(CloudClient):
         :param url: https://api-cloud.bitmart.com
         :param timeout: (2, 10)
         """
-        CloudClient.__init__(self, api_key, secret_key, memo, url, timeout)
+        CloudClient.__init__(self, api_key, secret_key, memo, url, timeout, headers, logger)
 
     def margin_borrow_isolated(self, symbol: str, currency: str, amount: str):
         """Margin Borrow (Isolated) (SIGNED)
@@ -116,8 +116,7 @@ class APIMarginLoan(CloudClient):
             param['end_time'] = end_time
         return self._request_with_params(GET, API_REPAYMENT_RECORD_ISOLATED_URL, param, Auth.KEYED)
 
-
-    def trading_pair_borrowing_rate_and_amount(self, symbol=''):
+    def trading_pair_borrowing_rate_and_amount(self, symbol=None):
         """Get Trading Pair Borrowing Rate and Amount (KEYED)
         Applicable for checking the borrowing rate and borrowing amount of trading pairs
 
@@ -126,7 +125,9 @@ class APIMarginLoan(CloudClient):
         :param symbol: It can be multiple-choice; if not filled in, then return all, like BTC_USDT, ETH_USDT
         :return:
         """
-        param = {
-            'symbol': symbol
-        }
+        param = {}
+
+        if symbol:
+            param['symbol'] = symbol
+
         return self._request_with_params(GET, API_TRADING_PAIR_BORROWING_RATE_AND_AMOUNT_URL, param, Auth.KEYED)
