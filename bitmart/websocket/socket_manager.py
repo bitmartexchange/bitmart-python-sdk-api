@@ -1,5 +1,7 @@
 import logging
 import threading
+import time
+
 from websocket import (
     ABNF,
     create_connection,
@@ -21,6 +23,7 @@ class SocketManager(threading.Thread):
         on_error=None,
         on_ping=None,
         on_pong=None,
+        on_reconnect=None,
         logger=None,
         timeout=None,
     ):
@@ -36,22 +39,42 @@ class SocketManager(threading.Thread):
         self.on_ping = on_ping
         self.on_pong = on_pong
         self.on_error = on_error
+        self.on_reconnect = on_reconnect
+        self.retryReconnectTimes = 5
         self.timeout = timeout
 
         self.create_ws_connection()
 
     def create_ws_connection(self):
         self.logger.debug(
-            f"Creating connection with WebSocket Server: {self.stream_url}",
+            f"WebSocket Client Connection to: {self.stream_url}",
         )
 
         self.ws = create_connection(
             self.stream_url, timeout=self.timeout
         )
         self.logger.debug(
-            f"WebSocket connection has been established: {self.stream_url}",
+            f"WebSocket Client has been established: {self.stream_url}",
         )
         self._callback(self.on_open)
+
+    def reconnect(self):
+        self.retryReconnectTimes -= 1
+        if self.retryReconnectTimes < 0:
+            self.logger.error(f"Reconnection failed: Retry Max 5 times")
+            return
+
+        if self.ws:
+            self.ws.close()
+
+        time.sleep(5 - self.retryReconnectTimes)  # Optional delay before attempting to reconnect
+
+        try:
+            self.create_ws_connection()  # Try to create a new connection
+            self.retryReconnectTimes = 5
+        except WebSocketException as e:
+            self.logger.error(f"Reconnection failed: {e}")
+            self.reconnect()  # Recursive reconnection attempt on failure
 
     def run(self):
         self.read_data()
@@ -76,7 +99,9 @@ class SocketManager(threading.Thread):
                     self.logger.error("Websocket connection timeout")
                 else:
                     self.logger.error("Websocket exception: {}".format(e))
-                raise e
+                self._callback(self.on_close, "Close Reason: {}".format(e))
+                self.on_reconnect()
+                continue
             except Exception as e:
                 self.logger.error("Exception in read_data: {}".format(e))
                 raise e
@@ -87,7 +112,7 @@ class SocketManager(threading.Thread):
                 self.logger.warning(
                     "CLOSE frame received, closing websocket connection"
                 )
-                self._callback(self.on_close)
+                self._callback(self.on_close, "CLOSE frame received, closing websocket connection")
                 break
 
     def _handle_data(self, op_code, frame):
