@@ -50,17 +50,27 @@ Example
 from bitmart.api_spot import APISpot
 
 if __name__ == '__main__':
-
     spotAPI = APISpot(timeout=(2, 10))
-    
+
     # Get a list of all cryptocurrencies on the platform
-    spotAPI.get_currencies()
-    
+    response = spotAPI.get_currencies()
+    print("response:", response[0])
+
     # Querying aggregated tickers of a particular trading pair
-    spotAPI.get_v3_ticker(symbol='BTC_USDT')
-    
+    response = spotAPI.get_v3_ticker(symbol='BTC_USDT')
+    print("response:", response[0])
+
+    # Get the quotations of all trading pairs
+    response = spotAPI.get_v3_tickers()
+    print("response:", response[0])
+
+    # Get full depth of trading pairs
+    response = spotAPI.get_v3_depth(symbol='BTC_USDT')
+    print("response:", response[0])
+
     # Get the latest trade records of the specified trading pair
-    spotAPI.get_v3_trades(symbol='BTC_USDT', limit=10)
+    response = spotAPI.get_v3_trades(symbol='BTC_USDT', limit=10)
+    print("response:", response[0])
 ```
 
 
@@ -184,30 +194,34 @@ Please find `examples/websocket/spot/websocket_stream/` folder to check for more
 from bitmart.api_contract import APIContract
 
 if __name__ == '__main__':
-
     contractAPI = APIContract(timeout=(2, 10))
 
     # query contract details
-    contractAPI.get_details(contract_symbol='ETHUSDT')
-    
+    response = contractAPI.get_details(contract_symbol='ETHUSDT')
+    print("response:", response[0])
+
     # Get full depth of trading pairs.
-    contractAPI.get_depth(contract_symbol='ETHUSDT')
+    response = contractAPI.get_depth(contract_symbol='ETHUSDT')
+    print("response:", response[0])
 
     # Querying the open interest and open interest value data of the specified contract
-    contractAPI.get_open_interest(contract_symbol='ETHUSDT')
+    response = contractAPI.get_open_interest(contract_symbol='ETHUSDT')
+    print("response:", response[0])
 
     # Applicable for checking the current funding rate of a specified contract
-    contractAPI.get_funding_rate(contract_symbol='ETHUSDT')
-    
-    # querying K-line data
-    contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=1662518172, end_time=1662518172)
+    response = contractAPI.get_funding_rate(contract_symbol='ETHUSDT')
+    print("response:", response[0])
 
+    # querying K-line data
+    response = contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=1662518172, end_time=1662518172)
+    print("response:", response[0])
 ```
 
 
 #### Contract Trade API Example
 ```python
 from bitmart.api_contract import APIContract
+from bitmart.lib import cloud_exceptions
 
 if __name__ == '__main__':
 
@@ -217,15 +231,26 @@ if __name__ == '__main__':
 
     contractAPI = APIContract(api_key, secret_key, memo, timeout=(3, 10))
 
-    contractAPI.post_submit_order(contract_symbol='BTCUSDT', 
-                                  client_order_id="BM1234",
-                                  side=4, 
-                                  mode=1, 
-                                  type='limit', 
-                                  leverage='1',
-                                  open_type='isolated',
-                                  size=10, 
-                                  price='20000')
+    try:
+        response = contractAPI.post_submit_order(contract_symbol='BTCUSDT',
+                                                 client_order_id="BM1234",
+                                                 side=4,
+                                                 mode=1,
+                                                 type='limit',
+                                                 leverage='1',
+                                                 open_type='isolated',
+                                                 size=10,
+                                                 price='20000')
+    except cloud_exceptions.APIException as apiException:
+        print("Error[HTTP<>200]:", apiException.response)
+    except Exception as exception:
+        print("Error[Exception]:", exception)
+    else:
+        if response[0]['code'] == 1000:
+            print('Call Success:', response[0])
+        else:
+            print('Call Failed:', response[0]['message'])
+
 ```
 
 Please find `examples/futures/` folder to check for more endpoints.
