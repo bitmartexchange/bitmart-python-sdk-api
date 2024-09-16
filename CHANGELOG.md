@@ -3,6 +3,14 @@ Changelog
 
 
 
+### v2.0.1 Release
+#### Improvements
+- Update the dome of the README
+#### Bug Fixes
+- Fix the issue that the socket package cannot be referenced
+
+---
+
 ### v2.0.0 Release
 #### New Features
 - New
