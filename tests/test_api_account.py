@@ -5,9 +5,6 @@ from tests import data as data
 accountAPI = APIAccount(data.api_key, data.secret_key, data.memo, data.url)
 
 
-# Close Request Printout
-# CloudLog.set_logger_level(logger_level='info')
-
 def test_get_currencies():
     """Test GET https://api-cloud.bitmart.com/account/v1/currencie"""
     assert accountAPI.get_currencies()[0]['code'] == 1000

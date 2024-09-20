@@ -1,8 +1,14 @@
+import logging
+
 from bitmart.api_contract import APIContract
+from bitmart.lib.cloud_utils import config_logging
 from tests import data as data
 
 # contract api
-contractAPI = APIContract(data.api_key, data.secret_key, data.memo, data.url)
+config_logging(logging, logging.DEBUG)
+logger = logging.getLogger(__name__)
+contractAPI = APIContract(
+    url=data.url, api_key=data.api_key, secret_key=data.secret_key, memo=data.memo, logger=logger)
 
 
 # contractAPI = APIContract(timeout=(2,10))
@@ -68,22 +74,21 @@ def test_get_position():
 def test_get_trades():
     """Test GET https://api-cloud.bitmart.com/contract/private/trades"""
     trades = contractAPI.get_trades(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)
-    assert trades[0]['success'] == True
+    assert trades[0]['code'] == 1000
 
 
 def test_get_transfer_list():
     """Test POST https://api-cloud.bitmart.com/account/v1/transfer-contract-list"""
     trades = contractAPI.get_transfer_list(page=1, limit=10)
-    assert trades[0]['success'] == True
+    assert trades[0]['code'] == 1000
 
 
 def test_post_submit_order():
     """Test POST https://api-cloud.bitmart.com/contract/private/submit-order"""
-    assert \
-        contractAPI.post_submit_order(contract_symbol='BTCUSDT', side=4, type='limit', leverage='1',
-                                      open_type='isolated',
-                                      size=10, price='20000', mode=1)[0][
-            'code'] == 1000
+    response = contractAPI.post_submit_order(contract_symbol='BTCUSDT', side=4, type='limit', leverage='1',
+                                             open_type='isolated',
+                                             size=10, price='20000', mode=1)
+    assert response[0]['code'] == 1000
 
 
 def test_post_cancel_order():

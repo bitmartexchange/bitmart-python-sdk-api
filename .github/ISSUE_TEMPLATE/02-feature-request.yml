@@ -1,0 +1,35 @@
+name: 🚀 Feature Request
+description: Submit a request for a new feature.
+title: "[Feature] "
+labels: [ "feature" ]
+assignees: [ "11101171" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        <img src="https://developer-pro.bitmart.com/images/logo-light@3x-caec722f.png" height="90px" align="right" />
+
+        Thank you for finding the time to propose new feature!
+
+        You could submit a request for a new BitMart SDK feature here, including but not limited to: new features or models, incomplete or unusable features, accuracy/performance not as expected, etc.
+
+        #### Before submitting a bug, please make sure the issue hasn't been already addressed by searching through [the existing and past issues](https://github.com/bitmartexchange/bitmart-python-sdk-api/issues).
+
+
+  - type: textarea
+    attributes:
+      label: Feature Description
+      description: A short description of your feature
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: |
+        A description of any alternative solutions or features you've considered, if any.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "Thanks for your contribution 🎉!"
