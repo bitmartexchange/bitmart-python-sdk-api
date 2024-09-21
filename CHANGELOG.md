@@ -2,7 +2,7 @@ Changelog
 =========================
 
 
-### v2.0.0 Release
+### v2.1.0 Release
 #### New Features
 - New
   - `/contract/private/submit-tp-sl-order`
