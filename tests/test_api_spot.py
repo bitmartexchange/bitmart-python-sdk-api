@@ -1,11 +1,14 @@
+import logging
 import time
 
 from bitmart.api_spot import APISpot
+from bitmart.lib.cloud_utils import config_logging
 from tests import data as data
 
 # spot api
-# spotAPI = APISpot(data.api_key, data.secret_key, data.memo, data.url, timeout=data.timeout)
-spotAPI = APISpot(data.api_key, data.secret_key, data.memo)
+config_logging(logging, logging.DEBUG)
+spotAPI = APISpot(
+    url=data.url, api_key=data.api_key, secret_key=data.secret_key, memo=data.memo, logger=logging)
 
 
 def test_get_currencies():
@@ -78,7 +81,7 @@ def test_margin_order():
 
 
 def test_post_batch_orders():
-    """Test POST https://api-cloud.bitmart.com/spot/v2/batch_orders"""
+    """Test POST https://api-cloud.bitmart.com/spot/v4/batch_orders"""
     order_params = [{"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"},
                     {"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"}]
     assert spotAPI.post_batch_orders(symbol='BTC_USDT', order_params=order_params)[0]['code'] == 1000
@@ -95,8 +98,8 @@ def test_post_cancel_order_by_clientid():
 
 
 def test_post_cancel_orders():
-    """Test POST https://api-cloud.bitmart.com/spot/v1/cancel_orders"""
-    assert spotAPI.post_cancel_orders(symbol='BTC_USDT', side='buy')[0]['code'] == 1000
+    """Test POST https://api-cloud.bitmart.com/spot/v4/cancel_orders"""
+    assert spotAPI.post_cancel_orders(symbol='BTC_USDT', order_ids=['sdfdsf4343', 'sdfdsa123'])[0]['code'] == 1000
     assert spotAPI.post_cancel_orders()[0]['code'] == 1000
 
 

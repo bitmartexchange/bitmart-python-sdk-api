@@ -2,6 +2,21 @@ Changelog
 =========================
 
 
+### v2.0.0 Release
+#### New Features
+- New
+  - `/contract/private/submit-tp-sl-order`
+  - `/contract/private/modify-plan-order`
+  - `/contract/private/modify-preset-plan-order`
+  - `/contract/private/modify-tp-sl-order`
+- Updated
+  - `/contract/private/cancel-order` Add new request field **client_order_id**
+  - `/contract/private/cancel-plan-order` Add new request field **client_order_id**
+  - `/contract/private/current-plan-order` Add new request field **plan_type**
+
+
+---
+
 
 ### v2.0.1 Release
 #### Improvements

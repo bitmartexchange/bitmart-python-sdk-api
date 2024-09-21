@@ -4,7 +4,8 @@ from bitmart.lib.cloud_consts import *
 
 class APIContract(CloudClient):
 
-    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL, timeout: tuple = TIMEOUT, headers=None, logger=None):
+    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL,
+                 timeout: tuple = TIMEOUT, headers=None, logger=None):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
         :param api_key: your access key
@@ -20,7 +21,7 @@ class APIContract(CloudClient):
         """Get Contract Details
         Applicable to query contract details
 
-        GET https://api-cloud.bitmart.com/contract/public/details
+        GET /contract/public/details
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
@@ -33,7 +34,7 @@ class APIContract(CloudClient):
     def get_depth(self, contract_symbol):
         """Get Market Depth
         Get full depth of trading pairs.
-        GET https://api-cloud.bitmart.com/contract/public/depth
+        GET /contract/public/depth
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
@@ -45,7 +46,7 @@ class APIContract(CloudClient):
         """Get Futures Open Interest
         Applicable for querying the open interest and open interest value data of the specified contract
 
-        GET https://api-cloud.bitmart.com/contract/public/open-interest
+        GET /contract/public/open-interest
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
@@ -57,7 +58,7 @@ class APIContract(CloudClient):
         """Get Current Funding Rate
         Applicable for checking the current funding rate of a specified contract
 
-        GET https://api-cloud.bitmart.com/contract/public/funding-rate
+        GET /contract/public/funding-rate
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
@@ -69,7 +70,7 @@ class APIContract(CloudClient):
         """Get K-line
         Applicable for querying K-line data
 
-        GET https://api-cloud.bitmart.com/contract/public/kline
+        GET /contract/public/kline
 
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
@@ -92,7 +93,7 @@ class APIContract(CloudClient):
         """Get Contract Assets (KEYED)
         Applicable for querying user contract asset details
 
-        GET https://api-cloud.bitmart.com/contract/private/assets-detail
+        GET /contract/private/assets-detail
 
         :return:
         """
@@ -102,7 +103,7 @@ class APIContract(CloudClient):
         """Get Order Detail (KEYED)
         Applicable for querying contract order detail
 
-        GET https://api-cloud.bitmart.com/contract/private/order
+        GET /contract/private/order
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param order_id: Order ID
@@ -118,7 +119,7 @@ class APIContract(CloudClient):
         """Get Order History (KEYED)
         Applicable for querying contract order history
 
-        GET https://api-cloud.bitmart.com/contract/private/order-history
+        GET /contract/private/order-history
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param start_time: Start time, default is the last 7 days
@@ -136,7 +137,7 @@ class APIContract(CloudClient):
         """Get All Open Orders (KEYED)
         Applicable for querying contract all open orders
 
-        GET https://api-cloud.bitmart.com/contract/private/get-open-orders
+        GET /contract/private/get-open-orders
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param type: Order type
@@ -163,17 +164,24 @@ class APIContract(CloudClient):
             param['limit'] = limit
         return self._request_with_params(GET, API_CONTRACT_OPEN_ORDER_URL, param, Auth.KEYED)
 
-    def get_current_plan_order(self, contract_symbol: str = None, type=None, limit=None):
+    def get_current_plan_order(self,
+                               contract_symbol: str = None,
+                               type: str = None,
+                               limit: int = None,
+                               plan_type: str = None):
         """Get All Current Plan Orders (KEYED)
         Applicable for querying contract all plan orders
 
-        GET https://api-cloud.bitmart.com/contract/private/current-plan-order
+        GET /contract/private/current-plan-order
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param type: Order type
                         -limit
                         - market
         :param limit: The number of returned results, with a maximum of 100 and a default of 100
+        :param plan_type: Plan order type default all
+                    -plan
+                    - profit_loss
         :return:
         """
         param = {}
@@ -186,13 +194,15 @@ class APIContract(CloudClient):
 
         if limit:
             param['limit'] = limit
+        if plan_type:
+            param['plan_type'] = plan_type
         return self._request_with_params(GET, API_CONTRACT_CURRENT_PLAN_ORDER_URL, param, Auth.KEYED)
 
     def get_position(self, contract_symbol: str = None):
         """Get Current Position (KEYED)
         Applicable for checking the position details a specified contract
 
-        GET https://api-cloud.bitmart.com/contract/private/position
+        GET /contract/private/position
 
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
@@ -208,7 +218,7 @@ class APIContract(CloudClient):
         """Get Current Position Risk Details(KEYED)
         Applicable for checking the position risk details a specified contract
 
-        GET https://api-cloud.bitmart.com/contract/private/position-risk
+        GET /contract/private/position-risk
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
@@ -223,7 +233,7 @@ class APIContract(CloudClient):
         """Get Order Trade (KEYED)
         Applicable for querying contract order trade detail
 
-        GET https://api-cloud.bitmart.com/contract/private/trades
+        GET /contract/private/trades
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param start_time: Start time, default is the last 7 days
@@ -245,7 +255,7 @@ class APIContract(CloudClient):
         """Get Transfer List (SIGNED)
         Query futures account transfer records
 
-        POST https://api-cloud.bitmart.com/account/v1/transfer-contract-list
+        POST /account/v1/transfer-contract-list
 
 
         :param page: Number of pages, allowed range [1,1000]
@@ -285,7 +295,7 @@ class APIContract(CloudClient):
         """Submit Order (SIGNED)
         Applicable for placing contract orders
 
-        POST https://api-cloud.bitmart.com/contract/private/submit-order
+        POST /contract/private/submit-order
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param client_order_id: Client-defined OrderId(A combination of numbers and letters, less than 32 bits)
@@ -360,28 +370,36 @@ class APIContract(CloudClient):
             param['preset_stop_loss_price'] = preset_stop_loss_price
         return self._request_with_params(POST, API_CONTRACT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 
-    def post_cancel_order(self, contract_symbol: str, order_id: str):
+    def post_cancel_order(self,
+                          contract_symbol: str,
+                          order_id: str = None,
+                          client_order_id: str = None):
         """Cancel Order (SIGNED)
         Applicable for canceling a specific contract order
 
-        POST https://api-cloud.bitmart.com/contract/private/cancel-order
+        POST /contract/private/cancel-order
 
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param order_id: Order ID
+        :param client_order_id: Client-defined OrderId
         :return:
         """
         param = {
             'symbol': contract_symbol,
-            'order_id': order_id,
         }
+
+        if order_id:
+            param['order_id'] = order_id
+        if client_order_id:
+            param['client_order_id'] = client_order_id
         return self._request_with_params(POST, API_CONTRACT_CANCEL_ORDER_URL, param, Auth.SIGNED)
 
     def post_cancel_orders(self, contract_symbol: str):
         """Cancel All Orders (SIGNED)
         Applicable for batch order cancellation under a particular contract
 
-        POST https://api-cloud.bitmart.com/contract/private/cancel-orders
+        POST /contract/private/cancel-orders
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :return:
@@ -393,13 +411,14 @@ class APIContract(CloudClient):
 
     def post_submit_plan_order(self, contract_symbol: str, type: str = None, side: int = None, leverage: str = None,
                                open_type: str = None, mode: int = None, size: int = None, trigger_price: str = None,
-                               executive_price=None, price_way: int = None, price_type: int = None, plan_category: int = None,
+                               executive_price=None, price_way: int = None, price_type: int = None,
+                               plan_category: int = None,
                                preset_take_profit_price_type: int = None, preset_stop_loss_price_type: int = None,
                                preset_take_profit_price: str = None, preset_stop_loss_price: str = None):
         """Submit Plan Order (SIGNED)
         Applicable for placing contract plan orders
 
-        POST https://api-cloud.bitmart.com/contract/private/submit-plan-order
+        POST /contract/private/submit-plan-order
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param type: Order type
@@ -484,27 +503,33 @@ class APIContract(CloudClient):
             param['preset_stop_loss_price'] = preset_stop_loss_price
         return self._request_with_params(POST, API_CONTRACT_SUBMIT_PLAN_ORDER_URL, param, Auth.SIGNED)
 
-    def post_cancel_plan_order(self, contract_symbol: str, order_id: str):
+    def post_cancel_plan_order(self, contract_symbol: str,
+                               order_id: str = None,
+                               client_order_id: str = None):
         """Cancel Plan Order (SIGNED)
         Applicable for canceling a specific contract plan order
 
-        POST https://api-cloud.bitmart.com/contract/private/cancel-plan-order
+        POST /contract/private/cancel-plan-order
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param order_id: Order ID
+        :param client_order_id: Client Order ID
         :return:
         """
         param = {
             'symbol': contract_symbol,
-            'order_id': order_id,
         }
+        if order_id:
+            param['order_id'] = order_id
+        if client_order_id:
+            param['client_order_id'] = client_order_id
         return self._request_with_params(POST, API_CONTRACT_CANCEL_PLAN_ORDER_URL, param, Auth.SIGNED)
 
     def post_transfer(self, currency: str, amount: str, type: str, recv_window=None):
         """Transfer (SIGNED)
         Transfer between spot account and contract account
 
-        POST https://api-cloud.bitmart.com/account/v1/transfer-contract
+        POST /account/v1/transfer-contract
 
         :param currency: Currency (Only USDT is supported)
         :param amount: Transfer amount，allowed range[0.01,10000000000]
@@ -529,7 +554,7 @@ class APIContract(CloudClient):
         """Submit Leverage (SIGNED)
         Applicable for adjust contract leverage
 
-        POST https://api-cloud.bitmart.com/contract/private/submit-leverage
+        POST /contract/private/submit-leverage
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param open_type: Open type, required at close position
@@ -548,3 +573,203 @@ class APIContract(CloudClient):
 
         return self._request_with_params(POST, API_CONTRACT_SUBMIT_LEVERAGE_URL, param, Auth.SIGNED)
 
+    def post_submit_tp_sl_order(self,
+                                contract_symbol: str,
+                                type: str,
+                                side: int,
+                                trigger_price: str,
+                                executive_price: str,
+                                price_type: int,
+                                size: int = None,
+                                plan_category: int = None,
+                                client_order_id: str = None,
+                                category: str = None):
+        """Submit TP or SL Order (SIGNED)
+        Applicable for placing contract TP or SL orders
+
+        POST /contract/private/submit-tp-sl-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param type: Order type
+                        -take_profit
+                        -stop_loss
+        :param side: Order side
+                    -2=buy_close_short
+                    -3=sell_close_long
+        :param trigger_price: Trigger price
+        :param executive_price: Execution price
+        :param price_type: Trigger price type
+                            -1=last_price
+                            -2=fair_price
+        :param size: Order size (Number of contracts) Default the size of position
+        :param plan_category: TP/SL type
+                                -1=TP/SL(default)
+                                -2=Position TP/SL
+        :param client_order_id: Client order ID
+        :param category: Trigger order type, position TP/SL default market
+                            -limit
+                            -market
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'type': type,
+            'side': side,
+            'trigger_price': trigger_price,
+            'executive_price': executive_price,
+            'price_type': price_type,
+        }
+
+        if size:
+            param['size'] = size
+
+        if plan_category:
+            param['plan_category'] = plan_category
+
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+
+        if category:
+            param['category'] = category
+
+        return self._request_with_params(POST, API_CONTRACT_SUBMIT_TP_SL_ORDER_URL, param, Auth.SIGNED)
+
+    def post_modify_plan_order(self,
+                               contract_symbol: str,
+                               trigger_price: str,
+                               price_type: int,
+                               type: str,
+                               order_id: str = None,
+                               client_order_id: str = None,
+                               executive_price: str = None):
+        """Modify Plan Order (SIGNED)
+        Applicable for modifying contract plan orders
+
+
+        POST /contract/private/modify-plan-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param trigger_price: Trigger price
+        :param price_type: type
+                            -1=last_price
+                            -2=fair_price
+        :param type: Order type
+                    -limit
+                    -market
+        :param order_id: Order ID(order_id or client_order_id must give one)
+        :param client_order_id: Client order ID(order_id or client_order_id must give one)
+        :param executive_price: Execution price for plan order, mandatory when type = limit
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'type': type,
+            'trigger_price': trigger_price,
+            'price_type': price_type,
+        }
+
+        if order_id:
+            param['order_id'] = order_id
+
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+
+        if executive_price:
+            param['executive_price'] = executive_price
+
+        return self._request_with_params(POST, API_CONTRACT_MODIFY_PLAN_ORDER_URL, param, Auth.SIGNED)
+
+    def post_modify_preset_plan_order(self,
+                                      contract_symbol: str,
+                                      order_id: str,
+                                      preset_take_profit_price_type: int = None,
+                                      preset_stop_loss_price_type: int = None,
+                                      preset_take_profit_price: str = None,
+                                      preset_stop_loss_price: str = None):
+        """Modify Preset Plan Order (SIGNED)
+        Applicable for modifying contract preset plan orders
+
+        POST /contract/private/modify-preset-plan-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param order_id: Order ID
+        :param preset_take_profit_price_type: Pre-set TP price type
+                                            -1=last_price(default)
+                                            -2=fair_price
+        :param preset_stop_loss_price_type: Pre-set SL price type
+                                            -1=last_price(default)
+                                            -2=fair_price
+        :param preset_take_profit_price: Pre-set TP price
+        :param preset_stop_loss_price: Pre-set SL price
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'order_id': order_id,
+        }
+
+        if preset_take_profit_price_type:
+            param['preset_take_profit_price_type'] = preset_take_profit_price_type
+
+        if preset_stop_loss_price_type:
+            param['preset_stop_loss_price_type'] = preset_stop_loss_price_type
+
+        if preset_take_profit_price:
+            param['preset_take_profit_price'] = preset_take_profit_price
+
+        if preset_stop_loss_price:
+            param['preset_stop_loss_price'] = preset_stop_loss_price
+
+        return self._request_with_params(POST, API_CONTRACT_MODIFY_PRESET_PLAN_ORDER_URL, param, Auth.SIGNED)
+
+    def post_modify_tp_sl_order(self, contract_symbol: str,
+                                trigger_price: str,
+                                price_type: int,
+                                order_id: str = None,
+                                client_order_id: str = None,
+                                executive_price: str = None,
+                                plan_category: int = None,
+                                category: str = None):
+        """Modify TP/SL Order (SIGNED)
+        Applicable for modifying TP/SL orders
+
+        POST /contract/private/modify-tp-sl-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param trigger_price: Trigger price
+        :param price_type: type
+                            -1=last_price
+                            -2=fair_price
+        :param order_id: Order ID(order_id or client_order_id must give one)
+        :param client_order_id: Client order ID(order_id or client_order_id must give one)
+        :param executive_price: Execution price for order, mandatory when plan_category = 1
+        :param plan_category: TP/SL type
+                            -1=TP/SL
+                            -2=Position TP/SL
+        :param category: Order type, Position TP/SL default market
+                        -limit
+                        -market
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'trigger_price': trigger_price,
+            'price_type': price_type,
+        }
+
+        if order_id:
+            param['order_id'] = order_id
+
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+
+        if executive_price:
+            param['executive_price'] = executive_price
+
+        if plan_category:
+            param['plan_category'] = plan_category
+
+        if category:
+            param['category'] = category
+
+        return self._request_with_params(POST, API_CONTRACT_MODIFY_TP_SL_ORDER_URL, param, Auth.SIGNED)

@@ -16,6 +16,19 @@ futuresAPI = APIContract(api_key="Your_Api_Key",
 try:
     response = futuresAPI.post_cancel_order(
         contract_symbol="ETHUSDT",
+    )[0]
+    logger.info(response)
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )
+
+
+try:
+    response = futuresAPI.post_cancel_order(
+        contract_symbol="ETHUSDT",
         order_id="BM1234",
     )[0]
     logger.info(response)
@@ -26,3 +39,15 @@ except APIException as error:
         )
     )
 
+try:
+    response = futuresAPI.post_cancel_order(
+        contract_symbol="ETHUSDT",
+        client_order_id="BM1234",
+    )[0]
+    logger.info(response)
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )
