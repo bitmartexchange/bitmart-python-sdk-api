@@ -14,7 +14,14 @@ futuresAPI = APIContract(api_key="Your_Api_Key",
                          logger=logger)
 
 try:
-    response = futuresAPI.get_current_plan_order()[0]
+    response = futuresAPI.post_modify_preset_plan_order(
+            contract_symbol='BTCUSDT',
+            order_id="12314323424",
+            preset_take_profit_price="2000",
+            preset_stop_loss_price="1450",
+            preset_take_profit_price_type=1,
+            preset_stop_loss_price_type=1,
+        )[0]
     logger.info(response)
 except APIException as error:
     logger.error(
@@ -23,17 +30,3 @@ except APIException as error:
         )
     )
 
-try:
-    response = futuresAPI.get_current_plan_order(
-        contract_symbol='BTCUSDT',
-        type='limit',
-        limit=10,
-        plan_type="plan",
-    )[0]
-    logger.info(response)
-except APIException as error:
-    logger.error(
-        "Found error. status: {}, error message: {}".format(
-            error.status_code, error.response
-        )
-    )
