@@ -5,6 +5,7 @@ BitMart-Python-SDK-API
 [![PyPI version](https://img.shields.io/pypi/v/bitmart-python-sdk-api)](https://pypi.python.org/pypi/bitmart-python-sdk-api)
 [![Python version](https://img.shields.io/badge/python-3.7%20%7C%203.8%20%7C%203.9-blue)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Telegram](https://img.shields.io/badge/Telegram-Join%20Us-blue?logo=Telegram)](https://t.me/bitmart_api)
 
 
 [BitMart Exchange official](https://bitmart.com) Python client for the BitMart Cloud API.
@@ -18,15 +19,15 @@ Feature
 - Efficiency, higher speeds, and lower latencies
 - Priority in development and maintenance
 - Dedicated and responsive technical support
-- Provide webSocket apis calls
 - Supported APIs:
     - `/spot/*`
     - `/contract/*`
     - `/account/*`
+- Supported websockets:
     - Spot WebSocket Market Stream
     - Spot User Data Stream
-    - Contract User Data Stream
-    - Contract WebSocket Market Stream
+    - futures User Data Stream
+    - futures WebSocket Market Stream
 - Test cases and examples
 
 
@@ -75,6 +76,7 @@ if __name__ == '__main__':
 
 
 #### Spot Trade API Example
+
 ```python
 from bitmart.api_spot import APISpot
 from bitmart.lib import cloud_exceptions
@@ -109,7 +111,7 @@ if __name__ == '__main__':
 ```
 
 
-Please find `examples/spot/` folder to check for more endpoints.
+Please find [examples/spot](https://github.com/bitmartexchange/bitmart-python-sdk-api/tree/master/examples/spot) folder to check for more endpoints.
 
 
 #### Spot WebSocket Public Channel Example
@@ -123,11 +125,11 @@ from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.spot_socket_client import SpotSocketClient
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}")
       
 if __name__ == '__main__':
-  config_logging(logging, logging.DEBUG)
+  config_logging(logging, logging.INFO)
   
   
   my_client = SpotSocketClient(stream_url=SPOT_PUBLIC_WS_URL,
@@ -163,11 +165,11 @@ from bitmart.lib.cloud_consts import SPOT_PRIVATE_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.spot_socket_client import SpotSocketClient
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}")
     
 if __name__ == '__main__':
-    config_logging(logging, logging.DEBUG)
+    config_logging(logging, logging.INFO)
 
     my_client = SpotSocketClient(stream_url=SPOT_PRIVATE_WS_URL,
                              on_message=message_handler,
@@ -186,10 +188,10 @@ if __name__ == '__main__':
 
 ```
 
-Please find `examples/websocket/spot/websocket_stream/` folder to check for more endpoints.
+Please find [examples/websocket/spot/websocket_stream](https://github.com/bitmartexchange/bitmart-python-sdk-api/tree/master/examples/websocket/spot/websocket_stream) folder to check for more endpoints.
 
 
-#### Contract Public API Example
+#### Futures Public API Example
 ```python
 from bitmart.api_contract import APIContract
 
@@ -218,7 +220,7 @@ if __name__ == '__main__':
 ```
 
 
-#### Contract Trade API Example
+#### Futures Trade API Example
 ```python
 from bitmart.api_contract import APIContract
 from bitmart.lib import cloud_exceptions
@@ -253,10 +255,10 @@ if __name__ == '__main__':
 
 ```
 
-Please find `examples/futures/` folder to check for more endpoints.
+Please find [examples/futures](https://github.com/bitmartexchange/bitmart-python-sdk-api/tree/master/examples/futures) folder to check for more endpoints.
 
 
-#### Contract WebSocket Public Channel Example
+#### Futures WebSocket Public Channel Example
 
 ```python
 
@@ -267,13 +269,13 @@ from bitmart.lib.cloud_consts import FUTURES_PUBLIC_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.futures_socket_client import FuturesSocketClient
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}")
     
     
 
 if __name__ == '__main__':
-    config_logging(logging, logging.DEBUG)
+    config_logging(logging, logging.INFO)
     
     my_client = FuturesSocketClient(stream_url=FUTURES_PUBLIC_WS_URL,
                                 on_message=message_handler)
@@ -304,7 +306,7 @@ if __name__ == '__main__':
 ```
 
 
-#### Contract WebSocket Private Channel Example
+#### Futures WebSocket Private Channel Example
 
 ```python
 
@@ -314,8 +316,8 @@ from bitmart.lib.cloud_consts import FUTURES_PRIVATE_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.futures_socket_client import FuturesSocketClient
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}")
 
 
 if __name__ == '__main__':
@@ -340,7 +342,7 @@ if __name__ == '__main__':
     # my_client.stop()
 ```
 
-Please find `examples/websocket/futures/websocket_stream/` folder to check for more endpoints.
+Please find [examples/websocket/futures/websocket_stream](https://github.com/bitmartexchange/bitmart-python-sdk-api/tree/master/examples/websocket/futures/websocket_stream) folder to check for more endpoints.
 
 
 Extra Options

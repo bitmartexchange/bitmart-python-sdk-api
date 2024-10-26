@@ -17,7 +17,7 @@ class SocketManager(threading.Thread):
     def __init__(
         self,
         stream_url,
-        on_message=None,
+        on_receive=None,
         on_open=None,
         on_close=None,
         on_error=None,
@@ -33,7 +33,7 @@ class SocketManager(threading.Thread):
         self.logger = logger
         self.ws = None
         self.stream_url = stream_url
-        self.on_message = on_message
+        self.on_receive = on_receive
         self.on_open = on_open
         self.on_close = on_close
         self.on_ping = on_ping
@@ -42,6 +42,7 @@ class SocketManager(threading.Thread):
         self.on_reconnect = on_reconnect
         self.retryReconnectTimes = 5
         self.timeout = timeout
+        self.is_close = False
 
         self.create_ws_connection()
 
@@ -80,16 +81,18 @@ class SocketManager(threading.Thread):
         self.read_data()
 
     def send_message(self, message):
-        self.logger.debug("Sending message to BitMart WebSocket Server: %s", message)
-        self.ws.send(message)
-
-    def ping(self):
         if self.ws.connected:
-            self.logger.debug("Sending ping to BitMart WebSocket Server")
-            self.ws.ping()
+            self.logger.debug("Sending message to BitMart WebSocket Server: %s", message)
+            self.ws.send(message)
+
+    def ping(self, message):
+        if self.ws.connected:
+            self.ws.send(message)
+            return True
+        return False
 
     def read_data(self):
-        while True:
+        while not self.is_close:
             try:
                 op_code, frame = self.ws.recv_data_frame(True)
             except WebSocketException as e:
@@ -118,10 +121,10 @@ class SocketManager(threading.Thread):
     def _handle_data(self, op_code, frame):
         if op_code == ABNF.OPCODE_TEXT:
             data = frame.data.decode("utf-8")
-            self._callback(self.on_message, data)
+            self.on_receive(data)
         elif op_code == ABNF.OPCODE_BINARY:
             data = inflate(frame.data)
-            self._callback(self.on_message, data)
+            self.on_receive(data)
         elif op_code == ABNF.OPCODE_PING:
             self._callback(self.on_ping, frame.data)
             self.ws.pong("")
@@ -134,7 +137,13 @@ class SocketManager(threading.Thread):
         if not self.ws.connected:
             self.logger.warning("Websocket already closed")
         else:
-            self.ws.send_close()
+            reason = "Normal closure"
+            status_code = 1000
+            truncated_reason = reason[:123]
+            reason_bytes = truncated_reason.encode("utf-8")
+            self.ws.send_close(status_code, reason_bytes)
+        self._callback(self.on_close, f"WebSocket closed.")
+        self.is_close = True
         return
 
     def _callback(self, callback, *args):

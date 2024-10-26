@@ -5,11 +5,11 @@ from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.spot_socket_client import SpotSocketClient
 
-config_logging(logging, logging.DEBUG)
+config_logging(logging, logging.INFO)
 
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}",)
 
 
 my_client = SpotSocketClient(stream_url=SPOT_PUBLIC_WS_URL,

@@ -2,6 +2,7 @@ from enum import Enum, unique
 
 # domain
 API_URL = 'https://api-cloud.bitmart.com'
+API_V2_URL = 'https://api-cloud-v2.bitmart.com'
 
 SPOT_PUBLIC_WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
 SPOT_PRIVATE_WS_URL = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
@@ -84,6 +85,7 @@ API_CONTRACT_DEPTH_URL = "/contract/public/depth"
 API_CONTRACT_OPEN_INTEREST_URL = "/contract/public/open-interest"
 API_CONTRACT_FUNDING_RATE_URL = "/contract/public/funding-rate"
 API_CONTRACT_KLINE_URL = "/contract/public/kline"
+API_CONTRACT_TRADE_FEE_RATE_URL = "/contract/private/trade-fee-rate"
 API_CONTRACT_ASSETS_DETAIL_URL = "/contract/private/assets-detail"
 API_CONTRACT_ORDER_URL = "/contract/private/order"
 API_CONTRACT_ORDER_HISTORY_URL = "/contract/private/order-history"

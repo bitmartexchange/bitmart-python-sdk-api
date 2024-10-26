@@ -7,8 +7,8 @@ from bitmart.websocket.spot_socket_client import SpotSocketClient
 config_logging(logging, logging.INFO)
 
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}")
 
 
 my_client = SpotSocketClient(stream_url=SPOT_PRIVATE_WS_URL,
@@ -24,4 +24,4 @@ my_client.login(timeout=5)
 my_client.subscribe(args="spot/user/balance:BALANCE_UPDATE")
 
 # Stop
-# my_client.stop()
+my_client.stop()

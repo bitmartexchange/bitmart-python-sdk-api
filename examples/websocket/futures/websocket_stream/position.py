@@ -7,8 +7,8 @@ from bitmart.websocket.futures_socket_client import FuturesSocketClient
 config_logging(logging, logging.INFO)
 
 
-def message_handler(_, message):
-    logging.info(message)
+def message_handler(message):
+    logging.info(f"message_handler: {message}")
 
 
 my_client = FuturesSocketClient(stream_url=FUTURES_PRIVATE_WS_URL,

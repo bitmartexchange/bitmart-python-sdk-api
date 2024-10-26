@@ -1,20 +1,19 @@
 import logging
 import time
 
-from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL, SPOT_PRIVATE_WS_URL, FUTURES_PUBLIC_WS_URL, \
-    FUTURES_PRIVATE_WS_URL
+from bitmart.lib.cloud_consts import FUTURES_PRIVATE_WS_URL
 from bitmart.lib.cloud_utils import config_logging
 from bitmart.websocket.futures_socket_client import FuturesSocketClient
-from bitmart.websocket.spot_socket_client import SpotSocketClient
 
 config_logging(logging, logging.DEBUG)
 
 
-def open_handler(_, ):
+def open_handler(ws):
     logging.info("open")
+    ws.send_message('message')
 
 
-def message_handler(_, message):
+def message_handler(message):
     logging.info(message)
 
 
