@@ -1,14 +1,14 @@
 import logging
 
 from bitmart.api_contract import APIContract
+from bitmart.lib import cloud_consts
 from bitmart.lib.cloud_utils import config_logging
 from tests import data as data
 
 # contract api
 config_logging(logging, logging.DEBUG)
 logger = logging.getLogger(__name__)
-contractAPI = APIContract(
-    url=data.url, api_key=data.api_key, secret_key=data.secret_key, memo=data.memo, logger=logger)
+contractAPI = APIContract(api_key=data.api_key, secret_key=data.secret_key, memo=data.memo, logger=logger)
 
 
 # contractAPI = APIContract(timeout=(2,10))
@@ -41,6 +41,13 @@ def test_get_kline():
 
 
 # private
+
+def test_get_trade_fee_rate():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/private/trade-fee-rate"""
+    assert contractAPI.get_trade_fee_rate(contract_symbol='BTCUSDT')[0][
+               'code'] == 1000
+
+
 def test_get_assets_detail():
     """Test GET https://api-cloud-v2.bitmart.com/contract/private/assets-detail"""
     assert contractAPI.get_assets_detail()[0][
@@ -53,7 +60,7 @@ def test_get_order():
                'code'] == 1000
 
 
-def test_ge1t_order_history():
+def test_get_order_history():
     """Test GET https://api-cloud-v2.bitmart.com/contract/private/order-history"""
     assert contractAPI.get_order_history(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)[0][
                'code'] == 1000

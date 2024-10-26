@@ -36,7 +36,7 @@ class SpotSocketClient:
         self.logger = logger
         self.socket_manager = SocketManager(
             stream_url,
-            on_message=on_message,
+            on_receive=self.receive,
             on_open=on_open,
             on_close=on_close,
             on_error=on_error,
@@ -53,6 +53,7 @@ class SpotSocketClient:
         self.API_KEY = api_key
         self.API_SECRET_KEY = api_secret_key
         self.API_MEMO = api_memo
+        self.on_message = on_message
 
         # start the thread
         self.socket_manager.start()
@@ -88,6 +89,22 @@ class SpotSocketClient:
                 self.reconnectionChannel.append(json_msg)
         self.socket_manager.send_message(json_msg)
 
+    def receive(self, message):
+        if message == "pong":
+            self.logger.debug("Spot WebSocket Client received text 'pong'")
+            return
+
+        message_data = json.loads(message)
+        self.logger.debug(f"Spot WebSocket Client received => {message_data}")
+
+        if self.reconnectionUseLogin:
+            event = message_data.get("event")
+            error_message = message_data.get("errorMessage")
+            if event == "login" and error_message != "":
+                self.logger.error(f"Spot WebSocket Client Stop Reason=>{message_data}")
+                self.__close()
+        self.on_message(message_data)
+
     def login(self, timeout=5):
         if not self.API_KEY:
             self.stop()
@@ -98,21 +115,25 @@ class SpotSocketClient:
         if not self.API_MEMO:
             self.stop()
             raise ValueError("Invalid API MEMO")
+        self.reconnectionUseLogin = True
         timestamp = cloud_utils.get_timestamp()
         sign = cloud_utils.sign(cloud_utils.pre_substring(
             timestamp, self.API_MEMO, 'bitmart.WebSocket'), self.API_SECRET_KEY)
         self.socket_manager.send_message(json.dumps({"op": "login", "args": [self.API_KEY, timestamp, sign]}))
-        self.reconnectionUseLogin = True
         # timeout
         time.sleep(timeout)
 
     def ping(self):
-        self.socket_manager.ping()
+        if self.socket_manager.ping('ping'):
+            self.logger.debug("Sending text 'ping' to BitMart WebSocket Server")
 
     def stop(self):
+        self.__close()
+        self.socket_manager.join()
+
+    def __close(self):
         self.reconnection = False
         self.socket_manager.close()
-        self.socket_manager.join()
 
     def reconnect(self):
         if not self.reconnection:

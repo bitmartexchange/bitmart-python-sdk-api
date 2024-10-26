@@ -1,3 +1,2 @@
-websockets>=9.0
 requests>=2.25.1
 websocket-client>=1.6.3

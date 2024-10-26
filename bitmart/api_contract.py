@@ -4,7 +4,7 @@ from bitmart.lib.cloud_consts import *
 
 class APIContract(CloudClient):
 
-    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_URL,
+    def __init__(self, api_key: str = "", secret_key: str = "", memo: str = "", url: str = API_V2_URL,
                  timeout: tuple = TIMEOUT, headers=None, logger=None):
         """
         Create api key from https://www.bitmart.com/api-config/en-US
@@ -88,6 +88,19 @@ class APIContract(CloudClient):
         return self._request_with_params(GET, API_CONTRACT_KLINE_URL, param)
 
     # private
+
+    def get_trade_fee_rate(self, contract_symbol: str):
+        """Get Trade Fee Rate (KEYED)
+        Applicable for querying trade fee rate
+
+        GET /contract/private/trade-fee-rate
+
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+        return self._request_with_params(GET, API_CONTRACT_TRADE_FEE_RATE_URL, param, Auth.KEYED)
 
     def get_assets_detail(self):
         """Get Contract Assets (KEYED)

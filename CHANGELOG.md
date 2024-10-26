@@ -2,6 +2,21 @@ Changelog
 =========================
 
 
+### v2.2.0 Release
+#### New Features
+- New
+    - `/contract/private/trade-fee-rate` Support querying trade fee rate(KEYED)
+#### Improvements
+- Add API_V2_URL=`https://api-cloud-v2.bitmart.com`
+- The default URL of the client APIContract is changed to API_V2_URL
+- Optimize websocket
+  - Remove `CloudWSClient` and `CloudWSContractClient`
+  - Remove `websockets` dependency
+  - The ping/pong mechanism of the spot websocket has been modified to support `ping` text
+  - 
+  
+---
+
 ### v2.1.0 Release
 #### New Features
 - New
