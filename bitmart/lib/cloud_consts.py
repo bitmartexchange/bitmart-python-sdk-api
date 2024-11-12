@@ -7,8 +7,8 @@ API_V2_URL = 'https://api-cloud-v2.bitmart.com'
 SPOT_PUBLIC_WS_URL = 'wss://ws-manager-compress.bitmart.com/api?protocol=1.1'
 SPOT_PRIVATE_WS_URL = 'wss://ws-manager-compress.bitmart.com/user?protocol=1.1'
 
-FUTURES_PUBLIC_WS_URL = 'wss://openapi-ws.bitmart.com/api?protocol=1.1'
-FUTURES_PRIVATE_WS_URL = 'wss://openapi-ws.bitmart.com/user?protocol=1.1'
+FUTURES_PUBLIC_WS_URL = 'wss://openapi-ws-v2.bitmart.com/api?protocol=1.1'
+FUTURES_PRIVATE_WS_URL = 'wss://openapi-ws-v2.bitmart.com/user?protocol=1.1'
 
 # connection timeout, read timeout
 TIMEOUT = (5, 10)
