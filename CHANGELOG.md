@@ -2,6 +2,18 @@ Changelog
 =========================
 
 
+### v2.3.0 Release
+#### New Features
+- New
+    - `/contract/private/submit-trail-order` Submit Trail Order (SIGNED)
+    - `/contract/private/cancel-trail-order` Cancel Trail Order (SIGNED)
+    - `/contract/public/funding-rate-history` Query Funding Rate History
+    - `/contract/public/transaction-history` Query Transaction History (KEYED)
+- Update
+    - `/contract/private/submit-order` Submit Order (SIGNED): Remove the Request Parameters related replacing trail orders
+    - `/contract/private/modify-plan-order` Modify Plan Order (SIGNED): Remove the Request Parameters **client_order_id**
+
+
 ### v2.2.1 Release
 #### Improvements
 - The domain name `wss://openapi-ws.bitmart.com` will not provide Futures 1.0 Websocket services.

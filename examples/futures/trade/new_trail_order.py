@@ -14,13 +14,10 @@ futuresAPI = APIContract(api_key="Your_Api_Key",
                          logger=logger)
 
 try:
-    response = futuresAPI.post_modify_plan_order(
-            contract_symbol='BTCUSDT',
-            trigger_price="2000",
-            executive_price="1450",
-            price_type=1,
-            type="limit"
-        )[0]
+    response = futuresAPI.post_submit_trail_order(contract_symbol='BTCUSDT', side=4, leverage='80',
+                                                  open_type='isolated', size=1, activation_price='190000',
+                                                  callback_rate='1', activation_price_type=1)[0]
+    #  'order_id': 56739000045
     logger.info(response)
 except APIException as error:
     logger.error(
@@ -28,4 +25,3 @@ except APIException as error:
             error.status_code, error.response
         )
     )
-
