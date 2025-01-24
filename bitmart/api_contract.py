@@ -87,6 +87,25 @@ class APIContract(CloudClient):
         }
         return self._request_with_params(GET, API_CONTRACT_KLINE_URL, param)
 
+    def get_fund_rate_history(self, contract_symbol: str, limit: int = None):
+        """Get Funding Rate History
+        Applicable for querying funding rate history data
+
+        GET /contract/public/funding-rate-history
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param limit: Number of results per request. The maximum is 100; The default is 100
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+
+        if limit:
+            param['limit'] = limit
+
+        return self._request_with_params(GET, API_CONTRACT_FUNDING_RATE_HISTORY_URL, param)
+
     # private
 
     def get_trade_fee_rate(self, contract_symbol: str):
@@ -264,6 +283,39 @@ class APIContract(CloudClient):
 
         return self._request_with_params(GET, API_CONTRACT_TRADES_URL, param, Auth.KEYED)
 
+    def get_transaction_history(self, contract_symbol: str = None, flow_type: int = None, start_time: int = None,
+                                end_time: int = None, page_size: int = None):
+        """Get Transaction History (KEYED)
+        Applicable for querying futures transaction history
+
+        GET /contract/private/transaction-history
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param flow_type: Type
+                                - 0 = All (default)
+                                - 1 = Transfer
+                                - 2 = Realized PNL
+                                - 3 = Funding Fee
+                                - 4 = Commission Fee
+                                - 5 = Liquidation Clearance
+        :param start_time: Start time, Start time, timestamp in ms
+        :param end_time: End time, timestamp in ms
+        :param page_size: Default 100; max 1000
+        :return:
+        """
+        param = {}
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+        if flow_type:
+            param['flow_type'] = flow_type
+        if start_time:
+            param['start_time'] = start_time
+        if end_time:
+            param['end_time'] = end_time
+        if page_size:
+            param['page_size'] = page_size
+        return self._request_with_params(GET, API_CONTRACT_TRANSACTION_HISTORY_URL, param, Auth.KEYED)
+
     def get_transfer_list(self, page: int, limit: int, currency=None, time_start=None, time_end=None, recv_window=None):
         """Get Transfer List (SIGNED)
         Query futures account transfer records
@@ -301,7 +353,6 @@ class APIContract(CloudClient):
     def post_submit_order(self, contract_symbol: str, client_order_id: str = None,
                           type: str = None, side: int = None, leverage: str = None, open_type: str = None,
                           mode: int = None, price: str = None, size: int = None,
-                          activation_price: str = None, callback_rate: str = None, activation_price_type: int = None,
                           preset_take_profit_price_type: int = None, preset_stop_loss_price_type: int = None,
                           preset_take_profit_price: str = None, preset_stop_loss_price: str = None
                           ):
@@ -332,11 +383,6 @@ class APIContract(CloudClient):
                         -4=Maker Only
         :param price: Order price, required at limit order
         :param size: Order size. Size refers to the order amount in the unit of contracts
-        :param activation_price: Activation price, required at trailing order
-        :param callback_rate: Callback rate, required at trailing order, min 0.1, max 5 where 1 for 1%
-        :param activation_price_type	: Activation price type, required at trailing order
-                                            -1=last_price
-                                            -2=fair_price
         :param preset_take_profit_price_type: Pre-set TP price type
                                             -1=last_price(default)
                                             -2=fair_price
@@ -367,12 +413,6 @@ class APIContract(CloudClient):
             param['price'] = price
         if size:
             param['size'] = size
-        if activation_price:
-            param['activation_price'] = activation_price
-        if callback_rate:
-            param['callback_rate'] = callback_rate
-        if activation_price_type:
-            param['activation_price_type'] = activation_price_type
         if preset_take_profit_price_type:
             param['preset_take_profit_price_type'] = preset_take_profit_price_type
         if preset_stop_loss_price_type:
@@ -653,7 +693,6 @@ class APIContract(CloudClient):
                                price_type: int,
                                type: str,
                                order_id: str = None,
-                               client_order_id: str = None,
                                executive_price: str = None):
         """Modify Plan Order (SIGNED)
         Applicable for modifying contract plan orders
@@ -670,7 +709,6 @@ class APIContract(CloudClient):
                     -limit
                     -market
         :param order_id: Order ID(order_id or client_order_id must give one)
-        :param client_order_id: Client order ID(order_id or client_order_id must give one)
         :param executive_price: Execution price for plan order, mandatory when type = limit
         :return:
         """
@@ -786,3 +824,69 @@ class APIContract(CloudClient):
             param['category'] = category
 
         return self._request_with_params(POST, API_CONTRACT_MODIFY_TP_SL_ORDER_URL, param, Auth.SIGNED)
+
+    def post_submit_trail_order(self, contract_symbol: str, side: int, leverage: str, open_type: str,
+                                size: int, activation_price: str, callback_rate: str, activation_price_type: int):
+        """Submit Trail Order (SIGNED)
+        Applicable for placing contract trail orders
+
+        POST /contract/private/submit-trail-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param side: Order side
+                    -1=buy_open_long
+                    -2=buy_close_short
+                    -3=sell_close_long
+                    -4=sell_open_short
+        :param leverage: Order leverage
+        :param open_type: Open type, required at close position
+                        -cross
+                        -isolated
+        :param size: Order size (Number of contracts)
+        :param activation_price: Activation price, required at trailing order
+        :param callback_rate: Callback rate, required at trailing order, min 0.1, max 5 where 1 for 1%
+        :param activation_price_type: Activation price type, required at trailing order
+                                    -1=last_price
+                                    -2=fair_price
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+
+        if side:
+            param['side'] = side
+        if leverage:
+            param['leverage'] = leverage
+        if open_type:
+            param['open_type'] = open_type
+        if size:
+            param['size'] = size
+        if activation_price:
+            param['activation_price'] = activation_price
+        if callback_rate:
+            param['callback_rate'] = callback_rate
+        if activation_price_type:
+            param['activation_price_type'] = activation_price_type
+        return self._request_with_params(POST, API_CONTRACT_SUBMIT_TRAIL_ORDER_URL, param, Auth.SIGNED)
+
+    def post_cancel_trail_order(self,
+                                contract_symbol: str,
+                                order_id: str = None):
+        """Cancel Trail Order (SIGNED)
+        Applicable for canceling a specific contract trail order
+
+        POST /contract/private/cancel-trail-order
+
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param order_id: Order ID
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+
+        if order_id:
+            param['order_id'] = order_id
+        return self._request_with_params(POST, API_CONTRACT_CANCEL_TRAIL_ORDER_URL, param, Auth.SIGNED)

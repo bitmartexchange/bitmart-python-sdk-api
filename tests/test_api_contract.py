@@ -40,6 +40,12 @@ def test_get_kline():
                'code'] == 1000
 
 
+def test_get_fund_rate_history():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/public/funding-rate-history"""
+    assert contractAPI.get_fund_rate_history(contract_symbol='ETHUSDT', limit=10)[0][
+               'code'] == 1000
+
+
 # private
 
 def test_get_trade_fee_rate():
@@ -90,6 +96,12 @@ def test_get_position():
 def test_get_trades():
     """Test GET https://api-cloud-v2.bitmart.com/contract/private/trades"""
     trades = contractAPI.get_trades(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)
+    assert trades[0]['code'] == 1000
+
+
+def test_get_transaction_history():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/private/transaction-history"""
+    trades = contractAPI.get_transaction_history(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)
     assert trades[0]['code'] == 1000
 
 
@@ -189,7 +201,6 @@ def test_post_modify_plan_order():
     assert \
         contractAPI.post_modify_plan_order(
             contract_symbol='BTCUSDT',
-            client_order_id="12314323424",
             trigger_price="2000",
             executive_price="1450",
             price_type=1,
@@ -222,3 +233,18 @@ def test_post_modify_tp_sl_order():
             plan_category=2,
             category="limit",
         )[0]['code'] == 1000
+
+
+def test_post_submit_trail_order():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/submit-trail-order"""
+    response = contractAPI.post_submit_trail_order(contract_symbol='BTCUSDT', side=4, leverage='20',
+                                                   open_type='cross', size=10, activation_price='20000',
+                                                   callback_rate='1', activation_price_type=1)
+    assert response[0]['code'] == 1000
+
+
+def test_post_cancel_trail_order():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/cancel-trail-order"""
+    assert \
+        contractAPI.post_cancel_trail_order(contract_symbol='ETHUSDT')[0][
+            'code'] == 1000
