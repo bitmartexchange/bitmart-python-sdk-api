@@ -2,6 +2,12 @@ Changelog
 =========================
 
 
+### v2.3.1 Release
+#### Bug Fixes
+- Fix the issue that Spot WebSocket login failure
+
+---
+
 ### v2.3.0 Release
 #### New Features
 - New
@@ -13,6 +19,7 @@ Changelog
     - `/contract/private/submit-order` Submit Order (SIGNED): Remove the Request Parameters related replacing trail orders
     - `/contract/private/modify-plan-order` Modify Plan Order (SIGNED): Remove the Request Parameters **client_order_id**
 
+---
 
 ### v2.2.1 Release
 #### Improvements
