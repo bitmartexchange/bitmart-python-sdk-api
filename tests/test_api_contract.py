@@ -1,4 +1,5 @@
 import logging
+import time
 
 from bitmart.api_contract import APIContract
 from bitmart.lib import cloud_consts
@@ -36,8 +37,20 @@ def test_get_funding_rate():
 
 def test_get_kline():
     """Test GET https://api-cloud-v2.bitmart.com/contract/public/kline"""
-    assert contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=1662518172, end_time=1662518172)[0][
+    end_time = int(time.time())
+    start_time = end_time - 3600
+    assert contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=start_time, end_time=end_time)[0][
                'code'] == 1000
+
+
+def test_get_mark_price_kline():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/public/markprice-kline"""
+    end_time = int(time.time())
+    start_time = end_time - 3600
+    assert \
+        contractAPI.get_mark_price_kline(contract_symbol='ETHUSDT', step=5, start_time=start_time, end_time=end_time)[
+            0][
+            'code'] == 1000
 
 
 def test_get_fund_rate_history():

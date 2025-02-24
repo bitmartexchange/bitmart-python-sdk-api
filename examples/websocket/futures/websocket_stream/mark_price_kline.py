@@ -18,22 +18,22 @@ my_client = FuturesSocketClient(stream_url=FUTURES_PUBLIC_WS_URL,
 # Example 1:
 
 # Subscribe to a single symbol stream
-my_client.subscribe(args="futures/ticker:BTCUSDT")
+my_client.subscribe(args="futures/markPriceKlineBin1m:BTCUSDT")
 
 time.sleep(2)
 
 # Unsubscribe
-my_client.unsubscribe(args="futures/ticker:BTCUSDT")
+my_client.unsubscribe(args="futures/markPriceKlineBin1m:BTCUSDT")
 
 time.sleep(5)
 # Example 2:
 # Send the original subscription message
-my_client.send({"action": "subscribe", "args": ["futures/ticker:BTCUSDT"]})
+my_client.send({"action": "subscribe", "args": ["futures/markPriceKlineBin1m:BTCUSDT"]})
 
 time.sleep(2)
 
 # Unsubscribe
-my_client.send({"action": "unsubscribe", "args": ["futures/ticker:BTCUSDT"]})
+my_client.send({"action": "unsubscribe", "args": ["futures/markPriceKlineBin1m:BTCUSDT"]})
 
 # Stop
 # my_client.stop()

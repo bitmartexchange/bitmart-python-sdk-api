@@ -12,13 +12,13 @@ logger = logging.getLogger(__name__)
 contractAPI = APIContract(logger=logger)
 
 try:
-    before = int(time.time())
-    after = before + 3600
+    end_time = int(time.time())
+    start_time = end_time - 3600
     response = contractAPI.get_kline(
         contract_symbol='BTCUSDT',
         step=5,
-        start_time=before,
-        end_time=after
+        start_time=start_time,
+        end_time=end_time
     )[0]
     logger.info(response)
 except APIException as error:

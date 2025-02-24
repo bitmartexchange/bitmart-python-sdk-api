@@ -15,13 +15,13 @@ spotAPI = APISpot(api_key="Your_Api_Key",
                   logger=logger)
 
 try:
-    before = int(time.time()) * 1000
-    after = before + 3600
+    start_time = int(time.time()) * 1000
+    end_time = start_time + 3600 * 1000
     response = spotAPI.v4_query_open_orders(
         symbol='BTC_USDT',
         order_mode='spot',
-        start_time=before,
-        end_time=after,
+        start_time=start_time,
+        end_time=end_time,
         limit=10,
         recv_window=5000)[0]
     logger.info(response)

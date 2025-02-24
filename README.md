@@ -282,22 +282,22 @@ if __name__ == '__main__':
 
     # Example 1:
     # Subscribe to a single symbol stream
-    my_client.subscribe(args="futures/ticker")
+    my_client.subscribe(args="futures/ticker:BTCUSDT")
 
     time.sleep(2)
 
     # Unsubscribe
-    my_client.unsubscribe(args="futures/ticker")
+    my_client.unsubscribe(args="futures/ticker:BTCUSDT")
 
     time.sleep(5)
     # Example 2:
     # Send the original subscription message
-    my_client.send({"action": "subscribe", "args": ["futures/ticker"]})
+    my_client.send({"action": "subscribe", "args": ["futures/ticker:BTCUSDT"]})
 
     time.sleep(2)
 
     # Unsubscribe
-    my_client.send({"action": "unsubscribe", "args": ["futures/ticker"]})
+    my_client.send({"action": "unsubscribe", "args": ["futures/ticker:BTCUSDT"]})
 
     # Stop
     # my_client.stop()

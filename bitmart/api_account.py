@@ -15,15 +15,20 @@ class APIAccount(CloudClient):
         """
         CloudClient.__init__(self, api_key, secret_key, memo, url, timeout, headers, logger)
 
-    def get_currencies(self):
+    def get_currencies(self, currencies: str = None):
         """Get Currencies
         Gets the currency of the asset for withdrawal
 
         GET https://api-cloud.bitmart.com/account/v1/currencies
 
+        :param currencies: Single query, such as BTC; multiple queries, such as BTC,ETH,BMX, can have a maximum of 20.
         :return:
         """
-        return self._request_without_params(GET, API_ACCOUNT_CURRENCIES_URL)
+        param = {}
+
+        if currencies:
+            param['currencies'] = currencies
+        return self._request_with_params(GET, API_ACCOUNT_CURRENCIES_URL, param)
 
     def get_wallet(self, currency: str = None):
         """Get Account Balance (KEYED)
@@ -54,6 +59,17 @@ class APIAccount(CloudClient):
             'currency': currency
         }
         return self._request_with_params(GET, API_ACCOUNT_DEPOSIT_ADDRESS_URL, param, Auth.KEYED)
+
+    def get_withdraw_address(self):
+        """Withdraw Address (KEYED)
+        Gets Withdraw Address List
+
+        GET https://api-cloud.bitmart.com/account/v1/withdraw/address/list
+
+        :return:
+        """
+        param = {}
+        return self._request_with_params(GET, API_ACCOUNT_WITHDRAW_ADDRESS_URL, param, Auth.KEYED)
 
     def get_withdraw_charge(self, currency: str):
         """Withdraw Quota (KEYED)
@@ -113,7 +129,7 @@ class APIAccount(CloudClient):
 
         return self._request_with_params(POST, API_ACCOUNT_WITHDRAW_APPLY_URL, param, Auth.SIGNED)
 
-    def get_deposit_withdraw_history_v2(self, operation_type: str, n: int, currency: str = None):
+    def get_deposit_withdraw_history_v2(self, operation_type: str, n: int, currency: str = None, start_time: int = None, end_time: int = None):
         """Get Deposit And Withdraw History (KEYED)
         Search for all existed withdraws and deposits and return their latest status.
 
@@ -124,6 +140,8 @@ class APIAccount(CloudClient):
         :param operation_type: type
                     -deposit=deposit
                     -withdraw=withdraw
+        :param start_time: Default: 90 days from current timestamp (milliseconds)
+        :param end_time: Default: present timestamp (milliseconds)
         :param n: Recent N records (value range 1-100)
         :return:
         """
@@ -134,6 +152,12 @@ class APIAccount(CloudClient):
 
         if currency:
             param['currency'] = currency
+
+        if start_time:
+            param['startTime'] = start_time
+
+        if end_time:
+            param['endTime'] = end_time
 
         return self._request_with_params(GET, API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_V2_URL, param, Auth.KEYED)
 

@@ -2,6 +2,18 @@ Changelog
 =========================
 
 
+### v2.4.0 Release
+#### New Features
+- New
+    - `/account/v1/withdraw/address/list` Withdraw Address (KEYED)
+    - `/contract/public/markprice-kline` Get MarkPrice K-line
+- Update
+    - `/account/v1/currencies` Get Currencies: Add new request field **currencies**
+    - `/account/v2/deposit-withdraw/history` Get Deposit And Withdraw History (KEYED): Add new request field **startTime** and **endTime**
+
+
+---
+
 ### v2.3.1 Release
 #### Bug Fixes
 - Fix the issue that Spot WebSocket login failure

@@ -24,8 +24,8 @@ except APIException as error:
     )
 
 try:
-    before = int(time.time())
-    after = before + 3600
+    before = int(time.time()) * 1000
+    after = before + 3600 * 1000
     response = futuresAPI.get_transaction_history(
         contract_symbol='BTCUSDT',
         start_time=before,
