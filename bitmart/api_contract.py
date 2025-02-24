@@ -87,6 +87,27 @@ class APIContract(CloudClient):
         }
         return self._request_with_params(GET, API_CONTRACT_KLINE_URL, param)
 
+    def get_mark_price_kline(self, contract_symbol: str, step: int, start_time: int, end_time: int):
+        """Get MarkPrice K-line
+        Applicable for querying MarkPrice K-line data. Single time request size upper limit 500
+
+        GET /contract/public/markprice-kline
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param step: K-Line step, default is 1 minute. step: 1, 3, 5, 15, 30, 60, 120, 240, 360, 720, 1440, 4320, 10080
+        :param start_time: Start time. Timestamps need to be in seconds
+        :param end_time: End time. Timestamps need to be in seconds
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'step': step,
+            'start_time': start_time,
+            'end_time': end_time
+        }
+        return self._request_with_params(GET, API_CONTRACT_MARK_PRICE_KLINE_URL, param)
+
+
     def get_fund_rate_history(self, contract_symbol: str, limit: int = None):
         """Get Funding Rate History
         Applicable for querying funding rate history data

@@ -13,7 +13,7 @@ accountAPI = APIAccount(api_key="Your_Api_Key",
                         logger=logger)
 
 try:
-    response = accountAPI.get_currencies()[0]
+    response = accountAPI.get_withdraw_address()[0]
     logger.info(response)
 except APIException as error:
     logger.error(
@@ -22,12 +22,5 @@ except APIException as error:
         )
     )
 
-try:
-    response = accountAPI.get_currencies(currencies='BTC,ETH')[0]
-    logger.info(response)
-except APIException as error:
-    logger.error(
-        "Found error. status: {}, error message: {}".format(
-            error.status_code, error.response
-        )
-    )
+
+

@@ -1,3 +1,5 @@
+import time
+
 from bitmart.api_account import APIAccount
 from tests import data as data
 
@@ -8,6 +10,7 @@ accountAPI = APIAccount(data.api_key, data.secret_key, data.memo, data.url)
 def test_get_currencies():
     """Test GET https://api-cloud.bitmart.com/account/v1/currencie"""
     assert accountAPI.get_currencies()[0]['code'] == 1000
+    assert accountAPI.get_currencies(currencies='BTC,ETH')[0]['code'] == 1000
 
 
 def test_get_wallet():
@@ -18,6 +21,10 @@ def test_get_wallet():
 def test_get_deposit_address():
     """Test GET https://api-cloud.bitmart.com/account/v1/deposit/address"""
     assert accountAPI.get_deposit_address(currency='USDT-ERC20')[0]['code'] == 1000
+
+def test_get_withdraw_address():
+    """Test GET https://api-cloud.bitmart.com/account/v1/withdraw/address/list"""
+    assert accountAPI.get_withdraw_address()[0]['code'] == 1000
 
 
 def test_get_withdraw_charge():
@@ -34,8 +41,10 @@ def test_post_withdraw_apply():
 
 def test_get_deposit_withdraw_history_v2():
     """Test GET https://api-cloud.bitmart.com/account/v2/deposit-withdraw/history"""
+    after = int(time.time())
+    before = after - 3600
     assert accountAPI.get_deposit_withdraw_history_v2(
-        currency='USDT-ERC20', operationType='withdraw', N=10)[0]['code'] == 1000
+        currency='USDT-ERC20', operation_type='withdraw', n=10, start_time=before, end_time=after)[0]['code'] == 1000
 
 
 def test_get_deposit_withdraw_detail():
