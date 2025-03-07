@@ -193,6 +193,7 @@ Please find [examples/websocket/spot/websocket_stream](https://github.com/bitmar
 
 #### Futures Public API Example
 ```python
+import time
 from bitmart.api_contract import APIContract
 
 if __name__ == '__main__':
@@ -215,7 +216,9 @@ if __name__ == '__main__':
     print("response:", response[0])
 
     # querying K-line data
-    response = contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=1662518172, end_time=1662518172)
+    end_time = int(time.time())
+    start_time = end_time - 3600
+    response = contractAPI.get_kline(contract_symbol='ETHUSDT', step=5, start_time=start_time, end_time=end_time)
     print("response:", response[0])
 ```
 
@@ -394,7 +397,7 @@ the default domain name is `https://api-cloud.bitmart.com`.
 from bitmart.api_spot import APISpot
 from bitmart.api_contract import APIContract
 spotAPI = APISpot(url='https://api-cloud.bitmart.com')
-contractAPI = APIContract(url='https://api-cloud.bitmart.com')
+contractAPI = APIContract(url='https://api-cloud-v2.bitmart.com')
 ```
 
 

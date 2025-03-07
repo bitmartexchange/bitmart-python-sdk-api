@@ -107,7 +107,6 @@ class APIContract(CloudClient):
         }
         return self._request_with_params(GET, API_CONTRACT_MARK_PRICE_KLINE_URL, param)
 
-
     def get_fund_rate_history(self, contract_symbol: str, limit: int = None):
         """Get Funding Rate History
         Applicable for querying funding rate history data
@@ -375,7 +374,8 @@ class APIContract(CloudClient):
                           type: str = None, side: int = None, leverage: str = None, open_type: str = None,
                           mode: int = None, price: str = None, size: int = None,
                           preset_take_profit_price_type: int = None, preset_stop_loss_price_type: int = None,
-                          preset_take_profit_price: str = None, preset_stop_loss_price: str = None
+                          preset_take_profit_price: str = None, preset_stop_loss_price: str = None,
+                          stp_mode: int = None
                           ):
         """Submit Order (SIGNED)
         Applicable for placing contract orders
@@ -412,6 +412,10 @@ class APIContract(CloudClient):
                                             -2=fair_price
         :param preset_take_profit_price: Pre-set TP price
         :param preset_stop_loss_price: Pre-set SL price
+        :param stp_mode: Self Trading Protection
+                        -1=cancel_maker(default)
+                        -2=cancel_taker
+                        -3=cancel_both
         :return:
         """
         param = {
@@ -442,7 +446,37 @@ class APIContract(CloudClient):
             param['preset_take_profit_price'] = preset_take_profit_price
         if preset_stop_loss_price:
             param['preset_stop_loss_price'] = preset_stop_loss_price
+        if stp_mode:
+            param['stp_mode'] = stp_mode
         return self._request_with_params(POST, API_CONTRACT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
+
+    def post_modify_limit_order(self, contract_symbol: str, client_order_id: str = None,
+                                order_id: int = None, price: str = None, size: str = None):
+        """Modify Limit Order (SIGNED)
+        Applicable for modifying contract limit orders
+
+        POST /contract/private/modify-limit-order
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param order_id: Order ID(order_id or client_order_id must give one)
+        :param client_order_id: Client-defined OrderId(A combination of numbers and letters, less than 32 bits)
+        :param price: Order Price（price or size must give one）
+        :param size: Order Size（size or price must give one）
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+
+        if order_id:
+            param['order_id'] = order_id
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+        if price:
+            param['price'] = price
+        if size:
+            param['size'] = size
+        return self._request_with_params(POST, API_CONTRACT_MODIFY_LIMIT_ORDER_URL, param, Auth.SIGNED)
 
     def post_cancel_order(self,
                           contract_symbol: str,

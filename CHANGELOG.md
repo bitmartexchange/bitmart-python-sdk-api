@@ -2,6 +2,18 @@ Changelog
 =========================
 
 
+### v2.4.1 Release
+#### New Features
+- New
+    - `/contract/private/modify-limit-order` Modify Limit Order (SIGNED)
+- Update
+    - `/contract/private/submit-order` Submit Order (SIGNED): Add new request field **stp_mode**
+#### Improvements
+- Logging: Added daily polling log files
+- Websocket: Output detailed log when exception occurs；Add a sample to subscribe to 1000 topics
+
+---
+
 ### v2.4.0 Release
 #### New Features
 - New
