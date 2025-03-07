@@ -9,7 +9,7 @@ from tests import data as data
 # contract api
 config_logging(logging, logging.DEBUG)
 logger = logging.getLogger(__name__)
-contractAPI = APIContract(api_key=data.api_key, secret_key=data.secret_key, memo=data.memo, logger=logger)
+contractAPI = APIContract(api_key=data.api_key, secret_key=data.secret_key, memo=data.memo, url=data.url, logger=logger)
 
 
 # contractAPI = APIContract(timeout=(2,10))
@@ -126,9 +126,16 @@ def test_get_transfer_list():
 
 def test_post_submit_order():
     """Test POST https://api-cloud-v2.bitmart.com/contract/private/submit-order"""
-    response = contractAPI.post_submit_order(contract_symbol='BTCUSDT', side=4, type='limit', leverage='1',
+    response = contractAPI.post_submit_order(contract_symbol='BTCUSDT', side=1, type='limit', leverage='20',
                                              open_type='isolated',
-                                             size=10, price='20000', mode=1)
+                                             size=1, price='78000', mode=1, stp_mode=2)
+    print(response)
+    assert response[0]['code'] == 1000
+
+
+def test_post_modify_limit_order():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/modify-limit-order"""
+    response = contractAPI.post_modify_limit_order(contract_symbol='BTCUSDT', order_id=62970000003, price='77000')
     assert response[0]['code'] == 1000
 
 

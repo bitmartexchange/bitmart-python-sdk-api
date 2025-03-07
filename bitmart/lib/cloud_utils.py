@@ -1,7 +1,9 @@
 import hmac
 import datetime
+import os
 import time
 import zlib
+from logging.handlers import TimedRotatingFileHandler
 
 from bitmart.lib import cloud_consts as c
 
@@ -60,21 +62,46 @@ def inflate(data):
 
 
 def config_logging(logging, logging_level, log_file: str = None):
-    """Configures logging to provide a more detailed log format, which includes date time in UTC
-    Example: 2021-11-02 19:42:04.849 UTC <logging_level> <log_name>: <log_message>
+    """Configures logging with UTC timestamp and optional daily rotating log files.
+
+    Example log format:
+        2025-03-07 19:42:04.849 UTC DEBUG my_logger: Log message
 
     Args:
-        logging: python logging
-        logging_level (int/str): For logging to include all messages with log levels >= logging_level. Ex: 10 or "DEBUG"
-                                 logging level should be based on https://docs.python.org/3/library/logging.html#logging-levels
-    Keyword Args:
-        log_file (str, optional): The filename to pass the logging to a file, instead of using console. Default filemode: "a"
+        logging: Python logging module
+        logging_level (int/str): Log level (e.g., 10 for DEBUG, 20 for INFO)
+        log_file (str, optional): Base filename for logs (e.g., "my_log.log"). If provided, logs will rotate daily.
     """
 
-    logging.Formatter.converter = time.gmtime  # date time in GMT/UTC
-    logging.basicConfig(
-        level=logging_level,
-        filename=log_file,
-        format="%(asctime)s.%(msecs)03d UTC %(levelname)s %(name)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
+    # Set UTC time format
+    logging.Formatter.converter = time.gmtime
+
+    # Define log format
+    log_format = "%(asctime)s.%(msecs)03d UTC %(levelname)s %(name)s: %(message)s"
+    date_format = "%Y-%m-%d %H:%M:%S"
+
+    # Create log formatter
+    formatter = logging.Formatter(fmt=log_format, datefmt=date_format)
+
+    # Configure logging to console
+    logging.basicConfig(level=logging_level, format=log_format, datefmt=date_format)
+
+    # If a log file is provided, enable daily log rotation
+    if log_file:
+        log_dir = os.path.dirname(log_file) or "."  # Ensure log directory exists
+        os.makedirs(log_dir, exist_ok=True)
+
+        # Create a rotating file handler (daily rotation)
+        file_handler = TimedRotatingFileHandler(
+            filename=log_file,  # This will be the base filename
+            when="midnight",  # Rotate at midnight
+            interval=1,  # Rotate every 1 day
+            backupCount=30,  # Keep the last 7 days of logs
+            encoding="utf-8",  # Support Unicode logs
+            utc=True  # Use UTC for time-based rotation
+        )
+
+        file_handler.setFormatter(formatter)
+        file_handler.suffix = "%Y-%m-%d"  # Filename suffix pattern
+        logging.getLogger().addHandler(file_handler)
+
