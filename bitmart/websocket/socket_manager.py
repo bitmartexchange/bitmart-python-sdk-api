@@ -18,6 +18,7 @@ class SocketManager(threading.Thread):
     def __init__(
         self,
         stream_url,
+        prefix_name=None,
         on_receive=None,
         on_open=None,
         on_close=None,
@@ -29,7 +30,7 @@ class SocketManager(threading.Thread):
         timeout=None,
     ):
         threading.Thread.__init__(self)
-        self.name = f"WSClient-{uuid.uuid4().hex[:8]}"
+        self.name = f"Ws{prefix_name}Client-{uuid.uuid4().hex[:8]}"
         if not logger:
             logger = logging.getLogger(__name__)
         self.logger = logger
@@ -116,11 +117,11 @@ class SocketManager(threading.Thread):
             self._handle_data(op_code, frame)
 
             if op_code == ABNF.OPCODE_CLOSE:
-                self.logger.warning(
+                self.logger.error(
                     f"[{self.name}] CLOSE frame received, closing websocket connection"
                 )
-                self._callback(self.on_close, f"[{self.name}] CLOSE frame received, closing websocket connection")
-                break
+                self.on_reconnect()
+                continue
 
     def _handle_data(self, op_code, frame):
         if op_code == ABNF.OPCODE_TEXT:

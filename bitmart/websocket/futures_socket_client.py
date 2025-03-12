@@ -37,6 +37,7 @@ class FuturesSocketClient:
         self.logger = logger
         self.socket_manager = SocketManager(
             stream_url,
+            prefix_name="Futures",
             on_receive=self.receive,
             on_open=on_open,
             on_close=on_close,
@@ -58,7 +59,7 @@ class FuturesSocketClient:
 
         # start the thread
         self.socket_manager.start()
-        self.logger.debug("BitMart Futures WebSocket Client started.")
+        self.logger.debug(f"[{self.socket_manager.name}] Running...")
 
         # Start the ping timer
         self.ping_interval = ping_interval
@@ -92,7 +93,7 @@ class FuturesSocketClient:
 
     def receive(self, message):
         message_data = json.loads(message)
-        self.logger.debug(f"Futures WebSocket Client received => {message_data}")
+        # self.logger.debug(f"[{self.socket_manager.name}] Received Text Message: {message_data}")
 
         if self.reconnectionUseLogin:
             action = message_data.get("action")
@@ -100,7 +101,7 @@ class FuturesSocketClient:
             # {'action': 'access', 'success': True}
             # {'action': 'access', 'success': False, 'error': 'access failed: **'}
             if action == "access" and success is False:
-                self.logger.error(f"Futures WebSocket Client Stop Reason=>{message_data}")
+                self.logger.error(f"[{self.socket_manager.name}] Connection Stop Reason=>{message_data}")
                 self.__close()
 
         self.on_message(message_data)
@@ -126,7 +127,7 @@ class FuturesSocketClient:
 
     def ping(self):
         if self.socket_manager.ping('{"action":"ping"}'):
-            self.logger.debug("Sending text '{\"action\":\"ping\"}' to BitMart WebSocket Server")
+            self.logger.debug(f"[{self.socket_manager.name}] Sending Message '\\\\{{\"action\":\"ping\"}}'")
 
     def stop(self):
         self.__close()
@@ -141,7 +142,7 @@ class FuturesSocketClient:
             return
 
         self.logger.debug(
-            f"WebSocket Client Reconnection to: {self.stream_url}",
+            f"[{self.socket_manager.name}] Reconnection to: {self.stream_url}",
         )
 
         # time.sleep(2)
