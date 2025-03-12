@@ -2,6 +2,14 @@ Changelog
 =========================
 
 
+### v2.4.2 Release
+#### Improvements
+- Websocket: Add a name field to the WebSocket client.
+- Websocket: When the client receives a close frame from the server, it should reconnect.
+
+
+---
+
 ### v2.4.1 Release
 #### New Features
 - New

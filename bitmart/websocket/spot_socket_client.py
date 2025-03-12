@@ -36,6 +36,7 @@ class SpotSocketClient:
         self.logger = logger
         self.socket_manager = SocketManager(
             stream_url,
+            prefix_name="Spot",
             on_receive=self.receive,
             on_open=on_open,
             on_close=on_close,
@@ -57,7 +58,7 @@ class SpotSocketClient:
 
         # start the thread
         self.socket_manager.start()
-        self.logger.debug(f"[{self.socket_manager.name}] BitMart Spot WebSocket Client started.")
+        self.logger.debug(f"[{self.socket_manager.name}] Running...")
 
         # Start the ping timer
         self.ping_interval = ping_interval
@@ -91,7 +92,7 @@ class SpotSocketClient:
 
     def receive(self, message):
         if message == "pong":
-            self.logger.debug(f"[{self.socket_manager.name}] Spot WebSocket Client received text 'pong'")
+            self.logger.debug(f"[{self.socket_manager.name}] Received Text Message 'pong'")
             return
 
         message_data = json.loads(message)
@@ -125,7 +126,7 @@ class SpotSocketClient:
 
     def ping(self):
         if self.socket_manager.ping('ping'):
-            self.logger.debug(f"[{self.socket_manager.name}] Sending text 'ping' to BitMart WebSocket Server")
+            self.logger.debug(f"[{self.socket_manager.name}] Sending Message 'ping'")
 
     def stop(self):
         self.__close()
@@ -140,7 +141,7 @@ class SpotSocketClient:
             return
 
         self.logger.debug(
-            f"[{self.socket_manager.name}] WebSocket Client Reconnection to: {self.stream_url}",
+            f"[{self.socket_manager.name}] Reconnection to: {self.stream_url}",
         )
 
         self.socket_manager.reconnect()
