@@ -30,7 +30,7 @@ class APIAccount(CloudClient):
             param['currencies'] = currencies
         return self._request_with_params(GET, API_ACCOUNT_CURRENCIES_URL, param)
 
-    def get_wallet(self, currency: str = None, need_usd_valuation: str = None):
+    def get_wallet(self, currency: str = None, need_usd_valuation: bool = None):
         """Get Account Balance (KEYED)
         Gets Account Balance
 
@@ -44,9 +44,9 @@ class APIAccount(CloudClient):
 
         if currency:
             param['currency'] = currency
-        if need_usd_valuation:
-            param['needUsdValuation'] = need_usd_valuation
 
+        if need_usd_valuation is not None:
+            param['needUsdValuation'] = 'true' if need_usd_valuation else 'false'    
         return self._request_with_params(GET, API_ACCOUNT_WALLET_URL, param, Auth.KEYED)
 
     def get_deposit_address(self, currency: str):

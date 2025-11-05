@@ -36,7 +36,7 @@ except APIException as error:
     )
 
 try:
-    response = accountAPI.get_wallet(currency='BTC', need_usd_valuation='true')[0]
+    response = accountAPI.get_wallet(currency='BTC', need_usd_valuation=True)[0]
     logger.info(response)
 except APIException as error:
     logger.error(
