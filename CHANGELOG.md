@@ -17,6 +17,9 @@ Changelog
     - `/contract/private/position-risk` Get Current Position Risk Details(KEYED): Add new request field **account**
     - `/contract/private/trades` Get Order Trade (KEYED): Add new request field **account**, request field **symbol** changed to optional
     - `/contract/private/transaction-history` Get Transaction History (KEYED): Add new request field **account**
+    - `/account/v1/wallet` Get Account Balance (KEYED): Add new request field **needUsdValuation**
+    - `/spot/v4/batch_orders` New Batch Order(v4) (SIGNED): Add new request field **stpMode**
+    - `/spot/v2/submit_order` New Order(v2) (SIGNED): Add new request field **stpMode**
 
 
 ---

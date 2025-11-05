@@ -35,3 +35,13 @@ except APIException as error:
         )
     )
 
+try:
+    response = accountAPI.get_wallet(currency='BTC', need_usd_valuation='true')[0]
+    logger.info(response)
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )
+

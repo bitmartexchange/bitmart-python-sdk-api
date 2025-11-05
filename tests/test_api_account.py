@@ -16,6 +16,7 @@ def test_get_currencies():
 def test_get_wallet():
     """Test GET https://api-cloud.bitmart.com/account/v1/wallet"""
     assert accountAPI.get_wallet(currency='BTC')[0]['code'] == 1000
+    assert accountAPI.get_wallet(currency='BTC', need_usd_valuation='true')[0]['code'] == 1000
 
 
 def test_get_deposit_address():

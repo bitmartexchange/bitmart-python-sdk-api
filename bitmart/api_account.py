@@ -30,19 +30,22 @@ class APIAccount(CloudClient):
             param['currencies'] = currencies
         return self._request_with_params(GET, API_ACCOUNT_CURRENCIES_URL, param)
 
-    def get_wallet(self, currency: str = None):
+    def get_wallet(self, currency: str = None, need_usd_valuation: str = None):
         """Get Account Balance (KEYED)
         Gets Account Balance
 
         GET https://api-cloud.bitmart.com/account/v1/wallet
 
         :param currency: Token symbol, e.g., 'BTC'
+        :param need_usd_valuation: Whether to return USD valuation, e.g., 'true' or 'false'
         :return:
         """
         param = {}
 
         if currency:
             param['currency'] = currency
+        if need_usd_valuation:
+            param['needUsdValuation'] = need_usd_valuation
 
         return self._request_with_params(GET, API_ACCOUNT_WALLET_URL, param, Auth.KEYED)
 

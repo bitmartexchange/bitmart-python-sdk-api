@@ -72,6 +72,9 @@ def test_post_submit_order():
     """Test POST https://api-cloud.bitmart.com/spot/v2/submit_order"""
     assert spotAPI.post_submit_order(symbol='BTC_USDT', side='buy', type='limit', size='0.01', price='8800')[0][
                'code'] == 1000
+    assert spotAPI.post_submit_order(symbol='BTC_USDT', side='buy', type='limit', size='0.01', price='8800',
+                                     stp_mode='cancel_maker')[0][
+               'code'] == 1000
 
 
 def test_margin_order():
@@ -82,8 +85,12 @@ def test_margin_order():
 
 def test_post_batch_orders():
     """Test POST https://api-cloud.bitmart.com/spot/v4/batch_orders"""
-    order_params = [{"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"},
-                    {"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800"}]
+    order_params = [
+        {"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800",
+         "stpMode": "cancel_maker"},
+        {"symbol": "BTC_USDT", "side": "buy", "type": "limit", "size": "0.01", "price": "8800",
+         "stpMode": "cancel_maker"}]
+    assert spotAPI.post_batch_orders(symbol='BTC_USDT', order_params=order_params)[0]['code'] == 1000
     assert spotAPI.post_batch_orders(symbol='BTC_USDT', order_params=order_params)[0]['code'] == 1000
 
 
