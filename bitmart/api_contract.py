@@ -151,7 +151,7 @@ class APIContract(CloudClient):
         """
         return self._request_without_params(GET, API_CONTRACT_ASSETS_DETAIL_URL, Auth.KEYED)
 
-    def get_order(self, contract_symbol: str, order_id: str):
+    def get_order(self, contract_symbol: str, order_id: str, account: str = None):
         """Get Order Detail (KEYED)
         Applicable for querying contract order detail
 
@@ -159,15 +159,19 @@ class APIContract(CloudClient):
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param order_id: Order ID
+        :param account: Account type
         :return:
         """
         param = {
             'symbol': contract_symbol,
             'order_id': order_id,
         }
+        if account:
+            param['account'] = account
         return self._request_with_params(GET, API_CONTRACT_ORDER_URL, param, Auth.KEYED)
 
-    def get_order_history(self, contract_symbol: str, start_time: int, end_time: int):
+    def get_order_history(self, contract_symbol: str, start_time: int, end_time: int, 
+                          account: str = None, order_id: str = None, client_order_id: str = None):
         """Get Order History (KEYED)
         Applicable for querying contract order history
 
@@ -176,6 +180,9 @@ class APIContract(CloudClient):
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param start_time: Start time, default is the last 7 days
         :param end_time: End time, default is the last 7 days
+        :param account: Account type
+        :param order_id: Order ID
+        :param client_order_id: Client Order ID
         :return:
         """
         param = {
@@ -183,6 +190,12 @@ class APIContract(CloudClient):
             'start_time': start_time,
             'end_time': end_time,
         }
+        if account:
+            param['account'] = account
+        if order_id:
+            param['order_id'] = order_id
+        if client_order_id:
+            param['client_order_id'] = client_order_id
         return self._request_with_params(GET, API_CONTRACT_ORDER_HISTORY_URL, param, Auth.KEYED)
 
     def get_open_order(self, contract_symbol: str = None, type=None, order_state=None, limit=None):
@@ -250,7 +263,7 @@ class APIContract(CloudClient):
             param['plan_type'] = plan_type
         return self._request_with_params(GET, API_CONTRACT_CURRENT_PLAN_ORDER_URL, param, Auth.KEYED)
 
-    def get_position(self, contract_symbol: str = None):
+    def get_position(self, contract_symbol: str = None, account: str = None):
         """Get Current Position (KEYED)
         Applicable for checking the position details a specified contract
 
@@ -258,30 +271,36 @@ class APIContract(CloudClient):
 
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param account: Account type
         :return:
         """
         param = {}
 
         if contract_symbol:
             param['symbol'] = contract_symbol
+        if account:
+            param['account'] = account
         return self._request_with_params(GET, API_CONTRACT_POSITION_URL, param, Auth.KEYED)
 
-    def get_position_risk(self, contract_symbol: str = None):
+    def get_position_risk(self, contract_symbol: str = None, account: str = None):
         """Get Current Position Risk Details(KEYED)
         Applicable for checking the position risk details a specified contract
 
         GET /contract/private/position-risk
 
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param account: Account type
         :return:
         """
         param = {}
 
         if contract_symbol:
             param['symbol'] = contract_symbol
+        if account:
+            param['account'] = account
         return self._request_with_params(GET, API_CONTRACT_POSITION_RISK_URL, param, Auth.KEYED)
 
-    def get_trades(self, contract_symbol: str, start_time: int = None, end_time: int = None):
+    def get_trades(self, contract_symbol: str = None, start_time: int = None, end_time: int = None, account: str = None):
         """Get Order Trade (KEYED)
         Applicable for querying contract order trade detail
 
@@ -290,21 +309,24 @@ class APIContract(CloudClient):
         :param contract_symbol: Symbol of the contract(like BTCUSDT)
         :param start_time: Start time, default is the last 7 days
         :param end_time: End time, default is the last 7 days
+        :param account: Account type
         :return:
         """
-        param = {
-            'symbol': contract_symbol,
-        }
+        param = {}
 
+        if contract_symbol:
+            param['symbol'] = contract_symbol
         if start_time:
             param['start_time'] = start_time
         if end_time:
             param['end_time'] = end_time
+        if account:
+            param['account'] = account
 
         return self._request_with_params(GET, API_CONTRACT_TRADES_URL, param, Auth.KEYED)
 
     def get_transaction_history(self, contract_symbol: str = None, flow_type: int = None, start_time: int = None,
-                                end_time: int = None, page_size: int = None):
+                                end_time: int = None, page_size: int = None, account: str = None):
         """Get Transaction History (KEYED)
         Applicable for querying futures transaction history
 
@@ -321,6 +343,7 @@ class APIContract(CloudClient):
         :param start_time: Start time, Start time, timestamp in ms
         :param end_time: End time, timestamp in ms
         :param page_size: Default 100; max 1000
+        :param account: Account type
         :return:
         """
         param = {}
@@ -334,6 +357,8 @@ class APIContract(CloudClient):
             param['end_time'] = end_time
         if page_size:
             param['page_size'] = page_size
+        if account:
+            param['account'] = account
         return self._request_with_params(GET, API_CONTRACT_TRANSACTION_HISTORY_URL, param, Auth.KEYED)
 
     def get_transfer_list(self, page: int, limit: int, currency=None, time_start=None, time_end=None, recv_window=None):
@@ -945,3 +970,93 @@ class APIContract(CloudClient):
         if order_id:
             param['order_id'] = order_id
         return self._request_with_params(POST, API_CONTRACT_CANCEL_TRAIL_ORDER_URL, param, Auth.SIGNED)
+
+    def post_cancel_all_after(self, contract_symbol: str, timeout: int):
+        """Cancel All After (SIGNED)
+        Applicable for canceling all contract orders timed
+
+        POST /contract/private/cancel-all-after
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param timeout: Timeout in seconds
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+            'timeout': timeout,
+        }
+        return self._request_with_params(POST, API_CONTRACT_CANCEL_ALL_AFTER_URL, param, Auth.SIGNED)
+
+    def get_position_mode(self):
+        """Get Position Mode (KEYED)
+        Applicable for querying position mode
+
+        GET /contract/private/get-position-mode
+
+        :return:
+        """
+        return self._request_without_params(GET, API_CONTRACT_GET_POSITION_MODE_URL, Auth.KEYED)
+
+    def post_set_position_mode(self, position_mode: str):
+        """Set Position Mode (SIGNED)
+        Applicable for setting position mode
+
+        POST /contract/private/set-position-mode
+
+        :param position_mode: Position mode (one_way_mode or hedge_mode)
+        :return:
+        """
+        param = {
+            'position_mode': position_mode,
+        }
+        return self._request_with_params(POST, API_CONTRACT_SET_POSITION_MODE_URL, param, Auth.SIGNED)
+
+    def get_position_v2(self, contract_symbol: str = None, account: str = None):
+        """Get Current Position V2 (KEYED)
+        Applicable for querying current position v2
+
+        GET /contract/private/position-v2
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param account: Account type
+        :return:
+        """
+        param = {}
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+        if account:
+            param['account'] = account
+        return self._request_with_params(GET, API_CONTRACT_POSITION_V2_URL, param, Auth.KEYED)
+
+    def get_leverage_bracket(self, contract_symbol: str = None):
+        """Get Current Leverage Risk Limit
+        Applicable for querying current leverage risk limit
+
+        GET /contract/public/leverage-bracket
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :return:
+        """
+        param = {}
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+        return self._request_with_params(GET, API_CONTRACT_LEVERAGE_BRACKET_URL, param)
+
+    def get_market_trade(self, contract_symbol: str, limit: int = None):
+        """Query the latest trade data
+        Applicable for querying the latest trade data
+
+        GET /contract/public/market-trade
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :param limit: Count(Default 50; max 100;)
+        :return:
+        """
+        param = {
+            'symbol': contract_symbol,
+        }
+
+        if limit:
+            param['limit'] = limit
+
+        return self._request_with_params(GET, API_CONTRACT_MARKET_TRADE_URL, param)
