@@ -1,4 +1,5 @@
 import logging
+from examples.config import API_KEY, SECRET_KEY, MEMO
 import time
 
 from bitmart.lib.cloud_consts import SPOT_PUBLIC_WS_URL, SPOT_PRIVATE_WS_URL
@@ -24,9 +25,9 @@ my_client = SpotSocketClient(stream_url=SPOT_PRIVATE_WS_URL,
                              on_open=open_handler,
                              on_message=message_handler,
                              on_close=close_handler,
-                             api_memo='your_api_memo',
-                             api_key='your_api_key',
-                             api_secret_key='your_secret_key',
+                             api_memo=MEMO,
+                             api_key=API_KEY,
+                             api_secret_key=SECRET_KEY,
                              reconnection=True)
 
 my_client.login(2)

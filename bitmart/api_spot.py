@@ -195,7 +195,8 @@ class APISpot(CloudClient):
         """
         return self._request_without_params(GET, API_SPOT_WALLET_URL, Auth.KEYED)
 
-    def post_submit_order(self, symbol: str, side: str, type: str, client_order_id='', size='', price='', notional=''):
+    def post_submit_order(self, symbol: str, side: str, type: str, client_order_id='', size='', price='', notional='',
+                          stp_mode=None):
         """
         Send in a new order.
 
@@ -207,6 +208,10 @@ class APISpot(CloudClient):
         :param size: Quantity sold, required when selling at market price size
         :param price: Price
         :param notional: Quantity bought, required when buying at market price notional
+        :param stp_mode: Self Trading Protection
+                        -cancel_maker(default)
+                        -cancel_taker
+                        -cancel_both
         :return:
         """
         param = {
@@ -226,6 +231,9 @@ class APISpot(CloudClient):
 
         if notional:
             param['notional'] = notional
+
+        if stp_mode is not None:
+            param['stpMode'] = stp_mode
 
         return self._request_with_params(POST, API_SPOT_SUBMIT_ORDER_URL, param, Auth.SIGNED)
 

@@ -1,4 +1,5 @@
 import logging
+from examples.config import API_KEY, SECRET_KEY, MEMO
 import time
 
 from bitmart.lib.cloud_consts import FUTURES_PRIVATE_WS_URL
@@ -26,9 +27,9 @@ my_client = FuturesSocketClient(stream_url=FUTURES_PRIVATE_WS_URL,
                                 on_message=message_handler,
                                 on_close=close_handler,
                                 reconnection=True,
-                                api_memo='your_api_memo',
-                                api_key='your_api_key',
-                                api_secret_key='your_secret_key'
+                                api_memo=MEMO,
+                                api_key=API_KEY,
+                                api_secret_key=SECRET_KEY
                                 )
 my_client.login()
 

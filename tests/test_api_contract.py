@@ -78,11 +78,26 @@ def test_get_order():
     assert contractAPI.get_order(contract_symbol='BTCUSDT', order_id='220609666322019')[0][
                'code'] == 1000
 
+    assert contractAPI.get_order(contract_symbol='BTCUSDT', order_id='220609666322019', account='futures')[0][
+               'code'] == 1000
+
 
 def test_get_order_history():
     """Test GET https://api-cloud-v2.bitmart.com/contract/private/order-history"""
-    assert contractAPI.get_order_history(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)[0][
+    before = int(time.time())
+    after = before + 3600
+
+    assert contractAPI.get_order_history(contract_symbol='BTCUSDT', start_time=before, end_time=after)[0][
                'code'] == 1000
+
+    assert contractAPI.get_order_history(
+        contract_symbol='BTCUSDT', 
+        start_time=before,
+        end_time=after,
+        account='futures',
+        order_id='220609666322019',
+        client_order_id='client_order_123'
+    )[0]['code'] == 1000
 
 
 def test_get_open_order():
@@ -105,16 +120,37 @@ def test_get_position():
     assert contractAPI.get_position(contract_symbol='BTCUSDT')[0][
                'code'] == 1000
 
+    assert contractAPI.get_position(contract_symbol='BTCUSDT', account='futures')[0][
+               'code'] == 1000
+
+
+def test_get_position_risk():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/private/position-risk"""
+    assert contractAPI.get_position_risk(contract_symbol='BTCUSDT')[0][
+               'code'] == 1000
+
+    assert contractAPI.get_position_risk(contract_symbol='BTCUSDT', account='futures')[0][
+               'code'] == 1000
+
 
 def test_get_trades():
     """Test GET https://api-cloud-v2.bitmart.com/contract/private/trades"""
     trades = contractAPI.get_trades(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)
     assert trades[0]['code'] == 1000
 
+    trades = contractAPI.get_trades(account='futures')
+    assert trades[0]['code'] == 1000
+
+    trades = contractAPI.get_trades(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179, account='futures')
+    assert trades[0]['code'] == 1000
+
 
 def test_get_transaction_history():
     """Test GET https://api-cloud-v2.bitmart.com/contract/private/transaction-history"""
     trades = contractAPI.get_transaction_history(contract_symbol='BTCUSDT', start_time=1662368173, end_time=1662368179)
+    assert trades[0]['code'] == 1000
+
+    trades = contractAPI.get_transaction_history(contract_symbol='BTCUSDT', flow_type=1, start_time=1662368173, end_time=1662368179, account='futures')
     assert trades[0]['code'] == 1000
 
 
@@ -268,3 +304,38 @@ def test_post_cancel_trail_order():
     assert \
         contractAPI.post_cancel_trail_order(contract_symbol='ETHUSDT')[0][
             'code'] == 1000
+
+
+def test_post_cancel_all_after():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/cancel-all-after"""
+    assert contractAPI.post_cancel_all_after(contract_symbol='BTCUSDT', timeout=120)[0]['code'] == 1000
+
+
+def test_get_position_mode():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/private/get-position-mode"""
+    assert contractAPI.get_position_mode()[0]['code'] == 1000
+
+
+def test_post_set_position_mode():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/set-position-mode"""
+    assert contractAPI.post_set_position_mode(position_mode='one_way_mode')[0]['code'] == 1000
+
+
+def test_get_position_v2():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/private/position-v2"""
+    assert contractAPI.get_position_v2()[0]['code'] == 1000
+
+    assert contractAPI.get_position_v2(contract_symbol='BTCUSDT', account='futures')[0]['code'] == 1000
+
+
+def test_get_leverage_bracket():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/public/leverage-bracket"""
+    assert contractAPI.get_leverage_bracket()[0]['code'] == 1000
+
+    assert contractAPI.get_leverage_bracket(contract_symbol='BTCUSDT')[0]['code'] == 1000
+
+
+def test_get_market_trade():
+    """Test GET https://api-cloud-v2.bitmart.com/contract/public/market-trade"""
+    assert contractAPI.get_market_trade(contract_symbol='BTCUSDT')[0]['code'] == 1000
+    assert contractAPI.get_market_trade(contract_symbol='BTCUSDT', limit=1)[0]['code'] == 1000

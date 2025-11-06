@@ -1,6 +1,5 @@
 import logging
 from examples.config import API_KEY, SECRET_KEY, MEMO
-import time
 
 from bitmart.api_contract import APIContract
 from bitmart.lib.cloud_exceptions import APIException
@@ -11,17 +10,10 @@ config_logging(logging, logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 futuresAPI = APIContract(api_key=API_KEY,
-                         secret_key=SECRET_KEY,
-                         memo=MEMO,
                          logger=logger)
 
 try:
-    response = futuresAPI.post_transfer(
-        currency="USDT",
-        amount="100",
-        type="spot_to_contract",
-        recv_window=6000,
-    )[0]
+    response = futuresAPI.get_position_v2()[0]
     logger.info(response)
 except APIException as error:
     logger.error(
@@ -30,3 +22,15 @@ except APIException as error:
         )
     )
 
+try:
+    response = futuresAPI.get_position_v2(
+        contract_symbol='BTCUSDT',
+        account='futures'
+    )[0]
+    logger.info(response)
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )

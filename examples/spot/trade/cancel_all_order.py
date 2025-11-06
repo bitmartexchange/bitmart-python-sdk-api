@@ -1,16 +1,18 @@
 
 import logging
+from examples.config import API_KEY, SECRET_KEY, MEMO
 
 from bitmart.api_spot import APISpot
 from bitmart.lib.cloud_exceptions import APIException
 from bitmart.lib.cloud_utils import config_logging
 
+
 config_logging(logging, logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-spotAPI = APISpot(api_key="Your_Api_Key",
-                  secret_key="Your_Secret_Key",
-                  memo="Your_Memo",
+spotAPI = APISpot(api_key=API_KEY,
+                  secret_key=SECRET_KEY,
+                  memo=MEMO,
                   logger=logger)
 
 

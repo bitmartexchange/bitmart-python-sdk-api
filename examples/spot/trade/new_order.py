@@ -1,16 +1,18 @@
 
 import logging
+from examples.config import API_KEY, SECRET_KEY, MEMO
 
 from bitmart.api_spot import APISpot
 from bitmart.lib.cloud_exceptions import APIException
 from bitmart.lib.cloud_utils import config_logging
 
+
 config_logging(logging, logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-spotAPI = APISpot(api_key="Your_Api_Key",
-                  secret_key="Your_Secret_Key",
-                  memo="Your_Memo",
+spotAPI = APISpot(api_key=API_KEY,
+                  secret_key=SECRET_KEY,
+                  memo=MEMO,
                   logger=logger)
 
 try:
@@ -24,6 +26,14 @@ try:
         price='8800')[0]
     logger.info(response)
 
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )
+
+try:
     # Place market order
     # Special Parameters for Market Buy Orders (type=market, side=buy)
     response1 = spotAPI.post_submit_order(
@@ -33,7 +43,14 @@ try:
         notional='10000',
     )
     logger.info(response1)
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )
 
+try:
     # Special Parameters for Market Sell Orders (type=market, side=sell)
     response2 = spotAPI.post_submit_order(
         symbol='BTC_USDT',
@@ -42,6 +59,23 @@ try:
         size='10000',
     )
     logger.info(response2)
+except APIException as error:
+    logger.error(
+        "Found error. status: {}, error message: {}".format(
+            error.status_code, error.response
+        )
+    )
+
+try:
+    # Place limit order with stpMode
+    response3 = spotAPI.post_submit_order(
+        symbol='BTC_USDT',
+        side='buy',
+        type='limit',
+        size='0.01',
+        price='8800',
+        stp_mode='cancel_maker')[0]
+    logger.info(response3)
 
 except APIException as error:
     logger.error(
