@@ -64,6 +64,15 @@ API_SPOT_V4_QUERY_HISTORY_ORDERS_URL = '/spot/v4/query/history-orders'
 API_SPOT_V4_QUERY_TRADES_URL = '/spot/v4/query/trades'
 API_SPOT_V4_QUERY_ORDER_TRADES_URL = '/spot/v4/query/order-trades'
 
+# spot algo order url
+API_SPOT_V4_ALGO_SUBMIT_ORDER_URL = '/spot/v4/algo/submit_order'
+API_SPOT_V4_ALGO_CANCEL_ORDER_URL = '/spot/v4/algo/cancel_order'
+API_SPOT_V4_ALGO_CANCEL_ALL_URL = '/spot/v4/algo/cancel_all'
+API_SPOT_V4_QUERY_ALGO_ORDER_BY_ID_URL = '/spot/v4/query/algo/order'
+API_SPOT_V4_QUERY_ALGO_ORDER_BY_CLIENT_ID_URL = '/spot/v4/query/algo/client-order'
+API_SPOT_V4_QUERY_ALGO_OPEN_ORDERS_URL = '/spot/v4/query/algo/open-orders'
+API_SPOT_V4_QUERY_ALGO_HISTORY_ORDERS_URL = '/spot/v4/query/algo/history-orders'
+
 
 API_SPOT_MARGIN_ACCOUNT_DETAILS_ISOLATED = '/spot/v1/margin/isolated/account'
 API_SPOT_MARGIN_ISOLATED_TRANSFER = '/spot/v1/margin/isolated/transfer'
@@ -120,11 +129,26 @@ API_CONTRACT_SET_POSITION_MODE_URL = "/contract/private/set-position-mode"
 API_CONTRACT_POSITION_V2_URL = "/contract/private/position-v2"
 API_CONTRACT_LEVERAGE_BRACKET_URL = "/contract/public/leverage-bracket"
 API_CONTRACT_MARKET_TRADE_URL = "/contract/public/market-trade"
+API_CONTRACT_FUNDING_RATE_V2_URL = "/contract/public/funding-rate-v2"
+API_CONTRACT_CLAIM_URL = "/contract/private/claim"
+API_CONTRACT_AUTO_REPAYMENT_URL = "/contract/private/auto_repayment"
+API_CONTRACT_CROSS_COLLATERAL_INTEREST_LOG_URL = "/contract/private/cross_collateral/interest_log"
+
+# contract affiliate url
+API_CONTRACT_AFFILIATE_AFF_CUSTOMER_INFO_URL = "/contract/private/affiliate/aff-customer-info"
+API_CONTRACT_AFFILIATE_DEPOSIT_WITHDRAWAL_LIST_URL = "/contract/private/affiliate/deposit-withdrawal-list"
+API_CONTRACT_AFFILIATE_REBATE_INVITE_USER_URL = "/contract/private/affiliate/rebate-inviteUser"
+API_CONTRACT_AFFILIATE_INVITE_CHECK_URL = "/contract/private/affiliate/invite-check"
+API_CONTRACT_AFFILIATE_REBATE_USER_URL = "/contract/private/affiliate/rebate-user"
+API_CONTRACT_AFFILIATE_REBATE_API_URL = "/contract/private/affiliate/rebate-api"
+API_CONTRACT_AFFILIATE_REBATE_LIST_URL = "/contract/private/affiliate/rebate-list"
+API_CONTRACT_AFFILIATE_TRADE_LIST_URL = "/contract/private/affiliate/trade-list"
 
 
 # websocket
 # spot public
 WS_PUBLIC_SPOT_TICKER = 'spot/ticker'
+WS_PUBLIC_SPOT_BOOK_TICKER = 'spot/bookTicker'
 WS_PUBLIC_SPOT_TRADE = 'spot/trade'
 WS_PUBLIC_SPOT_DEPTH5 = 'spot/depth5'
 WS_PUBLIC_SPOT_DEPTH20 = 'spot/depth20'

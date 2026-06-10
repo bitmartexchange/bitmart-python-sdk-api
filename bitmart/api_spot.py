@@ -563,3 +563,207 @@ class APISpot(CloudClient):
             param['recvWindow'] = recv_window
 
         return self._request_with_params(POST, API_SPOT_V4_QUERY_ORDER_TRADES_URL, param, Auth.SIGNED)
+
+    # algo order API (strategy order: plan order & take-profit/stop-loss)
+
+    def v4_algo_submit_order(self, symbol: str, side: str, type: str, client_order_id='', extra_params: dict = None):
+        """
+        Algo order placement, supports plan order(trigger) and take-profit/stop-loss(tp/sl) order.
+
+        POST https://api-cloud.bitmart.com/spot/v4/algo/submit_order
+
+        :param symbol: Trading pair (e.g. BTC_USDT)
+        :param side: Order side -buy=Buy order -sell=Sell order
+        :param type: Order type
+                    - tp/sl=One-way take-profit/stop-loss order
+                    - trigger=Plan order
+        :param client_order_id: Client-defined OrderId(A combination of letters (case-sensitive) and numbers,
+                                or pure letters / pure numbers, length 1-32)
+        :param extra_params: Optional dict of additional request fields required by the chosen order type,
+                            per the API documentation. Merged into the request body as-is.
+        :return:
+        """
+        param = {
+            'symbol': symbol,
+            'side': side,
+            'type': type
+        }
+
+        if client_order_id:
+            param['client_order_id'] = client_order_id
+
+        if extra_params:
+            param.update(extra_params)
+
+        return self._request_with_params(POST, API_SPOT_V4_ALGO_SUBMIT_ORDER_URL, param, Auth.SIGNED)
+
+    def v4_algo_cancel_order(self, symbol: str, order_id: str, type: str):
+        """
+        Cancel an unfilled algo order.
+
+        POST https://api-cloud.bitmart.com/spot/v4/algo/cancel_order
+
+        :param symbol: Trading pair (e.g. BMX_USDT)
+        :param order_id: Order ID
+        :param type: Order type
+                    - tp/sl=One-way take-profit/stop-loss order
+                    - trigger=Plan order
+        :return:
+        """
+        param = {
+            'symbol': symbol,
+            'order_id': order_id,
+            'type': type
+        }
+        return self._request_with_params(POST, API_SPOT_V4_ALGO_CANCEL_ORDER_URL, param, Auth.SIGNED)
+
+    def v4_algo_cancel_all(self, type: str, symbol=None):
+        """
+        Cancel all unfilled algo orders.
+
+        POST https://api-cloud.bitmart.com/spot/v4/algo/cancel_all
+
+        :param type: Order type
+                    - tp/sl=One-way take-profit/stop-loss order
+                    - trigger=Plan order
+        :param symbol: Trading pair (e.g. BTC_USDT)
+        :return:
+        """
+        param = {
+            'type': type
+        }
+
+        if symbol:
+            param['symbol'] = symbol
+
+        return self._request_with_params(POST, API_SPOT_V4_ALGO_CANCEL_ALL_URL, param, Auth.SIGNED)
+
+    def v4_query_algo_order_by_id(self, order_id: str, query_state=None, recv_window=None):
+        """
+        Query a single algo order by orderId.
+
+        POST https://api-cloud.bitmart.com/spot/v4/query/algo/order
+
+        :param order_id: Order id
+        :param query_state: Query Type
+                    - open=Query order state [new, partially_filled]
+                    - history=Query order state [filled, canceled, partially_canceled]
+        :param recv_window: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+        :return:
+        """
+        param = {
+            'orderId': order_id
+        }
+
+        if query_state:
+            param['queryState'] = query_state
+
+        if recv_window:
+            param['recvWindow'] = recv_window
+
+        return self._request_with_params(POST, API_SPOT_V4_QUERY_ALGO_ORDER_BY_ID_URL, param, Auth.SIGNED)
+
+    def v4_query_algo_order_by_client_id(self, client_order_id: str, query_state=None, recv_window=None):
+        """
+        Query a single algo order by clientOrderId.
+
+        POST https://api-cloud.bitmart.com/spot/v4/query/algo/client-order
+
+        :param client_order_id: User-defined order id
+        :param query_state: Query Type
+                    - open=Query order state [new, partially_filled]
+                    - history=Query order state [filled, canceled, partially_canceled]
+        :param recv_window: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+        :return:
+        """
+        param = {
+            'clientOrderId': client_order_id
+        }
+
+        if query_state:
+            param['queryState'] = query_state
+
+        if recv_window:
+            param['recvWindow'] = recv_window
+
+        return self._request_with_params(POST, API_SPOT_V4_QUERY_ALGO_ORDER_BY_CLIENT_ID_URL, param, Auth.SIGNED)
+
+    def v4_query_algo_open_orders(self, symbol=None, order_mode=None, start_time=None, end_time=None, limit=None,
+                                  recv_window=None):
+        """
+        Query the current algo order list of the account.
+
+        POST https://api-cloud.bitmart.com/spot/v4/query/algo/open-orders
+
+        :param symbol: Trading pair (e.g. BTC_USDT)
+        :param order_mode: Order mode
+                            - trigger=Plan order
+                            - tp/sl=Take-profit/stop-loss order
+        :param start_time: Start time in milliseconds, (e.g. 1681701557927)
+        :param end_time: End time in milliseconds, (e.g. 1681701557927)
+        :param limit: Number of queries, allowed range [1,200], default 200
+        :param recv_window: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+        :return:
+        """
+        param = {
+        }
+
+        if symbol:
+            param['symbol'] = symbol
+
+        if order_mode:
+            param['orderMode'] = order_mode
+
+        if start_time:
+            param['startTime'] = start_time
+
+        if end_time:
+            param['endTime'] = end_time
+
+        if limit:
+            param['limit'] = limit
+
+        if recv_window:
+            param['recvWindow'] = recv_window
+
+        return self._request_with_params(POST, API_SPOT_V4_QUERY_ALGO_OPEN_ORDERS_URL, param, Auth.SIGNED)
+
+    def v4_query_algo_history_orders(self, symbol=None, order_mode=None, start_time=None, end_time=None, limit=None,
+                                     recv_window=None):
+        """
+        Query the account history algo order list.
+
+        POST https://api-cloud.bitmart.com/spot/v4/query/algo/history-orders
+
+        :param symbol: Trading pair (e.g. BTC_USDT)
+        :param order_mode: Order mode
+                            - trigger=Plan order
+                            - tp/sl=Take-profit/stop-loss order
+        :param start_time: Start time in milliseconds, (e.g. 1681701557927)
+        :param end_time: End time in milliseconds, (e.g. 1681701557927)
+        :param limit: Number of queries, allowed range [1,200], default 200
+        :param recv_window: Trade time limit, allowed range (0,60000], default: 5000 milliseconds
+        :return:
+        """
+        param = {
+        }
+
+        if symbol:
+            param['symbol'] = symbol
+
+        if order_mode:
+            param['orderMode'] = order_mode
+
+        if start_time:
+            param['startTime'] = start_time
+
+        if end_time:
+            param['endTime'] = end_time
+
+        if limit:
+            param['limit'] = limit
+
+        if recv_window:
+            param['recvWindow'] = recv_window
+
+        return self._request_with_params(POST, API_SPOT_V4_QUERY_ALGO_HISTORY_ORDERS_URL, param, Auth.SIGNED)
