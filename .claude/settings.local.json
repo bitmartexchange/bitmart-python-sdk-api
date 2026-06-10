@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p ~/.claude/skills/w-sdk-for-python && echo created)",
+      "Skill(w-sdk-for-python)",
+      "Skill(w-sdk-for-python:*)",
+      "Bash(git pull *)",
+      "Bash(git checkout *)"
+    ]
+  }
+}

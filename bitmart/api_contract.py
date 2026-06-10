@@ -1060,3 +1060,287 @@ class APIContract(CloudClient):
             param['limit'] = limit
 
         return self._request_with_params(GET, API_CONTRACT_MARKET_TRADE_URL, param)
+
+    def get_funding_rate_v2(self, contract_symbol: str = None):
+        """Get Current Funding Rate (V2)
+        Applicable for checking the current funding rate of a specified contract
+
+        GET /contract/public/funding-rate-v2
+
+        :param contract_symbol: Symbol of the contract(like BTCUSDT)
+        :return:
+        """
+        param = {}
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+        return self._request_with_params(GET, API_CONTRACT_FUNDING_RATE_V2_URL, param)
+
+    def post_claim(self):
+        """Claim Demo Trading Assets (SIGNED)
+        Applicable for claiming demo trading assets
+
+        POST /contract/private/claim
+
+        :return:
+        """
+        return self._request_without_params(POST, API_CONTRACT_CLAIM_URL, Auth.SIGNED)
+
+    def get_auto_repayment(self, start_time: int = None, end_time: int = None, page: int = None, size: int = None,
+                           from_coin_code: str = None, type: str = None):
+        """Get Auto Repayment Records (KEYED)
+        Applicable for querying auto repayment records
+
+        GET /contract/private/auto_repayment
+
+        :param start_time: Start time (timestamp in seconds, e.g. 1770739200)
+        :param end_time: End time (timestamp in seconds, e.g. 1771257600)
+        :param page: Current page
+        :param size: Query size (e.g. 1000)
+        :param from_coin_code: Repayment currency (e.g. USDT)
+        :param type: Repayment type (e.g. AUTO_REPAY)
+        :return:
+        """
+        param = {}
+
+        if start_time:
+            param['start_time'] = start_time
+
+        if end_time:
+            param['end_time'] = end_time
+
+        if page:
+            param['page'] = page
+
+        if size:
+            param['size'] = size
+
+        if from_coin_code:
+            param['from_coin_code'] = from_coin_code
+
+        if type:
+            param['type'] = type
+
+        return self._request_with_params(GET, API_CONTRACT_AUTO_REPAYMENT_URL, param, Auth.KEYED)
+
+    def get_cross_collateral_interest_log(self, start_time: int = None, end_time: int = None, page: int = None,
+                                          size: int = None, coin_code: str = None):
+        """Get Cross Collateral Interest Log (KEYED)
+        Applicable for querying the cross collateral interest accrual log
+
+        GET /contract/private/cross_collateral/interest_log
+
+        :param start_time: Start time (timestamp in seconds, e.g. 1770739200)
+        :param end_time: End time (timestamp in seconds, e.g. 1771257600)
+        :param page: Current page
+        :param size: Query size
+        :param coin_code: Currency (e.g. USDT)
+        :return:
+        """
+        param = {}
+
+        if start_time:
+            param['start_time'] = start_time
+
+        if end_time:
+            param['end_time'] = end_time
+
+        if page:
+            param['page'] = page
+
+        if size:
+            param['size'] = size
+
+        if coin_code:
+            param['coin_code'] = coin_code
+
+        return self._request_with_params(GET, API_CONTRACT_CROSS_COLLATERAL_INTEREST_LOG_URL, param, Auth.KEYED)
+
+    def get_affiliate_aff_customer_info(self, user_id: int):
+        """Get Invited User Futures Account Info (KEYED)
+        Applicable for querying the futures account information of an invited user
+
+        GET /contract/private/affiliate/aff-customer-info
+
+        :param user_id: Invited user ID to query
+        :return:
+        """
+        param = {
+            'userId': user_id
+        }
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_AFF_CUSTOMER_INFO_URL, param, Auth.KEYED)
+
+    def get_affiliate_deposit_withdrawal_list(self, page: int, size: int, cid: int, start_time: int, end_time: int,
+                                              type: int = None):
+        """Get Invited User Deposit/Withdrawal List (KEYED)
+        Applicable for querying the deposit and withdrawal records of invited users
+
+        GET /contract/private/affiliate/deposit-withdrawal-list
+
+        :param page: Current page
+        :param size: Items per page (maximum 50)
+        :param cid: User CID to query
+        :param start_time: Start time (timestamp in seconds)
+        :param end_time: End time (timestamp in seconds), max interval 60 days
+        :param type: Optional, 1=deposit, 2=withdrawal
+        :return:
+        """
+        param = {
+            'page': page,
+            'size': size,
+            'cid': cid,
+            'start_time': start_time,
+            'end_time': end_time
+        }
+
+        if type:
+            param['type'] = type
+
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_DEPOSIT_WITHDRAWAL_LIST_URL, param, Auth.KEYED)
+
+    def get_affiliate_rebate_invite_user(self, start_time: int, end_time: int, page: int, size: int, cid: int = None):
+        """Get Invited Customer List (KEYED)
+        Applicable for querying the list of invited users
+
+        GET /contract/private/affiliate/rebate-inviteUser
+
+        :param start_time: Start time (timestamp in seconds)
+        :param end_time: End time (timestamp in seconds), max interval 60 days
+        :param page: Current page
+        :param size: Items per page (maximum 50)
+        :param cid: User CID to query
+        :return:
+        """
+        param = {
+            'start_time': start_time,
+            'end_time': end_time,
+            'page': page,
+            'size': size
+        }
+
+        if cid:
+            param['cid'] = cid
+
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_REBATE_INVITE_USER_URL, param, Auth.KEYED)
+
+    def get_affiliate_invite_check(self, cid: int):
+        """Check If Invited User (KEYED)
+        Applicable for checking whether a user is an invited user
+
+        GET /contract/private/affiliate/invite-check
+
+        :param cid: User CID to query
+        :return:
+        """
+        param = {
+            'cid': cid
+        }
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_INVITE_CHECK_URL, param, Auth.KEYED)
+
+    def get_affiliate_rebate_user(self, cid: int, start_time: int, end_time: int):
+        """Get Single User Rebate (KEYED)
+        Applicable for querying the rebate data of a single user
+
+        GET /contract/private/affiliate/rebate-user
+
+        :param cid: User CID to query (supports all sub-agents and direct/indirect invited users)
+        :param start_time: Start time (timestamp in seconds)
+        :param end_time: End time (timestamp in seconds), max interval 60 days
+        :return:
+        """
+        param = {
+            'cid': cid,
+            'start_time': start_time,
+            'end_time': end_time
+        }
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_REBATE_USER_URL, param, Auth.KEYED)
+
+    def get_affiliate_rebate_api(self, cid: int, start_time: int, end_time: int):
+        """Get Single API User Rebate (KEYED)
+        Applicable for querying the API rebate data of a single user
+
+        GET /contract/private/affiliate/rebate-api
+
+        :param cid: User CID to query (supports all sub-agents and direct/indirect invited users)
+        :param start_time: Start time (timestamp in seconds)
+        :param end_time: End time (timestamp in seconds), max interval 60 days
+        :return:
+        """
+        param = {
+            'cid': cid,
+            'start_time': start_time,
+            'end_time': end_time
+        }
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_REBATE_API_URL, param, Auth.KEYED)
+
+    def get_affiliate_rebate_list(self, page: int, size: int, currency: str, user_id: int = None,
+                                  rebate_start_time: int = None, rebate_end_time: int = None,
+                                  register_start_time: int = None, register_end_time: int = None):
+        """Get Rebate Records (KEYED)
+        Applicable for querying rebate records
+
+        GET /contract/private/affiliate/rebate-list
+
+        :param page: Current page
+        :param size: Items per page
+        :param currency: Currency to query
+        :param user_id: User ID to query
+        :param rebate_start_time: Rebate start timestamp (in seconds)
+        :param rebate_end_time: Rebate end timestamp (in seconds)
+        :param register_start_time: Register start timestamp (in seconds)
+        :param register_end_time: Register end timestamp (in seconds)
+        :return:
+        """
+        param = {
+            'page': page,
+            'size': size,
+            'currency': currency
+        }
+
+        if user_id:
+            param['user_id'] = user_id
+
+        if rebate_start_time:
+            param['rebate_start_time'] = rebate_start_time
+
+        if rebate_end_time:
+            param['rebate_end_time'] = rebate_end_time
+
+        if register_start_time:
+            param['register_start_time'] = register_start_time
+
+        if register_end_time:
+            param['register_end_time'] = register_end_time
+
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_REBATE_LIST_URL, param, Auth.KEYED)
+
+    def get_affiliate_trade_list(self, user_id: int, type: int, page: int, size: int, start_time: int = None,
+                                 end_time: int = None):
+        """Get Trade Records (KEYED)
+        Applicable for querying trade records
+
+        GET /contract/private/affiliate/trade-list
+
+        :param user_id: User ID to query
+        :param type: Query type
+                    - 1=USDT-margined
+                    - 2=Coin-margined
+        :param page: Current page
+        :param size: Items per page
+        :param start_time: Start timestamp (in seconds)
+        :param end_time: End timestamp (in seconds)
+        :return:
+        """
+        param = {
+            'user_id': user_id,
+            'type': type,
+            'page': page,
+            'size': size
+        }
+
+        if start_time:
+            param['start_time'] = start_time
+
+        if end_time:
+            param['end_time'] = end_time
+
+        return self._request_with_params(GET, API_CONTRACT_AFFILIATE_TRADE_LIST_URL, param, Auth.KEYED)
