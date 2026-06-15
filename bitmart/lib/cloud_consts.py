@@ -37,6 +37,16 @@ API_ACCOUNT_WITHDRAW_APPLY_URL = '/account/v1/withdraw/apply'
 API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_V2_URL = '/account/v2/deposit-withdraw/history'
 API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
 
+# spot sub-account url
+API_ACCOUNT_SUB_TO_MAIN_URL = '/account/sub-account/main/v1/sub-to-main'
+API_ACCOUNT_SUB_TO_MAIN_FROM_SUB_URL = '/account/sub-account/sub/v1/sub-to-main'
+API_ACCOUNT_MAIN_TO_SUB_URL = '/account/sub-account/main/v1/main-to-sub'
+API_ACCOUNT_SUB_TO_SUB_URL = '/account/sub-account/main/v1/sub-to-sub'
+API_ACCOUNT_SUB_TRANSFER_LIST_URL = '/account/sub-account/main/v1/transfer-list'
+API_ACCOUNT_SUB_TRANSFER_HISTORY_URL = '/account/sub-account/v1/transfer-history'
+API_ACCOUNT_SUB_WALLET_URL = '/account/sub-account/main/v1/wallet'
+API_ACCOUNT_SUB_LIST_URL = '/account/sub-account/main/v1/subaccount-list'
+
 # spot url
 API_SPOT_CURRENCIES_URL = '/spot/v1/currencies'
 API_SPOT_SYMBOLS_URL = '/spot/v1/symbols'
@@ -143,6 +153,14 @@ API_CONTRACT_AFFILIATE_REBATE_USER_URL = "/contract/private/affiliate/rebate-use
 API_CONTRACT_AFFILIATE_REBATE_API_URL = "/contract/private/affiliate/rebate-api"
 API_CONTRACT_AFFILIATE_REBATE_LIST_URL = "/contract/private/affiliate/rebate-list"
 API_CONTRACT_AFFILIATE_TRADE_LIST_URL = "/contract/private/affiliate/trade-list"
+
+# contract sub-account url
+API_CONTRACT_SUB_TO_MAIN_URL = "/account/contract/sub-account/main/v1/sub-to-main"
+API_CONTRACT_SUB_TO_MAIN_FROM_SUB_URL = "/account/contract/sub-account/sub/v1/sub-to-main"
+API_CONTRACT_MAIN_TO_SUB_URL = "/account/contract/sub-account/main/v1/main-to-sub"
+API_CONTRACT_SUB_TRANSFER_LIST_URL = "/account/contract/sub-account/main/v1/transfer-list"
+API_CONTRACT_SUB_TRANSFER_HISTORY_URL = "/account/contract/sub-account/v1/transfer-history"
+API_CONTRACT_SUB_WALLET_URL = "/account/contract/sub-account/main/v1/wallet"
 
 
 # websocket
