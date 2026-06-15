@@ -20,6 +20,8 @@ bitmart/
   api_spot.py               # APISpot      — /spot/* REST (24 methods)
   api_contract.py           # APIContract  — /contract/* futures REST (39 methods)
   api_account.py            # APIAccount   — /account/* REST (13 methods)
+  api_spot_sub_account.py   # APISpotSubAccount     — /account/sub-account/* spot (8 methods, api-cloud domain)
+  api_contract_sub_account.py # APIContractSubAccount — /account/contract/sub-account/* futures (6 methods, api-cloud-v2 domain)
   api_margin_loan.py        # APIMarginLoan — /spot/v1/margin/isolated/* (6 methods)
   api_broker.py             # APIBroker    — /spot/v1/broker/* (3 methods)
   api_system.py             # APISystem    — /system/* (3 methods)
