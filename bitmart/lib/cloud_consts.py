@@ -99,6 +99,24 @@ API_TRADING_PAIR_BORROWING_RATE_AND_AMOUNT_URL = '/spot/v1/margin/isolated/pairs
 # broker url
 API_BROKER_REBATE = '/spot/v1/broker/rebate'
 
+# finance url (Earn / Savings)
+API_FINANCE_EARN_URL = '/newearn/cloud/v1/earn'
+API_FINANCE_SAVING_PRODUCT_URL = '/newearn/cloud/v1/saving/product'
+API_FINANCE_SAVING_SUBSCRIBE_URL = '/newearn/cloud/v1/saving/subscribe'
+API_FINANCE_SAVING_REDEEM_URL = '/newearn/cloud/v1/saving/redeem'
+API_FINANCE_SAVING_EARN_URL = '/newearn/cloud/v1/saving/earn'
+API_FINANCE_SAVING_RECORD_URL = '/newearn/cloud/v1/saving/record'
+API_FINANCE_FIXED_PRODUCT_URL = '/newearn/cloud/v1/saving/fixed/product'
+API_FINANCE_FIXED_SUBSCRIBE_URL = '/newearn/cloud/v1/saving/fixed/subscribe'
+API_FINANCE_FIXED_EARN_URL = '/newearn/cloud/v1/saving/fixed/earn'
+API_FINANCE_FIXED_RECORD_URL = '/newearn/cloud/v1/saving/fixed/record'
+API_FINANCE_FIXED_REDEEM_URL = '/newearn/cloud/v1/saving/fixed/redeem'
+API_FINANCE_FIXED_SUBSCRIBE_OPERATE_URL = '/newearn/cloud/v1/saving/fixed/subscribe/operate'
+API_FINANCE_SAVING_SUBSCRIBE_BATCH_OPERATE_URL = '/newearn/cloud/v1/saving/subscribe/batch/operate'
+API_FINANCE_SAVING_SUBSCRIBE_BATCH_URL = '/newearn/cloud/v1/saving/subscribe/batch'
+API_FINANCE_SAVING_SUBSCRIBE_OPERATE_URL = '/newearn/cloud/v1/saving/subscribe/operate'
+API_FINANCE_SAVING_SUBSCRIBE_STATUS_URL = '/newearn/cloud/v1/saving/subscribe/status'
+
 # contract url
 API_CONTRACT_DETAILS_URL = "/contract/public/details"
 API_CONTRACT_DEPTH_URL = "/contract/public/depth"

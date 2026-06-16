@@ -1,6 +1,29 @@
 Changelog
 =========================
 
+### v2.7.0 Release
+#### New Features
+- New (Finance / Earn — new `APIFinance` class)
+    - `/newearn/cloud/v1/earn` Get Earn Account Holdings (KEYED)
+    - `/newearn/cloud/v1/saving/product` Get Flexible Savings Product List (KEYED)
+    - `/newearn/cloud/v1/saving/subscribe` Subscribe Flexible Savings (SIGNED)
+    - `/newearn/cloud/v1/saving/redeem` Redeem Flexible Savings (SIGNED)
+    - `/newearn/cloud/v1/saving/earn` Get Flexible Savings Holdings (KEYED)
+    - `/newearn/cloud/v1/saving/record` Get Flexible Savings History Records (KEYED)
+    - `/newearn/cloud/v1/saving/fixed/product` Get Fixed Savings Product List (KEYED)
+    - `/newearn/cloud/v1/saving/fixed/subscribe` Subscribe Fixed Savings (SIGNED)
+    - `/newearn/cloud/v1/saving/fixed/earn` Get Fixed Savings Holdings (KEYED)
+    - `/newearn/cloud/v1/saving/fixed/record` Get Fixed Savings History Records (KEYED)
+    - `/newearn/cloud/v1/saving/fixed/redeem` Early Redeem Fixed Savings (SIGNED)
+    - `/newearn/cloud/v1/saving/fixed/subscribe/operate` Modify Fixed Savings Auto-Renewal (SIGNED)
+    - `/newearn/cloud/v1/saving/subscribe/batch/operate` Toggle Global Auto Earn (SIGNED)
+    - `/newearn/cloud/v1/saving/subscribe/batch` Get Global Auto Earn Status (KEYED)
+    - `/newearn/cloud/v1/saving/subscribe/operate` Toggle Flexible Product Auto Subscribe (SIGNED)
+    - `/newearn/cloud/v1/saving/subscribe/status` Get Flexible Product Auto Subscribe Status (KEYED)
+
+
+---
+
 ### v2.6.1 Release
 #### New Features
 - New (Spot Sub-Account)
