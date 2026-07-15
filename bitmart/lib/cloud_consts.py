@@ -36,6 +36,10 @@ API_ACCOUNT_WITHDRAW_CHARGE_URL = '/account/v1/withdraw/charge'
 API_ACCOUNT_WITHDRAW_APPLY_URL = '/account/v1/withdraw/apply'
 API_ACCOUNT_DEPOSIT_WITHDRAW_HISTORY_V2_URL = '/account/v2/deposit-withdraw/history'
 API_ACCOUNT_DEPOSIT_WITHDRAW_DETAIL = '/account/v1/deposit-withdraw/detail'
+API_ACCOUNT_GET_DEPOSIT_ACCOUNT_URL = '/account/v1/get-deposit-account'
+API_ACCOUNT_SET_DEPOSIT_ACCOUNT_URL = '/account/v1/set-deposit-account'
+API_ACCOUNT_TRANSFER_URL = '/account/v1/transfer'
+API_ACCOUNT_UAPI_KEY_INFO_URL = '/uapi-key/v1/account/info'
 
 # spot sub-account url
 API_ACCOUNT_SUB_TO_MAIN_URL = '/account/sub-account/main/v1/sub-to-main'
@@ -161,6 +165,8 @@ API_CONTRACT_FUNDING_RATE_V2_URL = "/contract/public/funding-rate-v2"
 API_CONTRACT_CLAIM_URL = "/contract/private/claim"
 API_CONTRACT_AUTO_REPAYMENT_URL = "/contract/private/auto_repayment"
 API_CONTRACT_CROSS_COLLATERAL_INTEREST_LOG_URL = "/contract/private/cross_collateral/interest_log"
+API_CONTRACT_CLOSE_ALL_POSITION_URL = "/contract/private/close-all-position"
+API_CONTRACT_ACCOUNT_TRANSFER_URL = "/contract/private/account/v1/transfer"
 
 # contract affiliate url
 API_CONTRACT_AFFILIATE_AFF_CUSTOMER_INFO_URL = "/contract/private/affiliate/aff-customer-info"

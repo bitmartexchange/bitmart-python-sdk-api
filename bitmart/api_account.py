@@ -90,7 +90,8 @@ class APIAccount(CloudClient):
 
     def post_withdraw_apply(self, currency: str, amount: str,
                             destination: str = None, address: str = None, address_memo: str = None,
-                            type: int = None, value: str = None, area_code: str = None):
+                            type: int = None, value: str = None, area_code: str = None,
+                            source_account: str = None):
         """Withdraw (SIGNED)
         Creates a withdraw request from spot account to an external address
 
@@ -105,6 +106,10 @@ class APIAccount(CloudClient):
         :param type: Account type 1=CID 2=Email 3=Phone
         :param value: Account
         :param area_code: Phone area code, required when account type is phone, e.g.: 61
+        :param source_account: Withdrawal source account
+                        - SPOT=Spot account
+                        - FUND=Fund account
+                        If not provided, balance is drawn from spot and fund accounts one by one.
         :return:
         """
         param = {
@@ -129,6 +134,9 @@ class APIAccount(CloudClient):
             param['value'] = value
         if area_code:
             param['areaCode'] = area_code
+
+        if source_account:
+            param['sourceAccount'] = source_account
 
         return self._request_with_params(POST, API_ACCOUNT_WITHDRAW_APPLY_URL, param, Auth.SIGNED)
 
@@ -235,3 +243,68 @@ class APIAccount(CloudClient):
             'symbol': symbol
         }
         return self._request_with_params(GET, API_SPOT_ACTUAL_TRADE_FEE_RATE, param, Auth.KEYED)
+
+    def get_deposit_account(self):
+        """Get Deposit Account (KEYED)
+        Query the default deposit crediting account
+
+        GET https://api-cloud.bitmart.com/account/v1/get-deposit-account
+
+        :return:
+        """
+        return self._request_without_params(GET, API_ACCOUNT_GET_DEPOSIT_ACCOUNT_URL, Auth.KEYED)
+
+    def post_set_deposit_account(self, account_type: str = None):
+        """Set Deposit Account (SIGNED)
+        Set the deposit crediting account type (not supported for sub-accounts)
+
+        POST https://api-cloud.bitmart.com/account/v1/set-deposit-account
+
+        :param account_type: Deposit account type
+                    - SPOT=Spot account
+                    - CONTRACT=Contract account
+                    - FUND=Fund account
+        :return:
+        """
+        param = {}
+
+        if account_type:
+            param['account_type'] = account_type
+
+        return self._request_with_params(POST, API_ACCOUNT_SET_DEPOSIT_ACCOUNT_URL, param, Auth.SIGNED)
+
+    def post_account_transfer(self, currency: str = None, amount: str = None, type: str = None):
+        """Account Transfer (SIGNED)
+        Transfer funds between the spot account and the fund account
+
+        POST https://api-cloud.bitmart.com/account/v1/transfer
+
+        :param currency: Token symbol, e.g., 'USDT'
+        :param amount: Transfer amount
+        :param type: Transfer direction
+                    - spot_to_fund=Spot account to Fund account
+                    - fund_to_spot=Fund account to Spot account
+        :return:
+        """
+        param = {}
+
+        if currency:
+            param['currency'] = currency
+
+        if amount:
+            param['amount'] = amount
+
+        if type:
+            param['type'] = type
+
+        return self._request_with_params(POST, API_ACCOUNT_TRANSFER_URL, param, Auth.SIGNED)
+
+    def get_account_info(self):
+        """Get Account Info (KEYED)
+        Query the account information bound to the API key
+
+        GET https://api-cloud.bitmart.com/uapi-key/v1/account/info
+
+        :return:
+        """
+        return self._request_without_params(GET, API_ACCOUNT_UAPI_KEY_INFO_URL, Auth.KEYED)

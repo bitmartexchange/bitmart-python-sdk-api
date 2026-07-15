@@ -591,3 +591,24 @@ def test_get_affiliate_trade_list():
         )[0]["code"]
         == 1000
     )
+
+
+def test_post_close_all_position():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/close-all-position"""
+    assert contractAPI.post_close_all_position(contract_type=1)[0]["code"] == 1000
+    assert (
+        contractAPI.post_close_all_position(
+            contract_type=1, contract_symbol="BTCUSDT", position_side="long"
+        )[0]["code"]
+        == 1000
+    )
+
+
+def test_post_account_transfer():
+    """Test POST https://api-cloud-v2.bitmart.com/contract/private/account/v1/transfer"""
+    assert (
+        contractAPI.post_account_transfer(
+            currency="USDT", amount="10", type="fund_to_contract"
+        )[0]["code"]
+        == 1000
+    )

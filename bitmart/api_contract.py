@@ -1344,3 +1344,57 @@ class APIContract(CloudClient):
             param['end_time'] = end_time
 
         return self._request_with_params(GET, API_CONTRACT_AFFILIATE_TRADE_LIST_URL, param, Auth.KEYED)
+
+    def post_close_all_position(self, contract_type: int, contract_symbol: str = None, position_side: str = None):
+        """Close All Positions (SIGNED)
+        Applicable for closing all positions in one click
+
+        POST /contract/private/close-all-position
+
+        :param contract_type: Contract type
+                    - 1=USDT-FUTURES
+                    - 2=COIN-FUTURES
+        :param contract_symbol: Symbol of the contract (like BTCUSDT). If provided, only close
+                    positions of this symbol; otherwise close positions of all symbols.
+        :param position_side: Position side. If not provided, close positions of all sides.
+                    - long=Close long positions only
+                    - short=Close short positions only
+        :return:
+        """
+        param = {
+            'contractType': contract_type
+        }
+
+        if contract_symbol:
+            param['symbol'] = contract_symbol
+
+        if position_side:
+            param['position_side'] = position_side
+
+        return self._request_with_params(POST, API_CONTRACT_CLOSE_ALL_POSITION_URL, param, Auth.SIGNED)
+
+    def post_account_transfer(self, currency: str = None, amount: str = None, type: str = None):
+        """Account Transfer (SIGNED)
+        Transfer funds between the fund account and the contract account
+
+        POST /contract/private/account/v1/transfer
+
+        :param currency: Token symbol, e.g., 'USDT'
+        :param amount: Transfer amount
+        :param type: Transfer direction
+                    - fund_to_contract=Fund account to Contract account
+                    - contract_to_fund=Contract account to Fund account
+        :return:
+        """
+        param = {}
+
+        if currency:
+            param['currency'] = currency
+
+        if amount:
+            param['amount'] = amount
+
+        if type:
+            param['type'] = type
+
+        return self._request_with_params(POST, API_CONTRACT_ACCOUNT_TRANSFER_URL, param, Auth.SIGNED)
