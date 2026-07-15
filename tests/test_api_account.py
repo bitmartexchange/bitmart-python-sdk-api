@@ -38,6 +38,9 @@ def test_post_withdraw_apply():
     assert accountAPI.post_withdraw_apply(currency='USDT-ERC20', amount='40', destination='To Digital Address',
                                           address='0xe57b69a8776b37860407965B73cdFFBDFe668Bb5', address_memo='')[0][
                'code'] == 1000
+    assert accountAPI.post_withdraw_apply(currency='USDT-ERC20', amount='40', destination='To Digital Address',
+                                          address='0xe57b69a8776b37860407965B73cdFFBDFe668Bb5', address_memo='',
+                                          source_account='SPOT')[0]['code'] == 1000
 
 
 def test_get_deposit_withdraw_history_v2():
@@ -74,3 +77,24 @@ def test_get_actual_trade_fee_rate():
     """Test GET https://api-cloud.bitmart.com/spot/v1/trade_fee"""
     assert accountAPI.get_actual_trade_fee_rate(
         symbol='BTC_USDT')[0]['code'] == 1000
+
+
+def test_get_deposit_account():
+    """Test GET https://api-cloud.bitmart.com/account/v1/get-deposit-account"""
+    assert accountAPI.get_deposit_account()[0]['code'] == 1000
+
+
+def test_post_set_deposit_account():
+    """Test POST https://api-cloud.bitmart.com/account/v1/set-deposit-account"""
+    assert accountAPI.post_set_deposit_account(account_type='SPOT')[0]['code'] == 1000
+
+
+def test_post_account_transfer():
+    """Test POST https://api-cloud.bitmart.com/account/v1/transfer"""
+    assert accountAPI.post_account_transfer(
+        currency='USDT', amount='10', type='spot_to_fund')[0]['code'] == 1000
+
+
+def test_get_account_info():
+    """Test GET https://api-cloud.bitmart.com/uapi-key/v1/account/info"""
+    assert accountAPI.get_account_info()[0]['code'] == 1000
